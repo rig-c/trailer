@@ -1,0 +1,31 @@
+{
+ "seed": 63001,
+ "latent": [
+  832,
+  1216
+ ],
+ "size": [
+  1664,
+  2432
+ ],
+ "key": "kv",
+ "checkpoint": "novaAnimeXL_ilV80.safetensors",
+ "loras": [],
+ "sampler": {
+  "steps": 30,
+  "cfg": 5.5,
+  "sampler": "euler_ancestral",
+  "scheduler": "normal"
+ },
+ "control": {
+  "skeleton": "pose_seated.json",
+  "strength": 0.85,
+  "end_percent": 0.75,
+  "model": "controlnet-openpose-sdxl-1.0.safetensors"
+ },
+ "pose_from": "generation.pose",
+ "dropped": [],
+ "positive": "score_9, score_8_up, score_7_up, source_anime, masterpiece, best quality, highly detailed, 1girl, solo, adult woman, very long twin tails, straight hair, white hair, gradient hair, (aqua gradient hair tips:1.2), hair tied at the ends, red round hair bobbles, ahoge, aqua eyes, sparkling eyes, (navy blue beret:1.1), idol uniform, (navy blue jacket:1.3) with gold trim, epaulettes, white pinstripe shirt, red bowtie with gold star, black corset with gold buttons, red ribbon bow at waist, navy blue and white layered frilled skirt with gold stripes, white thighhighs with red stripe, navy blue ankle boots with red bows, fully clothed, full body, head to toe, entire body in frame, front view, facing viewer, looking at viewer, sitting, sitting in mid-air, floating, legs hanging down, crossed ankles, one hand raised resting on cheek, other hand resting at her side, head tilt, smile, closed mouth, twin tails hanging straight down, hair hanging down behind her, hair falling vertically, feet visible, shoes, anime illustration, detailed, soft shading, vibrant colors, (white background:1.3), simple background, plain background",
+ "negative": "score_4, score_3, score_2, score_1, worst quality, low quality, lowres, blurry, jpeg artifacts, nsfw, nude, naked, cleavage, underwear, sexual, suggestive, child, loli, shota, kid, toddler, text, watermark, signature, logo, bad anatomy, bad hands, extra fingers, deformed, mutated, revealing clothes, bare shoulders, off shoulder, 2girls, multiple girls, holding, bag, weapon, clouds, sky, grey background, blue background, gradient background, scenery, outdoors, from behind, back view, facing away, vignette, dark background, black background, spotlight, microphone, stage, flat color, monochrome, lineart, open mouth, teeth, tongue, closed eyes, half-closed eyes, wind, floating hair, red jacket, red coat, red hair, pink hair, red skirt, cropped, out of frame, cut off feet, close-up, portrait, upper body, from side, profile, standing, kneeling, lying, chair, bench, stool, sofa, bed, swing, railing, contact shadow, cast shadow, floor, ground, multiple views, reference sheet, hair spread, hair on floor, hair on ground, hair on seat, hair draped, hair flowing sideways, floating hair, wind, wavy hair, curly hair",
+ "chosen": "seed 63001 of four (63001-63004), read by eye: the only one whose twin tails hang straight down behind the seat line instead of draping over it"
+}

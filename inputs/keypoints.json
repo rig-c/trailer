@@ -1,0 +1,116 @@
+{
+ "spec": "spine-parts-keypoints/1",
+ "space": {
+  "units": "painting-px",
+  "origin": "top-left",
+  "y": "down"
+ },
+ "width": 1664,
+ "height": 2432,
+ "source": "read off the generated painting by eye at half size, by the author",
+ "people": [
+  {
+   "id": "a",
+   "joints": {
+    "nose": {
+     "state": "observed",
+     "at": [
+      810,
+      510
+     ]
+    },
+    "neck": {
+     "state": "observed",
+     "at": [
+      844,
+      664
+     ]
+    },
+    "r_shoulder": {
+     "state": "observed",
+     "at": [
+      672,
+      712
+     ]
+    },
+    "l_shoulder": {
+     "state": "observed",
+     "at": [
+      1016,
+      696
+     ]
+    },
+    "r_elbow": {
+     "state": "observed",
+     "at": [
+      600,
+      904
+     ]
+    },
+    "r_wrist": {
+     "state": "observed",
+     "at": [
+      740,
+      644
+     ]
+    },
+    "l_elbow": {
+     "state": "observed",
+     "at": [
+      1084,
+      940
+     ]
+    },
+    "l_wrist": {
+     "state": "observed",
+     "at": [
+      1200,
+      1304
+     ]
+    },
+    "r_hip": {
+     "state": "observed",
+     "at": [
+      770,
+      1184
+     ]
+    },
+    "l_hip": {
+     "state": "observed",
+     "at": [
+      930,
+      1184
+     ]
+    },
+    "r_knee": {
+     "state": "observed",
+     "at": [
+      704,
+      1384
+     ]
+    },
+    "l_knee": {
+     "state": "observed",
+     "at": [
+      910,
+      1384
+     ]
+    },
+    "r_ankle": {
+     "state": "observed",
+     "at": [
+      732,
+      1944
+     ]
+    },
+    "l_ankle": {
+     "state": "observed",
+     "at": [
+      700,
+      2000
+     ]
+    }
+   }
+  }
+ ]
+}

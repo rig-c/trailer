@@ -1,0 +1,16 @@
+{
+ "checkpoint": "novaAnimeXL_ilV80.safetensors",
+ "width": 1344,
+ "height": 768,
+ "seeds": [
+  7101,
+  7102,
+  7103,
+  7104
+ ],
+ "steps": 30,
+ "cfg": 5.5,
+ "positive": "masterpiece, best quality, very aesthetic, absurdres, no humans, scenery, anime background, night, night sky, starry sky, milky way, aurora, shooting star, crescent moon, sea of clouds, above the clouds, distant floating islands, distant city lights below, glowing lanterns in the distance, deep blue and violet palette, vibrant, wide shot, depth, atmospheric perspective, soft glow",
+ "negative": "worst quality, low quality, lowres, blurry, jpeg artifacts, text, watermark, signature, logo, 1girl, 1boy, person, people, character, animal, close-up, building in foreground, daytime, sun",
+ "chosen": 7104
+}

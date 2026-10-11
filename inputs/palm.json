@@ -1,0 +1,22 @@
+{
+ "checkpoint": "novaAnimeXL_ilV80.safetensors",
+ "width": 768,
+ "height": 896,
+ "seeds": [
+  8801,
+  8802,
+  8803,
+  8804,
+  8805,
+  8806,
+  8807,
+  8808,
+  8809,
+  8810
+ ],
+ "steps": 30,
+ "cfg": 5.5,
+ "positive": "masterpiece, best quality, very aesthetic, absurdres, hand focus, close-up, 1girl, solo, open hand, palm, waving, spread fingers, five fingers, fingers pointing up, slender fingers, wrist, bare arm, pale skin, anime coloring, cel shading, clean lineart, white background, simple background, head out of frame",
+ "negative": "worst quality, low quality, lowres, blurry, jpeg artifacts, text, watermark, signature, bad hands, extra fingers, extra digits, fewer digits, fused fingers, missing fingers, deformed, two hands, multiple hands, face, hair, sleeve, glove, jewelry, ring, bracelet, nail polish, fist, pointing, peace sign",
+ "chosen": 8809
+}

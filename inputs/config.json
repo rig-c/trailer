@@ -1,0 +1,967 @@
+{
+ "key": "kv",
+ "generation": {
+  "checkpoint": "novaAnimeXL_ilV80.safetensors",
+  "loras": [],
+  "trigger": "",
+  "identity": "1girl, solo, adult woman, very long twin tails, straight hair, white hair, gradient hair, (aqua gradient hair tips:1.2), hair tied at the ends, red round hair bobbles, ahoge, aqua eyes, sparkling eyes, (navy blue beret:1.1)",
+  "sampler": {
+   "steps": 30,
+   "cfg": 5.5,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal"
+  },
+  "costume": "idol uniform, (navy blue jacket:1.3) with gold trim, epaulettes, white pinstripe shirt, red bowtie with gold star, black corset with gold buttons, red ribbon bow at waist, navy blue and white layered frilled skirt with gold stripes, white thighhighs with red stripe, navy blue ankle boots with red bows, fully clothed",
+  "negative_extra": "revealing clothes, bare shoulders, off shoulder, 2girls, multiple girls, holding, bag, weapon, clouds, sky, grey background, blue background, gradient background, scenery, outdoors, from behind, back view, facing away, vignette, dark background, black background, spotlight, microphone, stage, flat color, monochrome, lineart, open mouth, teeth, tongue, closed eyes, half-closed eyes, wind, floating hair, red jacket, red coat, red hair, pink hair, red skirt",
+  "pose": "full body, head to toe, entire body in frame, front view, facing viewer, looking at viewer, sitting, sitting in mid-air, floating, legs hanging down, crossed ankles, one hand raised resting on cheek, other hand resting at her side, head tilt, smile, closed mouth, twin tails hanging straight down, hair hanging down behind her, hair falling vertically, feet visible, shoes",
+  "style": "anime illustration, detailed, soft shading, vibrant colors, (white background:1.3), simple background, plain background",
+  "negative_pose": "cropped, out of frame, cut off feet, close-up, portrait, upper body, from side, profile, standing, kneeling, lying, chair, bench, stool, sofa, bed, swing, railing, contact shadow, cast shadow, floor, ground, multiple views, reference sheet, hair spread, hair on floor, hair on ground, hair on seat, hair draped, hair flowing sideways, floating hair, wind, wavy hair, curly hair",
+  "latent": [
+   832,
+   1216
+  ],
+  "seed": 63001,
+  "control": {
+   "skeleton": "pose_seated.json",
+   "strength": 0.85,
+   "end_percent": 0.75
+  }
+ },
+ "seethrough": {
+  "resolution": 1024,
+  "steps": 30,
+  "seed": 42,
+  "offload": true,
+  "head_box": [
+   480,
+   110,
+   1137,
+   767
+  ]
+ },
+ "assemble": {
+  "rig_scale": 0.5,
+  "plan": [
+   [
+    "hair_long",
+    "full",
+    "back hair"
+   ],
+   [
+    "hair_back",
+    "head",
+    "back hair"
+   ],
+   [
+    "handwear_l",
+    "full",
+    "handwear-l"
+   ],
+   [
+    "legwear",
+    "full",
+    "legwear"
+   ],
+   [
+    "shoes",
+    "full",
+    "footwear"
+   ],
+   [
+    "neck",
+    "head",
+    "neck"
+   ],
+   [
+    "bottomwear",
+    "full",
+    "bottomwear"
+   ],
+   [
+    "topwear",
+    "full",
+    "topwear"
+   ],
+   [
+    "handwear_r",
+    "full",
+    "handwear-r"
+   ],
+   [
+    "ear_r",
+    "head",
+    "ears-r"
+   ],
+   [
+    "ear_l",
+    "head",
+    "ears-l"
+   ],
+   [
+    "face",
+    "head",
+    "face"
+   ],
+   [
+    "mouth",
+    "head",
+    "mouth"
+   ],
+   [
+    "eyewhite_r",
+    "head",
+    "eyewhite-r"
+   ],
+   [
+    "eyewhite_l",
+    "head",
+    "eyewhite-l"
+   ],
+   [
+    "iris_l",
+    "head",
+    "irides-l"
+   ],
+   [
+    "brow_l",
+    "head",
+    "eyebrow-l"
+   ],
+   [
+    "brow_r",
+    "head",
+    "eyebrow-r"
+   ],
+   [
+    "iris_r",
+    "head",
+    "irides-r"
+   ],
+   [
+    "lash_r",
+    "head",
+    "eyelash-r"
+   ],
+   [
+    "hairpin",
+    "head",
+    "headwear"
+   ],
+   [
+    "lash_l",
+    "head",
+    "eyelash-l"
+   ],
+   [
+    "hair_front",
+    "head",
+    "front hair"
+   ]
+  ],
+  "extend_below_crop": [
+   {
+    "part": "hair_back",
+    "run": "full",
+    "tag": "back hair"
+   }
+  ]
+ },
+ "bones": [
+  {
+   "name": "hip",
+   "parent": "root",
+   "at": [
+    425,
+    592
+   ]
+  },
+  {
+   "name": "chest",
+   "parent": "hip",
+   "at": [
+    424,
+    462
+   ]
+  },
+  {
+   "name": "chest_jiggle",
+   "parent": "chest",
+   "at": [
+    425,
+    422
+   ]
+  },
+  {
+   "name": "neck",
+   "parent": "chest",
+   "at": [
+    422,
+    332
+   ]
+  },
+  {
+   "name": "head",
+   "parent": "neck",
+   "at": [
+    403,
+    289
+   ]
+  },
+  {
+   "name": "eye_r",
+   "parent": "head",
+   "at": [
+    370,
+    256
+   ],
+   "tip": [
+    388,
+    248
+   ]
+  },
+  {
+   "name": "eye_l",
+   "parent": "head",
+   "at": [
+    436,
+    227
+   ],
+   "tip": [
+    454,
+    219
+   ]
+  },
+  {
+   "name": "brow_r",
+   "parent": "head",
+   "at": [
+    358,
+    225
+   ],
+   "tip": [
+    376,
+    217
+   ]
+  },
+  {
+   "name": "brow_l",
+   "parent": "head",
+   "at": [
+    428,
+    196
+   ],
+   "tip": [
+    446,
+    188
+   ]
+  },
+  {
+   "name": "mouth",
+   "parent": "head",
+   "at": [
+    415,
+    277
+   ],
+   "tip": [
+    433,
+    269
+   ]
+  },
+  {
+   "name": "bun",
+   "parent": "head",
+   "at": [
+    403,
+    191
+   ],
+   "tip": [
+    403,
+    315
+   ]
+  },
+  {
+   "chain": "bang_r",
+   "parent": "head",
+   "points": [
+    [
+     353,
+     103
+    ],
+    [
+     343,
+     161
+    ]
+   ],
+   "tip": [
+    335,
+    227
+   ]
+  },
+  {
+   "chain": "bang_c",
+   "parent": "head",
+   "points": [
+    [
+     391,
+     103
+    ],
+    [
+     391,
+     161
+    ]
+   ],
+   "tip": [
+    391,
+    227
+   ]
+  },
+  {
+   "chain": "bang_l",
+   "parent": "head",
+   "points": [
+    [
+     429,
+     103
+    ],
+    [
+     439,
+     161
+    ]
+   ],
+   "tip": [
+    447,
+    227
+   ]
+  },
+  {
+   "name": "hairpin",
+   "parent": "head",
+   "at": [
+    348,
+    117
+   ],
+   "tip": [
+    505,
+    117
+   ]
+  },
+  {
+   "chain": "hairpin_tassel",
+   "parent": "hairpin",
+   "points": [
+    [
+     310,
+     162
+    ],
+    [
+     310,
+     181
+    ]
+   ],
+   "tip": [
+    310,
+    204
+   ]
+  },
+  {
+   "chain": "sleeve_r",
+   "parent": "chest",
+   "points": [
+    [
+     302,
+     470
+    ],
+    [
+     325,
+     400
+    ]
+   ],
+   "tip": [
+    372,
+    300
+   ]
+  },
+  {
+   "chain": "sleeve_l",
+   "parent": "chest",
+   "points": [
+    [
+     508,
+     348
+    ],
+    [
+     542,
+     470
+    ]
+   ],
+   "tip": [
+    600,
+    652
+   ]
+  },
+  {
+   "chain": "skirt_r",
+   "parent": "hip",
+   "points": [
+    [
+     322,
+     612
+    ],
+    [
+     300,
+     655
+    ]
+   ],
+   "tip": [
+    280,
+    700
+   ]
+  },
+  {
+   "chain": "skirt_c",
+   "parent": "hip",
+   "points": [
+    [
+     400,
+     612
+    ],
+    [
+     400,
+     650
+    ]
+   ],
+   "tip": [
+    404,
+    696
+   ]
+  },
+  {
+   "chain": "skirt_l",
+   "parent": "hip",
+   "points": [
+    [
+     480,
+     612
+    ],
+    [
+     510,
+     655
+    ]
+   ],
+   "tip": [
+    540,
+    700
+   ]
+  },
+  {
+   "chain": "tail_r",
+   "parent": "chest",
+   "points": [
+    [
+     331,
+     420
+    ],
+    [
+     283,
+     570
+    ],
+    [
+     170,
+     670
+    ],
+    [
+     140,
+     790
+    ]
+   ],
+   "tip": [
+    200,
+    940
+   ]
+  },
+  {
+   "chain": "tail_l",
+   "parent": "chest",
+   "points": [
+    [
+     517,
+     420
+    ],
+    [
+     569,
+     570
+    ],
+    [
+     671,
+     670
+    ],
+    [
+     689,
+     790
+    ]
+   ],
+   "tip": [
+    610,
+    940
+   ]
+  },
+  {
+   "chain": "leg",
+   "parent": "hip",
+   "points": [
+    [
+     411,
+     690
+    ],
+    [
+     394,
+     830
+    ]
+   ],
+   "tip": [
+    374,
+    1000
+   ]
+  }
+ ],
+ "meshes": {
+  "hair_back": {
+   "grid": 23,
+   "r": 10,
+   "segments": [
+    [
+     "head",
+     [
+      403,
+      289
+     ],
+     [
+      403,
+      121
+     ]
+    ],
+    "bun"
+   ]
+  },
+  "hair_front": {
+   "grid": 26,
+   "r": 11,
+   "segments": [
+    [
+     "head",
+     [
+      403,
+      289
+     ],
+     [
+      403,
+      90
+     ]
+    ],
+    "bang_r",
+    "bang_c",
+    "bang_l"
+   ]
+  },
+  "hairpin": {
+   "grid": 13,
+   "r": 5,
+   "segments": [
+    [
+     "hairpin",
+     [
+      348,
+      117
+     ],
+     [
+      505,
+      117
+     ]
+    ],
+    [
+     "hairpin",
+     [
+      289,
+      105
+     ],
+     [
+      348,
+      135
+     ]
+    ],
+    "hairpin_tassel"
+   ]
+  },
+  "neck": {
+   "grid": 5,
+   "r": 3,
+   "segments": [
+    [
+     "chest",
+     [
+      403,
+      350
+     ],
+     [
+      403,
+      462
+     ]
+    ],
+    [
+     "head",
+     [
+      403,
+      289
+     ],
+     [
+      403,
+      239
+     ]
+    ]
+   ]
+  },
+  "handwear_r": {
+   "grid": 11,
+   "r": 5,
+   "segments": [
+    "sleeve_r"
+   ]
+  },
+  "handwear_l": {
+   "grid": 15,
+   "r": 6,
+   "segments": [
+    [
+     "chest",
+     [
+      504,
+      335
+     ],
+     [
+      509,
+      350
+     ]
+    ],
+    "sleeve_l"
+   ]
+  },
+  "topwear": {
+   "contour": {
+    "tolerance": 1,
+    "margin": 1,
+    "spacing": 24,
+    "stray": 48,
+    "regions": [
+     {
+      "name": "bust",
+      "shape": "circle",
+      "cx": 425,
+      "cy": 422,
+      "r": 44,
+      "bone": "chest_jiggle",
+      "spacing": 8,
+      "band": 20
+     }
+    ]
+   },
+   "r": 10,
+   "segments": [
+    [
+     "chest",
+     [
+      424,
+      299
+     ],
+     [
+      424,
+      572
+     ]
+    ],
+    [
+     "hip",
+     [
+      424,
+      572
+     ],
+     [
+      424,
+      692
+     ]
+    ]
+   ]
+  },
+  "bottomwear": {
+   "grid": 18,
+   "r": 8,
+   "segments": [
+    [
+     "chest",
+     [
+      424,
+      432
+     ],
+     [
+      424,
+      572
+     ]
+    ],
+    [
+     "hip",
+     [
+      229,
+      597
+     ],
+     [
+      573,
+      597
+     ]
+    ],
+    "skirt_r",
+    "skirt_c",
+    "skirt_l"
+   ]
+  },
+  "hair_long": {
+   "grid": 30,
+   "r": 12,
+   "segments": [
+    [
+     "head",
+     [
+      403,
+      289
+     ],
+     [
+      403,
+      121
+     ]
+    ],
+    [
+     "chest",
+     [
+      424,
+      330
+     ],
+     [
+      424,
+      420
+     ]
+    ],
+    "tail_r",
+    "tail_l"
+   ]
+  },
+  "legwear": {
+   "grid": 30,
+   "r": 12,
+   "segments": [
+    [
+     "hip",
+     [
+      411,
+      610
+     ],
+     [
+      411,
+      690
+     ]
+    ],
+    "leg"
+   ]
+  }
+ },
+ "regions": {
+  "eyewhite_r": "eye_r",
+  "eyewhite_l": "eye_l",
+  "shoes": "leg1",
+  "ear_r": "head",
+  "ear_l": "head",
+  "face": "head",
+  "mouth": "mouth",
+  "iris_l": "eye_l",
+  "brow_l": "brow_l",
+  "brow_r": "brow_r",
+  "iris_r": "eye_r",
+  "lash_r": "eye_r",
+  "lash_l": "eye_l"
+ },
+ "motion": {
+  "duration": 4,
+  "tracks": [
+   {
+    "bone": "chest",
+    "prop": "translatey",
+    "amp": 1.3,
+    "period": 4,
+    "phase": 0,
+    "base": 1.3
+   },
+   {
+    "bone": "chest",
+    "prop": "scalex",
+    "amp": 0.004,
+    "period": 4,
+    "phase": 0,
+    "base": 1.004
+   },
+   {
+    "bone": "head",
+    "prop": "rotate",
+    "amp": 0.9,
+    "period": 4,
+    "phase": 0.12
+   },
+   {
+    "bone": "neck",
+    "prop": "rotate",
+    "amp": 0.35,
+    "period": 4,
+    "phase": 0.08
+   },
+   {
+    "bone": "bun",
+    "prop": "rotate",
+    "amp": 0.8,
+    "period": 4,
+    "phase": 0.2
+   },
+   {
+    "chain": "bang_r",
+    "amps": [
+     1,
+     2.2
+    ],
+    "period": 4,
+    "phase": 0.18,
+    "lag": 0.1
+   },
+   {
+    "chain": "bang_c",
+    "amps": [
+     0.8,
+     1.76
+    ],
+    "period": 4,
+    "phase": 0.18,
+    "lag": 0.1
+   },
+   {
+    "chain": "bang_l",
+    "amps": [
+     1,
+     2.2
+    ],
+    "period": 4,
+    "phase": 0.18,
+    "lag": 0.1
+   },
+   {
+    "chain": "hairpin_tassel",
+    "amps": [
+     4,
+     7
+    ],
+    "period": 2,
+    "phase": 0.2,
+    "lag": 0.12
+   },
+   {
+    "chain": "sleeve_r",
+    "amps": [
+     0.4,
+     0.9
+    ],
+    "period": 4,
+    "phase": 0.22,
+    "lag": 0.08
+   },
+   {
+    "chain": "sleeve_l",
+    "amps": [
+     -0.2,
+     -0.6
+    ],
+    "period": 4,
+    "phase": 0.27,
+    "lag": 0.08
+   },
+   {
+    "chain": "skirt_r",
+    "amps": [
+     0.5,
+     1.1
+    ],
+    "period": 4,
+    "phase": 0.3,
+    "lag": 0.07
+   },
+   {
+    "chain": "skirt_c",
+    "amps": [
+     0.3,
+     0.6
+    ],
+    "period": 4,
+    "phase": 0.34,
+    "lag": 0.07
+   },
+   {
+    "chain": "skirt_l",
+    "amps": [
+     -0.5,
+     -1.1
+    ],
+    "period": 4,
+    "phase": 0.38,
+    "lag": 0.07
+   },
+   {
+    "chain": "tail_r",
+    "amps": [
+     0.2,
+     0.5,
+     1.0,
+     1.6
+    ],
+    "period": 4.0,
+    "phase": 0.2,
+    "lag": 0.08
+   },
+   {
+    "chain": "tail_l",
+    "amps": [
+     -0.2,
+     -0.5,
+     -1.0,
+     -1.6
+    ],
+    "period": 4.0,
+    "phase": 0.25,
+    "lag": 0.08
+   },
+   {
+    "chain": "leg",
+    "amps": [
+     1.2,
+     2.0
+    ],
+    "period": 4.0,
+    "phase": 0.35,
+    "lag": 0.1
+   }
+  ],
+  "blink": {
+   "t": 2.3,
+   "eyes": [
+    "eye_r",
+    "eye_l"
+   ],
+   "brows": [
+    "brow_r",
+    "brow_l"
+   ],
+   "squash": 0.12,
+   "brow_drop": 1.2
+  }
+ }
+}
