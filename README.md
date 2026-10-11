@@ -17,7 +17,7 @@ her skeleton, a performance longer than an idle, and a record of what review cau
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
 pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.6.0 and rig-c 2.39.1, then runs the five steps
+./build.sh                           # installs @rig-c/parts 1.7.0 and rig-c 2.41.0, then runs the five steps
 ```
 
 Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
@@ -56,7 +56,7 @@ The sections below say what each is for.
 **3. Compile and gate** — `rigc build`, twice. Nothing is written unless the gate is green:
 
 ```
-52 assertions: 19 measured (19 passed, 0 failed), 17 skipped, 16 not in profile "spine"
+53 assertions: 20 measured (20 passed, 0 failed), 17 skipped, 16 not in profile "spine"
 bones=79 slots=29 animations=2 regionAttachments=18 meshAttachments=11 physicsConstraints=24
 ```
 
@@ -106,7 +106,7 @@ gate and wrong in the picture, and was found by a person watching the loop.
 
 | Seen | Cause | Fix here | Where it went |
 | --- | --- | --- | --- |
-| "The eyes do not match the tilt of the face" | The head is painted 23.7° off vertical and the five face bones were written with the page's axes, so a blink's `scaley` squashed the eyes along the page | `rig.py` rotates `eye_*`, `brow_*` and `mouth` to the line through the eyes and turns their attachments back | [parts#239](https://github.com/rig-c/parts/issues/239) (build it that way), [core#1351](https://github.com/rig-c/core/issues/1351) (gate it) |
+| "The eyes do not match the tilt of the face" | The head is painted 23.7° off vertical and the five face bones were written with the page's axes, so a blink's `scaley` squashed the eyes along the page | first by hand in `rig.py`; since `@rig-c/parts` 1.7.0 the rig stage stands the five bones on the line through the eyes and declares it, `rig-c` 2.40.0's gate holds the build to it (`A51`), and `rig.py` only checks that it was done | [parts#239](https://github.com/rig-c/parts/issues/239), [core#1351](https://github.com/rig-c/core/issues/1351) — both shipped |
 | "The chest does not move — a paper doll" | The torso was one mesh on two rigid bones | the soft region and its spring; the parallax | — |
 | "The hand is too small: an open hand goes by the size of the face" | The palm was sized from the painted, half-hidden hand | wrist to fingertip 58 → 78 units, about half the face's width | — |
 | "Her wrist breaks when she waves" | Two things: the palm's forearm pointed the way the painted wrist did, 14° off the sleeve; and the whole palm turned ±15° at the cuff, against the arm | the forearm follows the sleeve's axis; the palm is two pieces, and only the hand turns, at the wrist, ±7°, a quarter beat behind the arm | — |
@@ -118,7 +118,19 @@ long hair behind the back dropped from the assembly plan
 ([parts#233](https://github.com/rig-c/parts/issues/233)), a cut piece given its base's chains a second time
 ([parts#230](https://github.com/rig-c/parts/issues/230)), the check's standing-figure bars
 ([parts#231](https://github.com/rig-c/parts/issues/231)), and a `tip` on a single bone accepted and ignored
-(in #239). The first three shipped in `@rig-c/parts` 1.6.0, which is why step 1 is one green command here.
+(in #239). All of them have shipped; the first three in `@rig-c/parts` 1.6.0, which is why step 1 is one green command here.
+
+Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround.
+
+## Looking at the rig
+
+`rig-c` 2.41.0 draws a build for an agent to read — bones, names, a coordinate grid and what the rig declares, over the art — with a legend beside the picture that maps pixels back to rig coordinates:
+
+```bash
+node_modules/.bin/rigc inspect --candidate out/build --show art,bones,names,declared --dim --zoom bone:head:120 --out head.png
+```
+
+Most of the findings in the table above were first seen in pictures like that one, drawn by throwaway scripts before the command existed.
 
 ## What is the rig and what is staging
 

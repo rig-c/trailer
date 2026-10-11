@@ -3,5 +3,5 @@
   "private": true,
   "description": "The rig-c organisation's trailer, reproducible: one painting to a rigged, animated loop",
   "scripts": { "build": "./build.sh" },
-  "devDependencies": { "@rig-c/parts": "1.6.0", "rig-c": "2.39.1" }
+  "devDependencies": { "@rig-c/parts": "1.7.0", "rig-c": "2.41.0" }
 }

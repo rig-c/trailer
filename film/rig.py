@@ -11,8 +11,6 @@ motion-spec data that `rigc build` compiles and gates like any other:
     drawn pieces on the seat bone — so the character and the swing are one
     skeleton, and the sway reaches every strand as ordinary bone motion;
   * a physics constraint on every hanging chain, and one on the soft chest;
-  * the face bones stood on the face's own axis (the eye line), so a blink
-    squashes across the eye and not along the page;
   * a second, keyed bone above three bones a physics constraint or a gesture
     already owns, for the parallax that reads as depth;
   * the open palm of the wave, as two pieces that meet at the wrist;
@@ -163,25 +161,18 @@ chain('skirt_c', 2, 120, 0.86, 0.5)
 chain('leg', 2, 95, 0.84, 0.55)
 
 # ---------------------------------------------------------------- the face's own axis
-# The head is painted tilted, and rig-parts 1.6.0 writes the face bones with the
-# page's axes (rig-c/parts#239). A blink keys scaley, which squashes along the
-# bone's own y: with the page's axes the closed eye is a horizontal stroke on a
-# tilted face. Rotate the five bones to the line through the two eyes, and turn
-# their attachments back by the same angle so the setup pose does not move.
+# The head is painted tilted. Since @rig-c/parts 1.7.0 the rig stage stands the
+# five face bones on the line through the two eyes itself and declares it
+# (`invariants.axes`), and rig-c's gate holds the build to it (A51) — so a blink,
+# which squashes along the bone's own y, closes across the eye and not along the
+# page. This script did that by hand until then (rig-c/parts#239); what is left
+# is the check that it was done.
+FACE = ('eye_r', 'eye_l', 'brow_r', 'brow_l', 'mouth')
 eye_r, eye_l = bone('eye_r'), bone('eye_l')
 TILT = math.degrees(math.atan2(eye_l['y'] - eye_r['y'], eye_l['x'] - eye_r['x']))
-cos_t, sin_t = math.cos(math.radians(-TILT)), math.sin(math.radians(-TILT))
-FACE = ('eye_r', 'eye_l', 'brow_r', 'brow_l', 'mouth')
 for name in FACE:
-    bone(name)['rotation'] = round(TILT, 4)
-for slot in rig['slots']:
-    if slot['bone'] in FACE:
-        for att in skin[slot['name']].values():
-            assert att.get('type', 'region') == 'region', slot['name']
-            x, y = att.get('x', 0), att.get('y', 0)
-            att['x'] = round(x * cos_t - y * sin_t, 4)
-            att['y'] = round(x * sin_t + y * cos_t, 4)
-            att['rotation'] = round(att.get('rotation', 0) - TILT, 4)
+    assert abs(bone(name).get('rotation', 0) - TILT) < 0.01, f'{name} is not on the eye line ({TILT:.2f} degrees): build with @rig-c/parts 1.7.0 or later'
+assert any(a.get('name') == 'face' for a in (rig.get('invariants') or {}).get('axes', [])), 'the rig declares no face axis'
 
 # ---------------------------------------------------------------- a keyed twin above a bone
 # A track owns one bone's one property, and a physics constraint owns its bone.
