@@ -20,7 +20,7 @@ how to check one without being able to watch it, and the rules this film was cor
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
 pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.11.0 and rig-c 2.47.0, then runs the five steps
+./build.sh                           # installs @rig-c/parts 1.12.0 and rig-c 2.47.1, then runs the five steps
 ```
 
 Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
