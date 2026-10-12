@@ -86,14 +86,16 @@ You cannot play the film. These readings replaced watching; each is a script in 
    loop time `IN × BREATH` plus whole periods — frames 25–26, 85–86, 145–146, 205–206 today). Red and cyan
    fringes; if they are a pixel wide a viewer will not see it either. **It measures how far, not how
    fast**: the same breath at half the speed gives the same number.
-5. **Does the loop close, does anything pop** — `python3 tools/loop.py out/render/show@20fps/geometry.json`.
+5. **Does any triangle fold** — `rigc render … --folds` (the command is under *The meshes, as they
+   stand*). One line per mesh that folds, none on this cut.
+6. **Does the loop close, does anything pop** — `python3 tools/loop.py out/render/show@20fps/geometry.json`.
    Loop time 0 against one loop later, and frames where bones turn several times further than on the
    frames around them. On this cut it prints 0.000 and only the hop's own frames; anything else is yours.
-6. **`rigc inspect`** for the rig itself — bones and names over the art, one mesh's weights, every mesh's
+7. **`rigc inspect`** for the rig itself — bones and names over the art, one mesh's weights, every mesh's
    density against the figure (`--show art,density`). See the README's *Looking at the rig*.
-7. **`tools/bends.py`** for what the performance asks of the rig: how far each bone turns from its setup
+8. **`tools/bends.py`** for what the performance asks of the rig: how far each bone turns from its setup
    pose over the loop.
-8. **A person.** `ffmpeg -stream_loop 1 -framerate 20 -i out/scene/s%04d.jpg -c:v libx264 -pix_fmt yuv420p
+9. **A person.** `ffmpeg -stream_loop 1 -framerate 20 -i out/scene/s%04d.jpg -c:v libx264 -pix_fmt yuv420p
    -crf 18 out.mp4` — the loop twice, so the seam is seen once — and ask. Two of the last three defects,
    "the eyes do not follow the face" and "I cannot feel the breath", were found this way and by no
    reading above. There is no reading here for whether a motion can be *felt*; a slow, small motion on a
@@ -124,25 +126,55 @@ Each is here because the film broke it once.
   declare each chain's largest turn from its setup pose as `auto.stimulus` in the config, and say how far
   from the unreduced mesh you accept at those bends (`auto.motion.maxLocalDeformation`: 3 here; 1 is not
   reachable at such bends — one removed vertex on the legs already reads 1.16).
+- **Build a part both ways before keeping its mesh.** A reduction held to a large bend is not the small
+  mesh it sounds like. On the skirt (24°) and the waving sleeve (33°) the `auto` reduction kept 276 and 148
+  triangles; `rig-parts mesh-draft`, which traces the outline around a coarse grid and keeps it only where
+  it holds against that grid, wrote 132 and 49, and the two films could not be told apart at the largest
+  bend, enlarged. On parts that bend a few degrees `auto` wins by as much. Nothing reports this; you find
+  it by building the part on a lattice at the figure's spacing (`"grid": 30` here), running `mesh-draft`,
+  and comparing the `[rig] mesh` lines.
 - **What the viewer is shown has to be visible.** The reveal drew every mesh edge alike and the outlines did
   not read; the outline of each mesh is now drawn over its inner edges.
 
 ## The meshes, as they stand
 
-`inputs/config.json`, per part: eight on `auto` (a traced outline reduced under declared bounds); `hair_long`
-and `hairpin` on `contour` (a traced outline with its grid inside, not reduced — at the bends the film
-gives them, 11° and 95°, their unreduced meshes already fold triangles, so no reduction can pass; that is
-a weight-rule defect, [parts#284](https://github.com/rig-c/parts/issues/284), and not something to work
-around here by declaring less than the film does); and the soft chest as a declared region of `topwear`.
-1,761 triangles where a lattice at each part's own spacing had 3,081.
+`inputs/config.json`, per part. 1,445 triangles where a lattice at each part's own spacing had 3,081.
+
+| part | mode | triangles | built the other way |
+| --- | --- | --- | --- |
+| `topwear` | `auto`, with the soft chest as a declared region | 503 | — |
+| `hair_long` | `contour`, `influences` with no cap and a continuous floor | 459 | lattice 578 |
+| `bottomwear` | `contour`, as `mesh-draft` drafted it | 132 | `auto` at the film's bends 276; lattice 140 |
+| `hair_front` | `auto` | 112 | lattice 114 |
+| `legwear` | `auto` | 77 | lattice 176 |
+| `handwear_r` | `contour`, as `mesh-draft` drafted it | 49 | `auto` at the film's bends 148; lattice 52 |
+| `hairpin` | `contour` at the draft's settings, `influences` with a continuous floor | 47 | `contour` at its own spacing 120; lattice 46 |
+| `handwear_l` | `auto` | 31 | lattice 72 |
+| `hair_back` | `auto` | 28 | lattice 120 |
+| `neck` | `auto` | 7 | lattice 12 |
+
+"Lattice" is `"grid": 30`, the spacing `rig-parts propose` drafts for this figure. `mesh-draft` left the
+hairpin on its lattice — its candidate sat 1.055 rig px from the lattice over the idle, against a line of
+1 — and the candidate's settings were then written by hand, which is an author's call and is why that
+entry carries no drafted note.
+
+**Folds.** `node_modules/.bin/rigc render --candidate out/build --animation show --fps 20 --max 900 --folds --out <dir>`
+names every mesh with a triangle turned over against the setup pose, and the frames. On this cut it names
+none. On the last one it named `hair_long` (three slivers at a curl's tip, 88 frames) and `hairpin` (91
+frames); a continuous floor cleared the hairpin and two of the hair's three, and lifting the cap on the
+long hair cleared the last. Both are `meshes.<part>.influences` in the config. Each line gives the folded
+triangles' world box and their share of the mesh's area, and
+`rigc inspect --candidate out/build --animation show --fps 20 --at <s> --show art,mesh,folds --zoom folds --max 900`
+frames a picture to them; a fold that still draws as a hairline wants a larger `--max`. Size is the triage:
+the long hair's three were 0.07 % of its mesh, at a nearly transparent tip.
 
 The declared bends against what `tools/bends.py` reads on this cut:
 
 | chain | declared `stimulus` | largest turn from setup, over the loop |
 | --- | --- | --- |
-| `skirt_r` / `skirt_c` / `skirt_l` | 24 / 16 / 24 | 23.8 / 11.8 / 22.4 |
+| `skirt_r` / `skirt_c` / `skirt_l` (on `contour` since this cut: nothing is reduced, so nothing is declared) | — | 23.8 / 11.8 / 22.4 |
 | `leg` | 12 | 10.6 |
-| `sleeve_r` (the wave) | 33 | 32.5 |
+| `sleeve_r` (the wave; on `contour` since this cut) | — | 32.5 |
 | `sleeve_l` | 4 | 2.0 |
 | `bang_r` / `bang_c` / `bang_l` | 11 / 10 / 11 | 11.0 / 10.0 / 10.4 |
 | `hairpin_tassel`, `tail_r` / `tail_l` (on `contour`: nothing is reduced, so nothing is declared) | — | 95.0, 8.8 / 11.2 |
@@ -179,8 +211,9 @@ cut; they stay here because how they were found is the method.
 
 ## Open, for whoever makes the next cut
 
-- `hair_long` and `hairpin` wait on parts#284; when the weight rule is continuous they should go to `auto`
-  like the rest.
+- `hair_long` and `hairpin` are on `contour` with their weight cut declared. Whether `auto` now accepts
+  them (it refused both while their unreduced meshes folded) has not been tried on this cut; by the table
+  above it is worth trying on `hair_long` and not on `hairpin`.
 - The soft chest's region is generous (503 triangles in `topwear`); it has not been tightened because the
   first complaint about this film was a chest that did not move.
 - The turn control `@rig-c/parts` 1.9.0 drafts (a dial that carries each part by its depth) is not used;

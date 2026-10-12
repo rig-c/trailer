@@ -638,7 +638,8 @@
    "contour": {
     "tolerance": 2,
     "margin": 2,
-    "spacing": 13
+    "spacing": 30,
+    "maxEdge": 30
    },
    "r": 5,
    "segments": [
@@ -665,7 +666,10 @@
      ]
     ],
     "hairpin_tassel"
-   ]
+   ],
+   "influences": {
+    "floor": "continuous"
+   }
   },
   "neck": {
    "auto": {
@@ -734,54 +738,18 @@
    ]
   },
   "handwear_r": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 11,
-     "stray": 4
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 3,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load",
-    "stimulus": {
-     "chain": "sleeve_r",
-     "degrees": 33
-    }
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 30,
+    "maxEdge": 30,
+    "stray": 2
    },
    "r": 5,
    "segments": [
     "sleeve_r"
-   ]
+   ],
+   "note": "drafted by rig-parts mesh-draft in place of the lattice at grid 30: the traced outline at tolerance and margin 2, no outline edge longer than 30 px, the interior grid at spacing 30 (figure 1108 px), stray 2 leaves out 2 dust island(s) of 2, 1 px; held to the lattice: bars \u2014 every check bar reading the part passed; idle \u2014 0.098 rig px from the lattice over the idle; at most 1 is required; bend inverted \u2014 0 inverted triangle(s) at the bend set against the lattice's 0; no more than the lattice's is required; bend worst \u2014 worst sample 1.197 rig px from the dense reference at the bend set against the lattice's 1.693 (-29.308 %); at most 1.862 (the lattice's + 10 %) is required; triangles \u2014 49 triangle(s) against the lattice's 52; no more than the lattice's is required (--more-triangles lifts this line); measured against the idle and the 15\u00b0-per-link bend set only \u2014 nothing larger was measured, so a chain an animation or a physics constraint bends further than that has not been read at that bend; the gate is a judgment relative to this config's lattice, not an absolute quality: when the lattice coarsens, the reference moves with it; the spacing rule round(H / 37) and the tolerance rule max(1, round(H / 554)) are calibrated on three figures of similar size (1106, 1108, 1185 px), not laws of figure size"
   },
   "handwear_l": {
    "auto": {
@@ -927,59 +895,12 @@
    ]
   },
   "bottomwear": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 18,
-     "stray": 2
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 3,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load",
-    "stimulus": [
-     {
-      "chain": "skirt_r",
-      "degrees": 24
-     },
-     {
-      "chain": "skirt_c",
-      "degrees": 16
-     },
-     {
-      "chain": "skirt_l",
-      "degrees": 24
-     }
-    ]
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 30,
+    "maxEdge": 30,
+    "stray": 1
    },
    "r": 8,
    "segments": [
@@ -1008,7 +929,8 @@
     "skirt_r",
     "skirt_c",
     "skirt_l"
-   ]
+   ],
+   "note": "drafted by rig-parts mesh-draft in place of the lattice at grid 30: the traced outline at tolerance and margin 2, no outline edge longer than 30 px, the interior grid at spacing 30 (figure 1108 px), stray 1 leaves out 8 dust island(s) of 1, 1, 1, 1, 1, 1, 1, 1 px; held to the lattice: bars \u2014 every check bar reading the part passed; idle \u2014 0.362 rig px from the lattice over the idle; at most 1 is required; bend inverted \u2014 0 inverted triangle(s) at the bend set against the lattice's 0; no more than the lattice's is required; bend worst \u2014 worst sample 8.806 rig px from the dense reference at the bend set against the lattice's 8.621 (+2.146 %); at most 9.484 (the lattice's + 10 %) is required; triangles \u2014 132 triangle(s) against the lattice's 140; no more than the lattice's is required (--more-triangles lifts this line); measured against the idle and the 15\u00b0-per-link bend set only \u2014 nothing larger was measured, so a chain an animation or a physics constraint bends further than that has not been read at that bend; the gate is a judgment relative to this config's lattice, not an absolute quality: when the lattice coarsens, the reference moves with it; the spacing rule round(H / 37) and the tolerance rule max(1, round(H / 554)) are calibrated on three figures of similar size (1106, 1108, 1185 px), not laws of figure size"
   },
   "hair_long": {
    "contour": {
@@ -1043,7 +965,11 @@
     ],
     "tail_r",
     "tail_l"
-   ]
+   ],
+   "influences": {
+    "maxInfluences": null,
+    "floor": "continuous"
+   }
   },
   "legwear": {
    "auto": {

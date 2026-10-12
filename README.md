@@ -20,7 +20,7 @@ how to check one without being able to watch it, and the rules this film was cor
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
 pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.9.1 and rig-c 2.45.2, then runs the five steps
+./build.sh                           # installs @rig-c/parts 1.11.0 and rig-c 2.47.0, then runs the five steps
 ```
 
 Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
@@ -39,7 +39,7 @@ beside it and a contact sheet. Run from a clean directory with the published pac
 ## The five steps
 
 **1. Parts, rig, check** — `rig-parts build`. The painting and the two See-through runs are assembled into
-23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,761 triangles in ten meshes; a
+23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,445 triangles in ten meshes; a
 lattice at each part's own spacing had 3,081 — see *The meshes*), given a four-second idle, and
 checked. The check passes nine bars of nine, two of them through a declaration:
 
@@ -105,11 +105,19 @@ Three seconds a breath, four to the loop, so it never falls in step with the swa
 head each ride a twin bone above the one `rig-parts` keys, and follow by lagging rather than by a motion
 of their own.
 
-**The meshes.** Eight parts are on `auto` — a traced outline reduced under declared bounds — and the long
-hair and the hairpin on `contour`, a traced outline with its grid inside. Each chain's bend in this film is declared in
-`config.json` (`auto.stimulus`, measured with `tools/bends.py`), because a mesh is otherwise reduced
-against the idle, and the idle bends a chain one or two degrees where the film bends the skirt 24. The declared values and what the film measures are tabled in WORKING.md. The
-reveal draws each mesh's outline over its inner edges, so the silhouettes read.
+**The meshes.** Six parts are on `auto` — a traced outline reduced under declared bounds — and four on
+`contour`, a traced outline with a coarse grid inside: the skirt and the waving sleeve as
+`rig-parts mesh-draft` drafted them, the hairpin at the same settings, and the long hair. Each part is on
+the mode that came out smaller when both were built. Where the film bends a chain a few degrees `auto` is
+far the smaller (the back hair, 28 triangles against a lattice's 120). Where it bends one 24° or 33°, a
+reduction held to those bends kept two to three times what the draft needs — the skirt 276 against 132,
+the sleeve 148 against 49 — and the film is the same to the eye. Each `auto` chain's bend in this film is
+declared in `config.json` (`auto.stimulus`, measured with `tools/bends.py`), because a mesh is otherwise
+reduced against the idle, and the idle bends a chain one or two degrees. No triangle folds over anywhere
+in the film (`rigc render --folds` names no mesh): the long hair and the hairpin, which folded three and
+two in the last cut, declare their weight cut (`influences`). The per-part counts and the declared bends
+are tabled in WORKING.md. The reveal draws each mesh's outline over its inner edges, so the silhouettes
+read.
 
 **The loop closes with a lead-in.** Springs make an animation's first frame differ from its last. The
 animation is 16 s: the loop's last four seconds, then the loop. By the loop's first frame the springs are
@@ -149,11 +157,13 @@ build and every check were green and the skirt's hem kinked in the film. The fil
 twenty times further than the idle does. That became the rule in WORKING.md, the declared bends in the
 config, and two issues — what a mesh should be reduced against ([parts#265](https://github.com/rig-c/parts/issues/265))
 and a weight rule that folds triangles under a large bend ([parts#284](https://github.com/rig-c/parts/issues/284)).
-The hairpin is why two parts are not reduced at all: its tassel swings 95° from rest, and at that bend the
-unreduced mesh already folds — the tool now says so in one sentence
-([parts#280](https://github.com/rig-c/parts/issues/280)) rather than leaving it to be found.
+Both have shipped, and this cut uses them: the figure's own spacing and `rig-parts mesh-draft` for the
+first, `meshes.<part>.influences` for the second. The hairpin's tassel swings 95° from rest, and at that
+bend its mesh folded before anything was reduced — the tool now says so in one sentence
+([parts#280](https://github.com/rig-c/parts/issues/280)) rather than leaving it to be found, and with the
+weight cut declared it no longer folds.
 
-Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround.
+Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround. Moving it to 1.10.0 and 1.11.0 found the count in *The meshes*: the author's own reduction of the three most-bent parts was two to three times heavier than what the new draft command wrote, and nothing had said so because nothing had built both. `rig-c` 2.46.0's fold reading named triangles nobody had seen at two curl tips and on the hairpin's outline; that it named them without saying where they were became [core#1386](https://github.com/rig-c/core/issues/1386), and 2.47.0 prints the box and frames a picture to it.
 
 ## Looking at the rig
 
