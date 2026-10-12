@@ -193,6 +193,10 @@ def twin(name, suffix='_px'):
 
 for name in ('leg0', 'leg1', 'chest_jiggle'):
     twin(name)
+# The breath's followers: the shoulders and the head ride the chest a moment late.
+# rig-parts keys its idle sway on these `_ctl` bones, so the breath takes a twin above each.
+for name in ('sleeve_r0_ctl', 'sleeve_l0_ctl', 'head_ctl'):
+    twin(name, '_breath')
 # The soft chest: `chest_jiggle` carries a region of the topwear mesh (the
 # rig-parts config declares it); this is the spring that moves it.
 physics['bust_phys'] = {"bone": "chest_jiggle", "x": 0.7, "y": 1, "inertia": 0.5,
@@ -348,8 +352,41 @@ PERIOD = idle['duration']        # 4 s, which is also the swing's period
 D = LOOP
 
 # The idle's own blink and brow tracks are replaced: the expression is written here.
-replaced = {('eyes', 'scaley'), ('brows', 'translatey')}
-tracks = [tile(t, PERIOD, TOTAL) for t in idle['tracks'] if (t.get('group'), t['property']) not in replaced]
+# So is its breath: the idle's is 2.6 px on the swing's own 4 s, which reads as part of the swing.
+replaced = {('eyes', 'scaley'), ('brows', 'translatey'), ('chest_ctl', 'translatey'), ('chest_ctl', 'scalex')}
+tracks = [tile(t, PERIOD, TOTAL) for t in idle['tracks']
+          if (t.get('group') or t.get('bone'), t['property']) not in replaced]
+
+# ---------------------------------------------------------------- the breath
+# Three seconds a breath, four to the loop, so it never falls in step with the
+# 4 s swing. The chest rises 14 px — 5.4 % of the torso (neck to hip, 260 px), twice
+# what a standing figure in close-up would take, because she is small in the frame
+# and swinging; at 2.5 % the breath could not be seen. It widens a little; in is quicker than out. The shoulders follow 0.12 s late and
+# the head 0.2 s late — the head by lagging, not by a nod of its own. Hair and
+# the soft chest are on springs and take it from there.
+BREATH, RISE, IN = 3.0, 14.0, 0.42
+assert abs(LOOP / BREATH - round(LOOP / BREATH)) < 1e-9, 'a whole number of breaths to the loop'
+
+
+def breath(t):
+    """0 at the bottom of the breath, 1 at the top, at loop time t."""
+    p = (t % BREATH) / BREATH
+    return 0.5 - 0.5 * math.cos(math.pi * p / IN) if p < IN else 0.5 + 0.5 * math.cos(math.pi * (p - IN) / (1 - IN))
+
+
+def sampled(fn, step=0.1):
+    """fn(loop time) -> keys over [0, TOTAL], a key every step (straight between keys)."""
+    n = int(round(TOTAL / step))
+    return [{"t": round(i * step, 5), "v": [round(fn(i * step - LEAD), 4)]} for i in range(n + 1)]
+
+
+tracks += [
+    {"bone": "chest_ctl", "property": "translatey", "keys": sampled(lambda t: RISE * breath(t))},
+    {"bone": "chest_ctl", "property": "scalex", "keys": sampled(lambda t: 1 + 0.018 * breath(t))},
+    {"bone": "sleeve_r0_ctl_breath", "property": "translatey", "keys": sampled(lambda t: 3.4 * breath(t - 0.12))},
+    {"bone": "sleeve_l0_ctl_breath", "property": "translatey", "keys": sampled(lambda t: 3.4 * breath(t - 0.12))},
+    {"bone": "head_ctl_breath", "property": "translatey", "keys": sampled(lambda t: 0.35 * RISE * (breath(t - 0.2) - breath(t)))},
+]
 
 #        blink        closed-eye smile                              blink        startled                                      blink        smile through the wave
 eyes = ([(0, 1)] + blink(0.9) + [(1.9, 1), (2.15, 0.38), (3.45, 0.38), (3.7, 1)] + blink(5.2)

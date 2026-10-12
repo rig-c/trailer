@@ -506,7 +506,45 @@
  ],
  "meshes": {
   "hair_back": {
-   "grid": 23,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 23
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 1,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load"
+   },
    "r": 10,
    "segments": [
     [
@@ -524,7 +562,60 @@
    ]
   },
   "hair_front": {
-   "grid": 26,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 26,
+     "stray": 2
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 3,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
+    "stimulus": [
+     {
+      "chain": "bang_r",
+      "degrees": 9
+     },
+     {
+      "chain": "bang_c",
+      "degrees": 9
+     },
+     {
+      "chain": "bang_l",
+      "degrees": 9
+     }
+    ]
+   },
    "r": 11,
    "segments": [
     [
@@ -544,7 +635,49 @@
    ]
   },
   "hairpin": {
-   "grid": 13,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 13
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 3,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
+    "stimulus": {
+     "chain": "hairpin_tassel",
+     "degrees": 45
+    }
+   },
    "r": 5,
    "segments": [
     [
@@ -573,7 +706,45 @@
    ]
   },
   "neck": {
-   "grid": 5,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 5
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 1,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load"
+   },
    "r": 3,
    "segments": [
     [
@@ -601,14 +772,100 @@
    ]
   },
   "handwear_r": {
-   "grid": 11,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 11,
+     "stray": 4
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 3,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
+    "stimulus": {
+     "chain": "sleeve_r",
+     "degrees": 32
+    }
+   },
    "r": 5,
    "segments": [
     "sleeve_r"
    ]
   },
   "handwear_l": {
-   "grid": 15,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 15,
+     "stray": 1
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 3,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
+    "stimulus": {
+     "chain": "sleeve_l",
+     "degrees": 4
+    }
+   },
    "r": 6,
    "segments": [
     [
@@ -626,11 +883,45 @@
    ]
   },
   "topwear": {
-   "contour": {
-    "tolerance": 1,
-    "margin": 1,
-    "spacing": 24,
-    "stray": 48,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 24,
+     "stray": 48
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 1,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
     "regions": [
      {
       "name": "bust",
@@ -638,9 +929,12 @@
       "cx": 425,
       "cy": 422,
       "r": 44,
+      "band": 20,
       "bone": "chest_jiggle",
-      "spacing": 8,
-      "band": 20
+      "maxEdgeLength": 12,
+      "transition": 16,
+      "grade": 0.75,
+      "minArtSamples": 1
      }
     ]
    },
@@ -671,7 +965,60 @@
    ]
   },
   "bottomwear": {
-   "grid": 18,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 18,
+     "stray": 2
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 3,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
+    "stimulus": [
+     {
+      "chain": "skirt_r",
+      "degrees": 24
+     },
+     {
+      "chain": "skirt_c",
+      "degrees": 16
+     },
+     {
+      "chain": "skirt_l",
+      "degrees": 24
+     }
+    ]
+   },
    "r": 8,
    "segments": [
     [
@@ -702,7 +1049,12 @@
    ]
   },
   "hair_long": {
-   "grid": 30,
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 30,
+    "stray": 13
+   },
    "r": 12,
    "segments": [
     [
@@ -732,7 +1084,50 @@
    ]
   },
   "legwear": {
-   "grid": 30,
+   "auto": {
+    "source": {
+     "tolerance": 2,
+     "margin": 2,
+     "spacing": 30,
+     "stray": 1
+    },
+    "sourceBounds": {
+     "minCoverage": 1,
+     "maxOvershoot": 5,
+     "maxUndercut": null
+    },
+    "targets": {
+     "artFit": {
+      "minCoverage": 1,
+      "maxOvershoot": 5,
+      "maxUndercut": 0
+     },
+     "maxBoundaryDeviation": 2
+    },
+    "influences": {
+     "maxInfluences": 4,
+     "minWeight": 0
+    },
+    "budget": {
+     "maxCandidates": 5000
+    },
+    "minArtSamples": 1,
+    "motion": {
+     "maxLocalDeformation": 3,
+     "residual": {
+      "maxResidual": 1
+     }
+    },
+    "boundaryRuns": {
+     "maxVertices": 8
+    },
+    "retriangulate": "delaunay",
+    "removalOrder": "deformation-load",
+    "stimulus": {
+     "chain": "leg",
+     "degrees": 12
+    }
+   },
    "r": 12,
    "segments": [
     [

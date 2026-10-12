@@ -180,11 +180,13 @@ def main(open_dir, black_dir, sky_path, show, out_dir, fps):
         if rest['kind'] != 'mesh':
             continue
         tri = rest['triangles']
-        e = set()
+        owners = {}
         for i in range(0, len(tri), 3):
             a, b, c = tri[i:i + 3]
-            e |= {tuple(sorted(p)) for p in ((a, b), (b, c), (c, a))}
-        edges[rest['slot']] = sorted(e)
+            for p in ((a, b), (b, c), (c, a)):
+                owners[tuple(sorted(p))] = owners.get(tuple(sorted(p)), 0) + 1
+        # An edge one triangle owns is the mesh's outline; the rest are inside it.
+        edges[rest['slot']] = (sorted(k for k, n in owners.items() if n > 1), sorted(k for k, n in owners.items() if n == 1))
 
     # Bones to draw: not the helper twins (`_ctl` the idle keys, `_px` the parallax keys),
     # not the swing, not the palm that is hidden during this beat.
@@ -290,9 +292,10 @@ def main(open_dir, black_dir, sky_path, show, out_dir, fps):
                 v = att.get('vertices')
                 if not e or not v:
                     continue
-                for a_, b_ in e:
-                    wd.line((X(v[2 * a_]) * S2, Y(v[2 * a_ + 1]) * S2, X(v[2 * b_]) * S2, Y(v[2 * b_ + 1]) * S2),
-                            fill=(170, 228, 255, 105), width=2)
+                for group, fill, width in ((e[0], (170, 228, 255, 95), 2), (e[1], (255, 255, 255, 235), 4)):
+                    for a_, b_ in group:
+                        wd.line((X(v[2 * a_]) * S2, Y(v[2 * a_ + 1]) * S2, X(v[2 * b_]) * S2, Y(v[2 * b_ + 1]) * S2),
+                                fill=fill, width=width)
             pos = {b['name']: (X(b['worldX']) * S2, Y(b['worldY']) * S2) for b in g['bones']}
             for n in drawn:
                 p = up(n)
