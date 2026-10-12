@@ -108,12 +108,16 @@ of their own.
 **The meshes.** Nine parts are on `auto` — a traced outline reduced under declared bounds — and the long
 hair on `contour`, a traced outline with its grid inside. Each chain's bend in this film is declared in
 `config.json` (`auto.stimulus`, measured with `tools/bends.py`), because a mesh is otherwise reduced
-against the idle, and the idle bends a chain one or two degrees where the film bends the skirt 24. The
+against the idle, and the idle bends a chain one or two degrees where the film bends the skirt 24. The declared values and what the film measures are tabled in WORKING.md. The
 reveal draws each mesh's outline over its inner edges, so the silhouettes read.
 
-**The loop closes with a lead-in.** Springs make an animation's first frame differ from its last. The
-animation is 16 s: the loop's last four seconds, then the loop. By the loop's first frame the springs are
-where they will be at its last, and step 5 keeps only the loop.
+**The loop has a lead-in.** Springs make an animation's first frame differ from its last. The animation
+is 16 s: the loop's last four seconds, then the loop, and step 5 keeps only the loop. The intent is that
+by the loop's first frame the springs are where they will be at its last — and the keys do agree exactly —
+but **the springs do not**: measured on this cut (`tools/loop.py`), the two frames differ by up to 26 px
+at the shoes and the hair's tips, and springs jump together on three single frames inside the loop. The
+cause is in how the renderer steps physics at 20 fps ([core#1380](https://github.com/rig-c/core/issues/1380)),
+found by an agent given nothing but this repository. It is left as built until that is fixed.
 
 ## What review caught
 
@@ -187,7 +191,10 @@ inputs/palm.png          the generated open hand; palm.json records it
 film/palm.py             the palm, cut out, recoloured and split at the wrist
 film/rig.py              the film rig
 film/compose.py          the film layer
-tools/bends.py           how far the film bends each bone, from the posed frames
+tools/                   the readings WORKING.md describes: frames.py (two builds, frame by frame),
+                         moved.py (which bones a change moved), overlay.py (two frames, red and cyan),
+                         loop.py (does the loop close; does anything pop), bends.py (how far the film
+                         turns each bone from its setup pose)
 trailer.webp             what build.sh makes
 ```
 

@@ -3,6 +3,10 @@
 # A change to inputs/config.json needs ./build.sh — the parts and the rig are rebuilt there.
 set -euo pipefail
 cd "$(dirname "$0")"; BIN=node_modules/.bin; OUT=out; FPS=20
+# The last build's frames are kept as out/prev, because every reading in WORKING.md compares two builds.
+if [ -d "$OUT/scene" ] && [ -d "$OUT/render" ]; then
+  rm -rf "$OUT/prev" && mkdir "$OUT/prev" && mv "$OUT/scene" "$OUT/render" "$OUT/prev/" && cp -R "$OUT/film" "$OUT/prev/film"
+fi
 rm -rf "$OUT/film" "$OUT/build" "$OUT/build_black" "$OUT/render" "$OUT/render_black" "$OUT/scene"
 python3 film/rig.py "$OUT/parts/rig" "$OUT/palm" "$OUT/film"
 "$BIN/rigc" build --rig "$OUT/film/rig.json" --motion "$OUT/film/motion.json" --out "$OUT/build" --profile spine

@@ -1,37 +1,30 @@
 #!/usr/bin/env python3
-"""How far does the film bend each bone? Read off the posed frames rigc render --geometry wrote.
+"""How far does the film turn each bone from its setup pose? Read off the posed loop frames.
 
     python3 tools/bends.py out/render/show@20fps/geometry.json
 
-For every bone, the angle between it and its parent over all frames — keys and physics together, as
-drawn. A chain's largest half-range is what its mesh has to carry, and it is the number to declare as
-`meshes.<part>.auto.stimulus` in inputs/config.json: the mesh is reduced against the idle unless told
-otherwise, and the idle bends a chain by a degree or two.
+For every bone of the character: its angle against its parent, as the largest turn away from the setup
+pose over the loop (keys and physics together, as drawn; the lead-in frames are left out), and the
+half-range beside it. The first number is the one to declare as `meshes.<part>.auto.stimulus` in
+inputs/config.json — a stimulus bends each link by plus and minus that many degrees *from the setup pose*
+— because a mesh is otherwise reduced against the idle, and the idle turns a chain by a degree or two.
 """
-import json
-import math
 import sys
 
-geo = json.load(open(sys.argv[1]))
-names = [b['name'] for b in geo['bones']]
-parent = {b['name']: b.get('parent') for b in geo['bones']}
-angle = {n: [] for n in names}
-for frame in geo['frames']:
-    for b in frame['bones']:
-        angle[b['name']].append(math.degrees(math.atan2(b['c'], b['a'])))
+from _geo import HELPERS, angle, load, real_parent, turn
 
-HELPERS = ('_ctl', '_px', '_phys', '_breath')
-print(f"{'bone':24s} {'against its parent, degrees':>28s} {'half-range':>11s}")
-for n in names:
-    p = parent.get(n)
-    if n.endswith(HELPERS) or not p:
+geo, first = load(sys.argv[1])
+parent = {b['name']: b.get('parent') for b in geo['bones']}
+setup = {b['name']: angle(b) for b in geo['setup']['bones']}
+frames = [{b['name']: angle(b) for b in f['bones']} for f in geo['frames'][first:]]
+
+print(f"loop frames {first}..{len(geo['frames']) - 1}")
+print(f"{'bone':22s} {'largest turn from setup':>24s} {'half-range':>11s}")
+for name in parent:
+    p = real_parent(parent, name)
+    if name.endswith(HELPERS) or not p:
         continue
-    # A helper twin sits between a bone and the parent it bends against: skip up to the first real bone.
-    while p and p.endswith(HELPERS):
-        p = parent.get(p)
-    if not p:
-        continue
-    d = [((a - b + 180) % 360) - 180 for a, b in zip(angle[n], angle[p])]
-    half = (max(d) - min(d)) / 2
-    if half >= 1:
-        print(f"{n:24s} {min(d):12.1f} .. {max(d):7.1f} {half:11.1f}")
+    rest = turn(setup[name], setup[p])
+    d = [turn(turn(f[name], f[p]), rest) for f in frames]
+    if max(abs(x) for x in d) >= 1:
+        print(f"{name:22s} {max(abs(x) for x in d):24.1f} {(max(d) - min(d)) / 2:11.1f}")
