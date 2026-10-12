@@ -20,12 +20,12 @@ how to check one without being able to watch it, and the rules this film was cor
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
 pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.9.0 and rig-c 2.45.1, then runs the five steps
+./build.sh                           # installs @rig-c/parts 1.9.1 and rig-c 2.45.2, then runs the five steps
 ```
 
 Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
 painting, the sky, the palm and the See-through layers are inputs, already in `inputs/`.
-The whole build took 12 min 26 s on an Apple M4 that was doing other work (measured once, this cut).
+The whole build took 12 min 29 s on an Apple M4 that was doing other work (measured once, this cut).
 
 The result is `out/scene/trailer.webp` (960×540, 240 frames, 12 s at 20 fps), with the 1920×1080 frames
 beside it and a contact sheet. Run from a clean directory with the published packages, on the machine the trailer was made on, it reproduced the published loop byte for byte — all 240 frames and the WebP (python 3.13.1, pillow 12.2.0, numpy 2.4.4, bun 1.4.2). Another machine's encoders and caption font can move bytes without moving the picture.
@@ -39,7 +39,7 @@ beside it and a contact sheet. Run from a clean directory with the published pac
 ## The five steps
 
 **1. Parts, rig, check** — `rig-parts build`. The painting and the two See-through runs are assembled into
-23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,745 triangles in ten meshes; a
+23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,761 triangles in ten meshes; a
 lattice at each part's own spacing had 3,081 — see *The meshes*), given a four-second idle, and
 checked. The check passes nine bars of nine, two of them through a declaration:
 
@@ -105,19 +105,20 @@ Three seconds a breath, four to the loop, so it never falls in step with the swa
 head each ride a twin bone above the one `rig-parts` keys, and follow by lagging rather than by a motion
 of their own.
 
-**The meshes.** Nine parts are on `auto` — a traced outline reduced under declared bounds — and the long
-hair on `contour`, a traced outline with its grid inside. Each chain's bend in this film is declared in
+**The meshes.** Eight parts are on `auto` — a traced outline reduced under declared bounds — and the long
+hair and the hairpin on `contour`, a traced outline with its grid inside. Each chain's bend in this film is declared in
 `config.json` (`auto.stimulus`, measured with `tools/bends.py`), because a mesh is otherwise reduced
 against the idle, and the idle bends a chain one or two degrees where the film bends the skirt 24. The declared values and what the film measures are tabled in WORKING.md. The
 reveal draws each mesh's outline over its inner edges, so the silhouettes read.
 
-**The loop has a lead-in.** Springs make an animation's first frame differ from its last. The animation
-is 16 s: the loop's last four seconds, then the loop, and step 5 keeps only the loop. The intent is that
-by the loop's first frame the springs are where they will be at its last — and the keys do agree exactly —
-but **the springs do not**: measured on this cut (`tools/loop.py`), the two frames differ by up to 26 px
-at the shoes and the hair's tips, and springs jump together on three single frames inside the loop. The
-cause is in how the renderer steps physics at 20 fps ([core#1380](https://github.com/rig-c/core/issues/1380)),
-found by an agent given nothing but this repository. It is left as built until that is fixed.
+**The loop closes with a lead-in.** Springs make an animation's first frame differ from its last. The
+animation is 16 s: the loop's last four seconds, then the loop. By the loop's first frame the springs are
+where they will be at its last, and step 5 keeps only the loop. `tools/loop.py` reads it: 0.000 units
+between loop time 0 and one loop later, on every bone and vertex.
+
+That was not true of this film until `rig-c` 2.45.2. Through seven cuts the springs were up to 26 px apart
+at the seam and jumped together on three frames inside the loop, and the page said the loop closed. See
+the last row of the table below.
 
 ## What review caught
 
@@ -133,6 +134,7 @@ gate and wrong in the picture, and was found by a person watching the loop.
 | "Hair lying over the seat will be hard to swing" | In the first painting the twin tails draped over the swing | a new painting, hair hanging behind the seat line (`generation.json`) | — |
 | The swing's end joints read as eyes | Glossy balls with a dark centre | flat open rings | — |
 | "I cannot feel her breathing" | The idle's breath was 2.6 units, and at 6.5 (2.5 % of the torso, right for a standing figure in close-up) it was still lost: she is small in the frame and swinging | 14 units, its own 3 s period, shoulders and head following late | the drafted breath now scales with the torso ([parts#252](https://github.com/rig-c/parts/issues/252), [#270](https://github.com/rig-c/parts/issues/270)) |
+| The loop did not close on its springs, and springs jumped on three frames | Not the film: the renderer advanced physics in steps of 1/60 s under frames of 1/20 s, and three such steps are not exactly a twentieth in floating point, so what a spring showed flipped between two states (the official runtime does the same on the same calls) | nothing here; rebuilt on the fixed renderer | `rigc render` got a physics clock of its own ([core#1380](https://github.com/rig-c/core/issues/1380), rig-c 2.45.2). Found by an agent handed this repository and nothing else, checking a claim this page made |
 | "The meshes have no outline" | The reveal drew every edge alike, and the largest mesh was still a lattice whose blocks covered the rest | the long hair on a traced outline; outlines drawn over inner edges | — |
 
 Four more were found by the tools refusing, or by the author reading their reports, and became issues:
@@ -147,6 +149,9 @@ build and every check were green and the skirt's hem kinked in the film. The fil
 twenty times further than the idle does. That became the rule in WORKING.md, the declared bends in the
 config, and two issues — what a mesh should be reduced against ([parts#265](https://github.com/rig-c/parts/issues/265))
 and a weight rule that folds triangles under a large bend ([parts#284](https://github.com/rig-c/parts/issues/284)).
+The hairpin is why two parts are not reduced at all: its tassel swings 95° from rest, and at that bend the
+unreduced mesh already folds — the tool now says so in one sentence
+([parts#280](https://github.com/rig-c/parts/issues/280)) rather than leaving it to be found.
 
 Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround.
 

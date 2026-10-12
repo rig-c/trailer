@@ -604,15 +604,15 @@
     "stimulus": [
      {
       "chain": "bang_r",
-      "degrees": 9
+      "degrees": 11
      },
      {
       "chain": "bang_c",
-      "degrees": 9
+      "degrees": 10
      },
      {
       "chain": "bang_l",
-      "degrees": 9
+      "degrees": 11
      }
     ]
    },
@@ -635,48 +635,10 @@
    ]
   },
   "hairpin": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 13
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 3,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load",
-    "stimulus": {
-     "chain": "hairpin_tassel",
-     "degrees": 45
-    }
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 13
    },
    "r": 5,
    "segments": [
@@ -813,7 +775,7 @@
     "removalOrder": "deformation-load",
     "stimulus": {
      "chain": "sleeve_r",
-     "degrees": 32
+     "degrees": 33
     }
    },
    "r": 5,

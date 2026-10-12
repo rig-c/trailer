@@ -4,7 +4,7 @@ For an agent picking this repository up with no memory of how it got here, and a
 [README.md](README.md) says what the film is and how to rebuild it; this page says how to change it and
 how to know the change is right. Everything on it was learned by getting it wrong first, and the page
 itself was corrected by handing it to an agent that had nothing else: what that reader had to work out
-alone is now written down, and what it found wrong is under *Known defects*.
+alone is now written down, and what it found wrong has been fixed (see *What the cold reader found*).
 
 Units: the rig's own units, which are the painting's pixels. `film/compose.py` draws them at 0.822 px per
 unit in the 1920×1080 frames and 0.411 in the 960×540 WebP. "Film px" below means the 1080p frames.
@@ -88,7 +88,7 @@ You cannot play the film. These readings replaced watching; each is a script in 
    fast**: the same breath at half the speed gives the same number.
 5. **Does the loop close, does anything pop** — `python3 tools/loop.py out/render/show@20fps/geometry.json`.
    Loop time 0 against one loop later, and frames where bones turn several times further than on the
-   frames around them. Read *Known defects* before believing you caused what it prints.
+   frames around them. On this cut it prints 0.000 and only the hop's own frames; anything else is yours.
 6. **`rigc inspect`** for the rig itself — bones and names over the art, one mesh's weights, every mesh's
    density against the figure (`--show art,density`). See the README's *Looking at the rig*.
 7. **`tools/bends.py`** for what the performance asks of the rig: how far each bone turns from its setup
@@ -129,43 +129,43 @@ Each is here because the film broke it once.
 
 ## The meshes, as they stand
 
-`inputs/config.json`, per part: nine on `auto` (a traced outline reduced under declared bounds), `hair_long`
-on `contour` (a traced outline with its grid inside, not reduced — its unreduced mesh already folds seven
-triangles at a 10° bend, so no reduction of it can pass; that is a weight-rule defect,
-[parts#284](https://github.com/rig-c/parts/issues/284), and not something to work around here), and the
-soft chest as a declared region of `topwear`. 1,745 triangles where a lattice at each part's own spacing
-had 3,081.
+`inputs/config.json`, per part: eight on `auto` (a traced outline reduced under declared bounds); `hair_long`
+and `hairpin` on `contour` (a traced outline with its grid inside, not reduced — at the bends the film
+gives them, 11° and 95°, their unreduced meshes already fold triangles, so no reduction can pass; that is
+a weight-rule defect, [parts#284](https://github.com/rig-c/parts/issues/284), and not something to work
+around here by declaring less than the film does); and the soft chest as a declared region of `topwear`.
+1,761 triangles where a lattice at each part's own spacing had 3,081.
 
 The declared bends against what `tools/bends.py` reads on this cut:
 
 | chain | declared `stimulus` | largest turn from setup, over the loop |
 | --- | --- | --- |
 | `skirt_r` / `skirt_c` / `skirt_l` | 24 / 16 / 24 | 23.8 / 11.8 / 22.4 |
-| `leg` | 12 | 10.5 |
-| `sleeve_r` (the wave) | 32 | 32.5 |
+| `leg` | 12 | 10.6 |
+| `sleeve_r` (the wave) | 33 | 32.5 |
 | `sleeve_l` | 4 | 2.0 |
-| `bang_r` / `bang_c` / `bang_l` | 9 / 9 / 9 | 9.7 / 9.0 / 9.6 |
-| `hairpin_tassel` | 45 | 95.0 |
-| `tail_r` / `tail_l` (on `contour`: nothing is reduced, so nothing is declared) | — | 8.8 / 11.2 |
+| `bang_r` / `bang_c` / `bang_l` | 11 / 10 / 11 | 11.0 / 10.0 / 10.4 |
+| `hairpin_tassel`, `tail_r` / `tail_l` (on `contour`: nothing is reduced, so nothing is declared) | — | 95.0, 8.8 / 11.2 |
 
-The fringe, the waving sleeve and above all the tassel are declared under what the film does: the values
-were written from an earlier, looser reading. They are left as built — changing them changes the meshes and
-so the published frames — and are the first thing to put right in the next cut. If you change the
-performance so that a chain turns further than its declared `stimulus`, re-measure and raise it, or the
-mesh is again one that was never asked about the motion it carries.
+Every declared value covers what the film does. If you change the performance so that a chain turns
+further than its declared `stimulus`, re-measure and raise it, or the mesh is again one that was never
+asked about the motion it carries. (A bone's motion does not depend on its mesh, so one measurement after
+the change is enough — but it does depend on the renderer: the fringe read 9.7 before `rig-c` 2.45.2 and
+11.0 after.)
 
-## Known defects in this cut
+## What the cold reader found
 
-Found by the cold reader; none is fixed here, because each fix changes the published frames.
+Three defects, each of which this page or the README had denied or not known. All three are fixed in this
+cut; they stay here because how they were found is the method.
 
-- **The loop does not close on its springs.** `tools/loop.py` on this cut: loop time 0 against one loop
-  later differs by up to 31.7 units (26 film px, the shoes), and bones on springs jump together on
-  animation frames 11→12, 44→45 and 187→188. The keys agree exactly; the cause is in the renderer's
-  physics step at 20 fps, [core#1380](https://github.com/rig-c/core/issues/1380). You did not cause it,
-  and a change to the film will not fix it.
-- **The reveal draws three helper bones.** `compose.py` leaves out twins ending `_ctl` and `_px`; the
-  breath's twins end `_breath` and are drawn.
-- **The declared bends** in the table above.
+- **The loop did not close on its springs** — 26 film px at the seam, and springs jumping together on
+  three frames — while the README said it closed. The reader measured a claim instead of repeating it.
+  The cause was the renderer's ([core#1380](https://github.com/rig-c/core/issues/1380)); `tools/loop.py`
+  is that measurement, kept.
+- **The reveal drew three helper bones**, the breath's twins, because `compose.py` listed two helper
+  suffixes and a third had been added in `rig.py`.
+- **The declared bends did not match the tool that measures them**: `bends.py` read the lead-in frames and
+  printed a half-range, where a stimulus is a turn from the setup pose. Three chains were under-declared.
 
 ## Before you publish
 
@@ -179,8 +179,8 @@ Found by the cold reader; none is fixed here, because each fix changes the publi
 
 ## Open, for whoever makes the next cut
 
-- The three known defects above, once `rig-c` renders springs continuously.
-- `hair_long` waits on parts#284; when the weight rule is continuous it should go to `auto` like the rest.
+- `hair_long` and `hairpin` wait on parts#284; when the weight rule is continuous they should go to `auto`
+  like the rest.
 - The soft chest's region is generous (503 triangles in `topwear`); it has not been tightened because the
   first complaint about this film was a chest that did not move.
 - The turn control `@rig-c/parts` 1.9.0 drafts (a dial that carries each part by its depth) is not used;

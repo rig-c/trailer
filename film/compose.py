@@ -188,17 +188,19 @@ def main(open_dir, black_dir, sky_path, show, out_dir, fps):
         # An edge one triangle owns is the mesh's outline; the rest are inside it.
         edges[rest['slot']] = (sorted(k for k, n in owners.items() if n > 1), sorted(k for k, n in owners.items() if n == 1))
 
-    # Bones to draw: not the helper twins (`_ctl` the idle keys, `_px` the parallax keys),
+    # Bones to draw: not the helper twins (`_ctl` the idle keys, `_px` the parallax keys, `_breath` the breath's followers),
+    HELPERS = ('_ctl', '_px', '_breath')
+    # …
     # not the swing, not the palm that is hidden during this beat.
     parent = {b['name']: b['parent'] for b in geo['bones']}
 
     def up(n):
         p = parent[n]
-        while p and p.endswith(('_ctl', '_px')):
+        while p and p.endswith(HELPERS):
             p = parent[p]
         return p
 
-    drawn = [n for n in parent if not n.endswith(('_ctl', '_px')) and n not in ('root', 'swing', 'seat', 'palm_r', 'hand_r')]
+    drawn = [n for n in parent if not n.endswith(HELPERS) and n not in ('root', 'swing', 'seat', 'palm_r', 'hand_r')]
 
     def chain_of(n):
         while up(n) not in (None, 'root', 'swing', 'seat', 'hip', 'chest', 'head'):
