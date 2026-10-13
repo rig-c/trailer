@@ -32,14 +32,14 @@ beside it and a contact sheet. Run from a clean directory with the published pac
 
 | | |
 | --- | --- |
-| **An input, not rebuilt** | `inputs/painting.png`, `inputs/layers/` (See-through), `inputs/sky.png`, `inputs/palm.png` — generated on a ComfyUI box; `generation.json`, `sky.json` and `palm.json` record how |
+| **An input, not rebuilt** | `inputs/painting.png`, `inputs/layers/` (See-through), `inputs/sky.png`, `inputs/palm.png` — generated on a ComfyUI box; `generation.json`, `sky.json` and `palm.json` record how, and `tools/trim_loops.py` the one edit made to the painting and its back-hair layer afterwards |
 | **Written by the author (an AI agent)** | `inputs/config.json`, `keypoints.json`, `requirements.json`, and `film/` |
 | **Rebuilt by `build.sh`** | the parts, the rig, the compiled skeleton, every rendered frame, the composite |
 
 ## The five steps
 
 **1. Parts, rig, check** — `rig-parts build`. The painting and the two See-through runs are assembled into
-23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,445 triangles in ten meshes; a
+23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,420 triangles in ten meshes; a
 lattice at each part's own spacing had 3,081 — see *The meshes*), given a four-second idle, and
 checked. The check passes nine bars of nine, two of them through a declaration:
 
@@ -141,6 +141,7 @@ gate and wrong in the picture, and was found by a person watching the loop.
 | "Her wrist breaks when she waves" | Two things: the palm's forearm pointed the way the painted wrist did, 14° off the sleeve; and the whole palm turned ±15° at the cuff, against the arm | the forearm follows the sleeve's axis; the palm is two pieces, and only the hand turns, at the wrist, ±7°, a quarter beat behind the arm | — |
 | "Hair lying over the seat will be hard to swing" | In the first painting the twin tails draped over the swing | a new painting, hair hanging behind the seat line (`generation.json`) | — |
 | The swing's end joints read as eyes | Glossy balls with a dark centre | flat open rings | — |
+| "The curled loops beside her hips read as hair lying on the ground; she is in the air, so they float" | The painting drew a ring of hair on the outside of each twin tail at hip height | both rings erased from the painting and the See-through layer (`tools/trim_loops.py`: the tail's edge measured on the rows above and below each ring, everything outside it removed) | — |
 | "I cannot feel her breathing" | The idle's breath was 2.6 units, and at 6.5 (2.5 % of the torso, right for a standing figure in close-up) it was still lost: she is small in the frame and swinging | 14 units, its own 3 s period, shoulders and head following late | the drafted breath now scales with the torso ([parts#252](https://github.com/rig-c/parts/issues/252), [#270](https://github.com/rig-c/parts/issues/270)) |
 | The loop did not close on its springs, and springs jumped on three frames | Not the film: the renderer advanced physics in steps of 1/60 s under frames of 1/20 s, and three such steps are not exactly a twentieth in floating point, so what a spring showed flipped between two states (the official runtime does the same on the same calls) | nothing here; rebuilt on the fixed renderer | `rigc render` got a physics clock of its own ([core#1380](https://github.com/rig-c/core/issues/1380), rig-c 2.45.2). Found by an agent handed this repository and nothing else, checking a claim this page made |
 | "The meshes have no outline" | The reveal drew every edge alike, and the largest mesh was still a lattice whose blocks covered the rest | the long hair on a traced outline; outlines drawn over inner edges | — |
@@ -196,7 +197,7 @@ trailer is a video. The compiled model in `out/build/` is what `@rig-c/play` loa
 build.sh                 the five steps
 film.sh                  steps 2-5 alone, for a change to film/
 WORKING.md               how to change the film and check the change
-inputs/painting.png      the generated painting, 1664×2432; generation.json and pose_seated.json record it
+inputs/painting.png      the generated painting, 1664×2432; generation.json and pose_seated.json record it, tools/trim_loops.py the edit after
 inputs/layers/           the two See-through runs (full body, head crop) and what each was fed
 inputs/config.json       the rig-parts config: plan, bones, meshes, regions, motion
 inputs/keypoints.json    the joints, read off the painting
@@ -209,7 +210,7 @@ film/compose.py          the film layer
 tools/                   the readings WORKING.md describes: frames.py (two builds, frame by frame),
                          moved.py (which bones a change moved), overlay.py (two frames, red and cyan),
                          loop.py (does the loop close; does anything pop), bends.py (how far the film
-                         turns each bone from its setup pose)
+                         turns each bone from its setup pose); trim_loops.py is the input edit, not a reading
 trailer.webp             what build.sh makes
 ```
 

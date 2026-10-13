@@ -138,12 +138,12 @@ Each is here because the film broke it once.
 
 ## The meshes, as they stand
 
-`inputs/config.json`, per part. 1,445 triangles where a lattice at each part's own spacing had 3,081.
+`inputs/config.json`, per part. 1,420 triangles where a lattice at each part's own spacing had 3,081 (the lattice figures were measured before the hip loops were erased from the long hair).
 
 | part | mode | triangles | built the other way |
 | --- | --- | --- | --- |
 | `topwear` | `auto`, with the soft chest as a declared region | 503 | — |
-| `hair_long` | `contour`, `influences` with no cap and a continuous floor | 459 | lattice 578 |
+| `hair_long` | `contour`, `influences` with no cap and a continuous floor | 434 | lattice 578 |
 | `bottomwear` | `contour`, as `mesh-draft` drafted it | 132 | `auto` at the film's bends 276; lattice 140 |
 | `hair_front` | `auto` | 112 | lattice 114 |
 | `legwear` | `auto` | 77 | lattice 176 |
