@@ -20,12 +20,12 @@ how to check one without being able to watch it, and the rules this film was cor
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
 pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.61.0 and rig-c 2.69.0, then runs the five steps
+./build.sh                           # installs @rig-c/parts 1.62.0 and rig-c 2.69.0, then runs the five steps
 ```
 
 Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
 painting, the sky, the palm and the See-through layers are inputs, already in `inputs/`.
-The whole build took 12 min 29 s on an Apple M4 that was doing other work (measured once, this cut).
+The whole build took 11 min 42 s on an Apple M4 (measured once, this cut).
 
 The result is `out/scene/trailer.webp` (960×540, 240 frames, 12 s at 20 fps), with the 1920×1080 frames
 beside it and a contact sheet. Run from a clean directory with the published packages, on the machine the trailer was made on, it reproduced the published loop byte for byte — all 240 frames and the WebP (python 3.13.1, pillow 12.2.0, numpy 2.4.4, bun 1.4.2). Another machine's encoders and caption font can move bytes without moving the picture.
@@ -79,8 +79,8 @@ transform and every mesh vertex after skinning, per frame.
 | Sway | whole loop | `swing` rotates ±2.5° about a pivot far above the frame; `seat` and the whole character hang under it |
 | Breath | whole loop, 3 s | the chest rises 14 units and widens; the shoulders follow 0.12 s late and the head 0.2 s late; hair and the soft chest take it through their springs |
 | Tilt and smile | 1.5 – 4.1 | `head` rotation; the `eyes` group's `scaley`, `brows`, `mouth` |
+| The reveal | 3.7 – 5.2 | not the rig: the film layer drawing the render's own geometry |
 | Kicking legs | 4.3 – 6.4 | `leg1` rotation, with a spring on both leg bones |
-| The reveal | 4.1 – 6.6 | not the rig: the film layer drawing the render's own geometry |
 | Hop | 6.7 – 7.8 | `seat` jumps 44 units; everything on a spring arrives late |
 | Wave | 9.6 – 11.7 | the forearm from the elbow, an open palm swapped in, the hand trailing at the wrist |
 
@@ -146,6 +146,7 @@ gate and wrong in the picture, and was found by a person watching the loop.
 | "I cannot feel her breathing" | The idle's breath was 2.6 units, and at 6.5 (2.5 % of the torso, right for a standing figure in close-up) it was still lost: she is small in the frame and swinging | 14 units, its own 3 s period, shoulders and head following late | the drafted breath now scales with the torso ([parts#252](https://github.com/rig-c/parts/issues/252), [#270](https://github.com/rig-c/parts/issues/270)) |
 | The loop did not close on its springs, and springs jumped on three frames | Not the film: the renderer advanced physics in steps of 1/60 s under frames of 1/20 s, and three such steps are not exactly a twentieth in floating point, so what a spring showed flipped between two states (the official runtime does the same on the same calls) | nothing here; rebuilt on the fixed renderer | `rigc render` got a physics clock of its own ([core#1380](https://github.com/rig-c/core/issues/1380), rig-c 2.45.2). Found by an agent handed this repository and nothing else, checking a claim this page made |
 | "The meshes have no outline" | The reveal drew every edge alike, and the largest mesh was still a lattice whose blocks covered the rest | the long hair on a traced outline; outlines drawn over inner edges | — |
+| The kick is never seen without the x-ray | The reveal ran 4.1 – 6.6 s across the whole kick (4.3 – 6.4 s) | the reveal moved to 3.7 – 5.2 s: it opens over the first kick and clears before the larger second kick (5.2 – 6.4 s, 1.2 s) | — |
 
 Four more were found by the tools refusing, or by the author reading their reports, and became issues:
 long hair behind the back dropped from the assembly plan
@@ -165,7 +166,7 @@ bend its mesh folded before anything was reduced — the tool now says so in one
 ([parts#280](https://github.com/rig-c/parts/issues/280)) rather than leaving it to be found, and with the
 weight cut declared it no longer folds.
 
-Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround. Moving it to 1.10.0 and 1.11.0 found the count in *The meshes*: the author's own reduction of the three most-bent parts was two to three times heavier than what the new draft command wrote, and nothing had said so because nothing had built both. `rig-c` 2.46.0's fold reading named triangles nobody had seen at two curl tips and on the hairpin's outline; that it named them without saying where they were became [core#1386](https://github.com/rig-c/core/issues/1386), and 2.47.0 prints the box and frames a picture to it. Moving it to 1.61.0 caught a chest segment left in `meshes.handwear_l.segments`: `CHECK_STRESS_OFF_CHAIN` refused the 0.532 off-chain chest weight that pinned the cuff when the left sleeve turned (ratio 27.9 at 180° against 1.0 rigid; dropping the chest segment leaves `handwear_l` on `sleeve_l` alone at ratio 1).
+Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround. Moving it to 1.10.0 and 1.11.0 found the count in *The meshes*: the author's own reduction of the three most-bent parts was two to three times heavier than what the new draft command wrote, and nothing had said so because nothing had built both. `rig-c` 2.46.0's fold reading named triangles nobody had seen at two curl tips and on the hairpin's outline; that it named them without saying where they were became [core#1386](https://github.com/rig-c/core/issues/1386), and 2.47.0 prints the box and frames a picture to it. Moving it to 1.61.0 caught a chest segment left in `meshes.handwear_l.segments`: `CHECK_STRESS_OFF_CHAIN` refused the 0.532 off-chain chest weight that pinned the cuff when the left sleeve turned (ratio 27.9 at 180° against 1.0 rigid; dropping the chest segment leaves `handwear_l` on `sleeve_l` alone at ratio 1). Rebuilding on `@rig-c/parts` 1.62.0 and `rig-c` 2.69.0 did not move the rig or its 321 posed frames (0.000 units across all 83 bones; `out/render/show@20fps` and `out/render_black/show@20fps` are byte for byte unchanged from 1.61.0); moving the reveal from 4.1 – 6.6 s to 3.7 – 5.2 s changed 62 of the 240 composed frames (`s0065`–`s0130`, 3.25 – 6.50 s; 58 with pixels differing by more than 40, while `s0092`–`s0095` at 4.60 – 4.75 s sit inside the full-opacity plateau of both windows and are unchanged) and left the 25 frames across the second kick (`s0104`–`s0128`, 5.20 – 6.40 s, 1.20 s) free of any overlay.
 
 ## Looking at the rig
 
