@@ -6,6 +6,7 @@ BIN=node_modules/.bin
 OUT=out
 FPS=20
 [ -x "$BIN/rig-parts" ] || npm install
+python3 -c 'import json, pathlib, re; v = lambda k: json.load(open(f"node_modules/{k}/package.json"))["version"]; vp, vr = v("@rig-c/parts"), v("rig-c"); p = pathlib.Path("README.md"); p.write_text(re.sub(r"# installs @rig-c/parts [0-9.]+ and rig-c [0-9.]+", f"# installs @rig-c/parts {vp} and rig-c {vr}", p.read_text()))'
 
 # 1. rig-parts: the painting and its two See-through layer sets -> parts -> rig -> check.
 #    requirements.json says what the scene knows and the tool cannot: she sits, and one forearm is raised.
