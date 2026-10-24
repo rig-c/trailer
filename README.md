@@ -20,7 +20,7 @@ how to check one without being able to watch it, and the rules this film was cor
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
 pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.12.0 and rig-c 2.47.1, then runs the five steps
+./build.sh                           # installs @rig-c/parts 1.61.0 and rig-c 2.69.0, then runs the five steps
 ```
 
 Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
@@ -41,12 +41,13 @@ beside it and a contact sheet. Run from a clean directory with the published pac
 **1. Parts, rig, check** — `rig-parts build`. The painting and the two See-through runs are assembled into
 23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,420 triangles in ten meshes; a
 lattice at each part's own spacing had 3,081 — see *The meshes*), given a four-second idle, and
-checked. The check passes nine bars of nine, two of them through a declaration:
+checked. The check passes twelve bars of twelve, two of them through a declaration:
 
 ```
 BREATH_VISIBLE: PASS — declared_not_planted shoes; …
 TIP_OVER_ROOT: PASS — declared_rises handwear_r; …
-check: PASS; 9 of 9 bar(s) measured, 0 skipped
+STRESS_OFF_CHAIN: PASS — tags handwear; turns 90 | -90 | 180; parts_read 2; reading 1; …
+check: PASS; 12 of 12 bar(s) measured, 0 skipped
 ```
 
 `rig-parts check` assumes a figure that stands. `inputs/requirements.json` says what the scene knows and the
@@ -60,7 +61,7 @@ The sections below say what each is for.
 **3. Compile and gate** — `rigc build`, twice. Nothing is written unless the gate is green:
 
 ```
-53 assertions: 20 measured (20 passed, 0 failed), 17 skipped, 16 not in profile "spine"
+52 assertions: 21 measured (21 passed, 0 failed), 17 skipped, 14 not in profile "spine"
 bones=83 slots=29 animations=2 regionAttachments=18 meshAttachments=11 physicsConstraints=24
 ```
 
@@ -164,7 +165,7 @@ bend its mesh folded before anything was reduced — the tool now says so in one
 ([parts#280](https://github.com/rig-c/parts/issues/280)) rather than leaving it to be found, and with the
 weight cut declared it no longer folds.
 
-Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround. Moving it to 1.10.0 and 1.11.0 found the count in *The meshes*: the author's own reduction of the three most-bent parts was two to three times heavier than what the new draft command wrote, and nothing had said so because nothing had built both. `rig-c` 2.46.0's fold reading named triangles nobody had seen at two curl tips and on the hairpin's outline; that it named them without saying where they were became [core#1386](https://github.com/rig-c/core/issues/1386), and 2.47.0 prints the box and frames a picture to it.
+Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround. Moving it to 1.10.0 and 1.11.0 found the count in *The meshes*: the author's own reduction of the three most-bent parts was two to three times heavier than what the new draft command wrote, and nothing had said so because nothing had built both. `rig-c` 2.46.0's fold reading named triangles nobody had seen at two curl tips and on the hairpin's outline; that it named them without saying where they were became [core#1386](https://github.com/rig-c/core/issues/1386), and 2.47.0 prints the box and frames a picture to it. Moving it to 1.61.0 caught a chest segment left in `meshes.handwear_l.segments`: `CHECK_STRESS_OFF_CHAIN` refused the 0.532 off-chain chest weight that pinned the cuff when the left sleeve turned (ratio 27.9 at 180° against 1.0 rigid; dropping the chest segment leaves `handwear_l` on `sleeve_l` alone at ratio 1).
 
 ## Looking at the rig
 

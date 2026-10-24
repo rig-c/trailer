@@ -25,7 +25,7 @@ unit in the 1920×1080 frames and 0.411 in the 960×540 WebP. "Film px" below me
 - **The posed frames are ready about 16 seconds in** (`out/render/show@20fps/geometry.json`); composing the
   240 frames is the rest. For a change of timing or motion, stop after step 4 and read the geometry
   (`tools/moved.py`, `tools/loop.py`, `tools/bends.py`) before paying for the composite.
-- A green `./film.sh` ends with the gate line twice (`53 assertions: 20 measured (20 passed, 0 failed) …`)
+- A green `./film.sh` ends with the gate line twice (`52 assertions: 21 measured (21 passed, 0 failed) …`)
   and `240 frames -> out/scene/trailer.webp`. `rig-parts check` is not rerun by it and measures the
   **idle**: its `BREATH_VISIBLE` is about the idle's breath, which the film replaces. It says nothing about
   a change under `film/`.
