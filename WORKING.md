@@ -43,7 +43,7 @@ the keys are in `rig.py` and are the authority.
 | whole loop | the breath, 3 s | see *The breath* |
 | 0.9, 5.2, 8.6 | blinks | the `eyes` group's `scaley` |
 | 1.5 – 4.1 | head tilt (eyes closed in a smile 1.9 – 3.7) | `head` rotate; eyes to 0.38, iris and white faded out; brows; mouth |
-| 4.1 – 6.6 | the reveal: every mesh and bone drawn over her (caption 4.2 – 6.55) | `compose.py`, from `geometry.json` |
+| 3.7 – 5.2 | the reveal: every mesh and bone drawn over her (caption 3.75 – 5.15) | `compose.py`, from `geometry.json` |
 | 4.3 – 6.4 | kicking legs | `leg0`, `leg1` rotate |
 | 6.7 – 7.8 | the hop, and a startled face | `seat` translate 6.74 – 7.52; everything on a spring follows late |
 | 9.6 – 11.7 | the wave (palm shown 9.8 – 11.4) | `sleeve_r0` from the elbow; the palm and a bare forearm swapped in; `hand_r` a quarter beat late |
