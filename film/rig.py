@@ -128,9 +128,9 @@ hip['y'] = hip['y'] - SEAT_Y
 
 slots = [{"name": "rope_r", "bone": "seat", "attachment": "rope_r"},
          {"name": "rope_l", "bone": "seat", "attachment": "rope_l"}] + rig['slots']
-# The bar hangs in front of the long hair and behind the body.
+# Long hair hangs in front of the bar, while the body and legs stay in front of it.
 behind = next(i for i, s in enumerate(slots) if s['name'] == 'hair_long')
-slots.insert(behind + 1, {"name": "seat_bar", "bone": "seat", "attachment": "seat_bar"})
+slots.insert(behind, {"name": "seat_bar", "bone": "seat", "attachment": "seat_bar"})
 rig['slots'] = slots
 skin['seat_bar'] = {"seat_bar": {"image": "seat_bar.png", "x": 0, "y": 0}}
 skin['rope_r'] = {"rope_r": {"image": "rope.png", "x": -HALF, "y": ROPE / 2 + RING * 0.78}}
@@ -149,8 +149,15 @@ def chain(prefix, links, strength, damping, inertia, taper=0.85, start=0):
             "strength": round(strength * (taper ** k), 1), "damping": damping, "mass": 1.0, "mix": 1}
 
 
-chain('tail_r', 4, 105, 0.88, 0.5, taper=0.8, start=1)
-chain('tail_l', 4, 105, 0.88, 0.5, taper=0.8, start=1)
+chain('tail_r', 4, 105, 0.85, 0.2, taper=0.8, start=0)
+chain('tail_l', 4, 105, 0.85, 0.2, taper=0.8, start=0)
+# A root gravity response keeps hanging hair below its moving attachment.
+# Distal links take half the inertial kick, preserving the painted curl.
+for side in ('tail_r', 'tail_l'):
+    for k in range(4):
+        physics[f'{side}{k}_phys']['gravity'] = 120 if k == 0 else 0
+        if k >= 2:
+            physics[f'{side}{k}_phys']['inertia'] = 0.1
 for bang in ('bang_r', 'bang_c', 'bang_l'):
     chain(bang, 2, 130, 0.86, 0.5)
 chain('hairpin_tassel', 2, 60, 0.80, 0.7)
@@ -201,6 +208,13 @@ for name in ('sleeve_r0_ctl', 'sleeve_l0_ctl', 'head_ctl'):
 # rig-parts config declares it); this is the spring that moves it.
 physics['bust_phys'] = {"bone": "chest_jiggle", "x": 0.7, "y": 1, "inertia": 0.5,
                         "strength": 85, "damping": 0.87, "mass": 1, "mix": 1}
+
+# Independent iris children carry gaze in the face's own eye-line axes.
+for side in ('r', 'l'):
+    eye = f'eye_{side}'
+    name = f'gaze_{side}'
+    bones.append({"name": name, "parent": eye})
+    next(s for s in rig['slots'] if s['name'] == f'iris_{side}')['bone'] = name
 
 # ---------------------------------------------------------------- the open palm
 # The painting's right hand cups the cheek. For the wave, that arm piece is
@@ -257,6 +271,16 @@ def placed(image, anchor):
 skin['palm_r'] = {"palm_r": placed("palm_arm.png", palm['cuff'])}
 skin['hand_r'] = {"hand_r": placed("palm_hand.png", palm['wrist'])}
 skin['arm_r_front'] = {"handwear_r_arm": {**skin['handwear_r']['handwear_r'], "image": "handwear_r_arm.png"}}
+# The film duplicates this sleeve as a second mesh slot for the wave. The
+# producer's exact slot budget covers its own rig; admit precisely this copy.
+if skin['arm_r_front']['handwear_r_arm'].get('type') == 'mesh':
+    rig['invariants']['meshSlots'] += 1
+
+# Physics replaces the producer's keyed tail idle; all other tracks are retained.
+for animation in motion['animations'].values():
+    animation['tracks'] = [track for track in animation['tracks']
+                           if not (track.get('bone', '').startswith('tail_')
+                                   and track.get('bone', '').endswith('_ctl'))]
 motion['physics'] = physics
 
 # ---------------------------------------------------------------- keys
@@ -338,7 +362,7 @@ def steps(points):
     """Stepped keys (an attachment name or None) in loop time -> over [0, TOTAL]."""
     def at(t):
         return [v for q, v in points if q <= t][-1]
-    keys = [(0.0, at(CUT))] + [(q - CUT, v) for q, v in points if q > CUT] + [(q + LEAD, v) for q, v in points]
+    keys = [(0.0, at(CUT))] + [(q - CUT, v) for q, v in points if CUT < q < LOOP] + [(q + LEAD, v) for q, v in points]
     return [{"t": round(q, 5), "v": v} for q, v in keys]
 
 
@@ -389,10 +413,10 @@ tracks += [
 ]
 
 #        blink        closed-eye smile                              blink        startled                                      blink        smile through the wave
-eyes = ([(0, 1)] + blink(0.9) + [(1.9, 1), (2.15, 0.38), (3.45, 0.38), (3.7, 1)] + blink(5.2)
-        + [(6.88, 1), (6.98, 1.14), (7.45, 1.14), (7.75, 1)] + blink(8.6)
+eyes = ([(0, 1)] + blink(0.9) + [(1.9, 1), (2.15, 0.38), (3.45, 0.38), (3.7, 1)] + blink(6.1)
+        + [(8.08, 1), (8.18, 1.14), (8.65, 1.14), (8.95, 1)] + blink(9.15)
         + [(10.0, 1), (10.14, 0.38), (11.2, 0.38), (11.4, 1)] + [(D, 1)])
-brows = [(0, 0), (1.9, 0), (2.15, 2.0), (3.45, 2.0), (3.7, 0), (6.88, 0), (6.98, 7.0), (7.45, 7.0), (7.8, 0), (D, 0)]
+brows = [(0, 0), (1.9, 0), (2.15, 2.0), (3.45, 2.0), (3.7, 0), (8.08, 0), (8.18, 7.0), (8.65, 7.0), (9.0, 0), (D, 0)]
 SHOW, HIDE = 9.82, 11.44         # the hand changes while the arm is already moving, clear of the face
 
 tracks += [
@@ -408,19 +432,19 @@ tracks += [
     {"group": "eyes", "property": "scaley", "keys": lay(eyes)},
     {"group": "brows", "property": "translatey", "keys": lay(brows)},
     {"bone": "mouth", "property": "scalex", "keys": lay(
-        [(0, 1), (1.9, 1), (2.15, 1.22), (3.45, 1.22), (3.7, 1), (6.88, 1), (6.98, 0.78), (7.45, 0.78), (7.8, 1), (D, 1)])},
+        [(0, 1), (1.9, 1), (2.15, 1.22), (3.45, 1.22), (3.7, 1), (8.08, 1), (8.18, 0.78), (8.65, 0.78), (9.0, 1), (D, 1)])},
     {"bone": "mouth", "property": "scaley", "keys": lay(
-        [(0, 1), (1.9, 1), (2.15, 1.10), (3.45, 1.10), (3.7, 1), (6.88, 1), (6.98, 1.7), (7.45, 1.7), (7.8, 1), (D, 1)])},
+        [(0, 1), (1.9, 1), (2.15, 1.10), (3.45, 1.10), (3.7, 1), (8.08, 1), (8.18, 1.7), (8.65, 1.7), (9.0, 1), (D, 1)])},
     {"bone": "head", "property": "rotate", "keys": lay(
-        [(0, 0), (1.5, 0), (2.0, 7.5), (3.5, 7.5), (4.1, 0), (6.88, 0), (7.02, -3.5), (7.5, -2.0), (8.0, 0),
+        [(0, 0), (1.5, 0), (2.0, 7.5), (3.5, 7.5), (3.75, 0), (8.08, 0), (8.22, -3.5), (8.7, -2.0), (9.2, 0),
          (9.7, 0), (10.1, -5.5), (11.2, -5.5), (11.7, 0), (D, 0)])},
     # Kicking legs, then the hop: the seat jumps and everything on a spring follows late.
     {"bone": "leg1", "property": "rotate", "keys": lay(
-        [(0, 0), (4.3, 0), (4.65, 9), (5.1, -8), (5.55, 9), (6.0, -7), (6.4, 0), (6.88, 0), (7.05, -12), (7.5, 3), (7.9, 0), (D, 0)])},
+        [(0, 0), (6.0, 0), (6.3, 9), (6.65, -8), (7.0, 9), (7.35, -7), (7.7, 0), (8.08, 0), (8.25, -12), (8.7, 3), (9.1, 0), (D, 0)])},
     {"bone": "leg0", "property": "rotate", "keys": lay(
-        [(0, 0), (4.3, 0), (4.65, 2.5), (5.1, -2.5), (5.55, 2.5), (6.0, -2), (6.4, 0), (D, 0)])},
+        [(0, 0), (6.0, 0), (6.3, 2.5), (6.65, -2.5), (7.0, 2.5), (7.35, -2), (7.7, 0), (D, 0)])},
     {"bone": "seat", "property": "translatey", "keys": lay(
-        [(0, 0), (6.74, 0), (6.88, -9), (7.06, 44), (7.30, -7), (7.52, 0), (D, 0)])},
+        [(0, 0), (8.1, 0), (8.24, -9), (8.42, 44), (8.66, -7), (8.88, 0), (D, 0)])},
     # The wave: the forearm from the elbow.
     {"bone": "sleeve_r0", "property": "rotate", "keys": lay(
         [(0, 0), (9.55, 0), (9.9, 27), (10.12, 32), (10.36, 22), (10.6, 32), (10.84, 22), (11.08, 30), (11.3, 26), (11.68, 0), (D, 0)])},
@@ -434,15 +458,45 @@ tracks += [
     {"slot": "palm_r", "property": "attachment", "keys": steps([(0, None), (SHOW, "palm_r"), (HIDE, None)])},
     {"slot": "hand_r", "property": "attachment", "keys": steps([(0, None), (SHOW, "hand_r"), (HIDE, None)])},
 ]
-# A closed eye is the lash alone: the iris and the white go out with the lid.
-tracks += [{"slot": name, "property": "alpha", "keys": lay([(t, [1.0, 0.0][v < 0.5]) for t, v in eyes])}
+# The eyes lead each change by 0.25 s. Positive yaw is screen-left:
+# the sampled depth field uses D = -depth * sin(yaw), with no head spin.
+LOOK = [(0, 0), (3.85, 0), (4.25, 12), (4.55, 12), (5.10, -12), (5.40, -12), (5.90, 0), (D, 0)]
+GAZE = [(0, 0), (3.60, 0), (3.85, -3), (4.30, -3), (4.55, 3), (5.15, 3), (5.40, 0), (D, 0)]
+tracks += [{"bone": "yaw_dial", "property": "rotate", "keys": lay(LOOK)}]
+tracks += [{"bone": name, "property": "translatex", "keys": lay(GAZE)}
+           for name in ("gaze_r", "gaze_l")]
+
+# A closed eye is the lash alone: binary iris/white visibility is explicitly stepped.
+tracks += [{"slot": name, "property": "alpha", "keys": [{"t": k["t"], "v": [k["v"]],
+                                                    **({"ease": "stepped"} if k["t"] < TOTAL else {})}
+                                                   for k in steps([(t, [1.0, 0.0][v < 0.5]) for t, v in eyes])]}
            for name in ("iris_r", "iris_l", "eyewhite_r", "eyewhite_l")]
 
-motion['animations'] = {"idle": idle, "show": {"duration": TOTAL, "loop": False, "tracks": tracks}}
+motion['animations'] = {**motion['animations'], "show": {"duration": TOTAL, "loop": False, "tracks": tracks}}
 
 json.dump({"D": LOOP, "WARM": LEAD, "physics": len(physics),
-           "beats": {"smile": [1.9, 3.7], "kick": [4.3, 6.4], "hop": [6.74, 7.8], "wave": [9.8, 11.3]}},
+           "beats": {"breath": [0, 3], "tilt_smile": [1.5, 3.75], "look_around": [3.6, 5.9], "kick": [6.0, 7.7], "hop": [8.1, 9.2], "wave": [9.55, 11.68]}, "reveal": [3.95, 5.65]},
           open(f'{DST}/show.json', 'w'))
+# Moving-seat angular stops. Draw the middle link through the public stop's
+# clamped twin; lower links keep their own springs. This is not surface contact.
+rig['stops'] = [
+    {"chain": f'{side}_seat', "links": [f'{side}1'], "against": "seat",
+     "at": [x, 27], "inward": 0, "outward": 60}
+    for side, x in (("tail_r", -246), ("tail_l", 255))
+]
+for name, value in physics.items():
+    if name.startswith('tail_'):
+        rig['constraints'].append({"name": name, "type": "physics", **value})
+motion['physics'] = {name: value for name, value in physics.items()
+                     if not name.startswith('tail_')}
+for link in bones:
+    if link['name'] in ('tail_r2_ctl', 'tail_l2_ctl'):
+        link['parent'] += '_d'
+for vertex in skin['hair_long']['hair_long']['weights']:
+    for weight in vertex:
+        if weight['bone'] in ('tail_r1', 'tail_l1'):
+            weight['bone'] += '_d'
+
 json.dump(rig, open(f'{DST}/rig.json', 'w'))
 json.dump(motion, open(f'{DST}/motion.json', 'w'))
 black = dict(rig)

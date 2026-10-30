@@ -1,0 +1,326 @@
+{
+  "spec": "trailer-build-measurement/1",
+  "pool_job_id": "20261030T020043Z-7fccc4325ce44a049ceb8f0442c6f871",
+  "input_snapshot_sha256": "c8fbf1faecac7effb39c06807bf2ce3c8516a7098551d520e5ba53c2876ccb29",
+  "command": [
+    "bash",
+    "build.sh"
+  ],
+  "exit": 0,
+  "build_seconds": 239.531,
+  "excluded_from_timer": [
+    "dependency installation",
+    "queue wait",
+    "evidence capture"
+  ],
+  "isolation": "unmodified pool runner fresh source snapshot excludes out/node_modules; exact npm ci from lock; output absent; no manual clone",
+  "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "packages": {
+      "@rig-c/parts": "1.79.1",
+      "@rig-c/pose": "1.5.4",
+      "rig-c": "2.81.1"
+    },
+    "numpy": "2.4.4",
+    "pillow": "12.2.0",
+    "caption_font": "DejaVuSans-Bold.ttf",
+    "caption_font_sha256": "5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895"
+  },
+  "source_inputs_changed": [],
+  "compiler_spine_each": {
+    "assertions": 52,
+    "passed": 24,
+    "failed": 0,
+    "skipped": 14,
+    "outside_profile": 14,
+    "A00_ROUNDTRIP_PARSE": "SKIP: spine-core not installed"
+  },
+  "parts_check": {
+    "summary": "PASS; 12 of 12 counted bars measured, 0 skipped",
+    "optional_notes": {
+      "SEAM_OVER_MOTION": "SKIP: no neighbour pair",
+      "CLOTH_SETTLES": "SKIP: parts-stage rig has no physics"
+    },
+    "requirements": {
+      "declared": 0,
+      "measured": 0,
+      "pass": 0,
+      "fail": 0,
+      "not_measurable": 0,
+      "not_declared": [
+        "contact",
+        "follow",
+        "aim",
+        "range",
+        "stretch",
+        "seam"
+      ]
+    },
+    "recomposite_holes": "REPORTED, not barred",
+    "uncovered_error_px": 4093
+  },
+  "film": {
+    "bones": 99,
+    "slots": 29,
+    "physics": 26,
+    "producer_triangles": 1702,
+    "film_mesh_triangles_including_wave_copy": 2120,
+    "face_triangles": 360,
+    "wave_copy_triangles": 58
+  },
+  "folds": {
+    "body_turn": {
+      "meshes": 11,
+      "folded": []
+    },
+    "idle": {
+      "meshes": 11,
+      "folded": []
+    },
+    "show": {
+      "meshes": 12,
+      "folded": []
+    },
+    "tilt": {
+      "meshes": 11,
+      "folded": []
+    },
+    "turn": {
+      "meshes": 11,
+      "folded": []
+    }
+  },
+  "loop_printed_units": {
+    "bone": "0.000",
+    "vertex": "0.000"
+  },
+  "delivery": {
+    "width": 960,
+    "height": 540,
+    "frames": 240,
+    "duration_ms": 12000,
+    "yaw_degrees": [
+      -12,
+      12
+    ],
+    "sha256": "7beaf0a550aa4b419d90518a156197c728e48cbe65ff4d212323643cbbb7b251",
+    "bytes": 6238610
+  },
+  "runtime_file_sha256": {
+    "build.sh": "c946584fedff492eb8959ba6a89dcd3b031835afdc06088781f688d226826265",
+    "film.sh": "589d082c5f090fbf79fe3179bd2fc62857adda56a42de85e657f1f9e96fa19fb",
+    "package.json": "2024505c93a6fe77d8e28a636f9a6f99ff79c5b25e20fd070cf51e25fff7b9ce",
+    "package-lock.json": "e06c5ded33a31f30ca7d42376a852c9129116194448ec3e0485900a9eecb2c73",
+    "requirements.txt": "6edaefaf33b398d3809ed82ffb1b4090e27a87d98f21d354cc68aa2d1cf8a453",
+    "inputs/config.json": "847f140876b0a6d7aa8ac4a96cc4c4eb7575e227d167c5b0c6922e86c5407fa9",
+    "inputs/requirements.json": "7f20a53674465c592af4e3fdf355f2440d44a8f6337f27c8afddd3fbe1e30c6d",
+    "inputs/painting.png": "acec219e9e9263d9bd5b7baa1dd5a0fd64103d5a5f0484c2ec5b46552575d56d",
+    "inputs/sky.png": "c533c0588dfe2e216a75b33a749aef31c309cb1f9b847b4601fa08afa26d63db",
+    "inputs/palm.png": "3c0b54d52143ffca79085d442f36b7db70a87d64f4f7c6041bb0054fb836c8f1",
+    "film/rig.py": "1abeeb1f12cf09ecff3de2122c8115cc26a24ac16711f09fb4959e8985ae6b63",
+    "film/palm.py": "9e347a2cdf5aa0bbb110fff2f61b1e91f683d4e8873a0e45a7d5c5aefbdd68c5",
+    "film/compose.py": "057a0dc39027525757a9aed382db8b2fe709f376d6f11964575121b461017317",
+    "tools/loop.py": "fcaffdbc66c6f1e84997d93a96ed0204fc5b6dceae2ec2524ba2de7ee4c4db8d",
+    "tools/bends.py": "d790e2fe2209f12ccbb6a3ad97e5511bf0f4b0048e595fab65dc6eb2872f6b70",
+    "tools/_geo.py": "0045bc5908d659f97308b6d0580dd57ad6b9347befc37d4cabd05120b5a9fc62",
+    "tools/delivery.py": "d9c15edf1e2d26e11eb552ad79d1d1bf4d2ab3cbf058e795d5fdd2fbab9f6cd6",
+    "tools/trim_loops.py": "6339e1f51e45bd8a4d64ab4928d7245f985ef4f3c8ff06588d9262376855a439",
+    "tools/derive_trimmed_full.py": "011a1436a43d0ad49376ad039680df975c62edf0a4fe645b44b237b78fb02113"
+  },
+  "limits": [
+    "Build/gates do not establish visual acceptance",
+    "No auto3px residual claim for contour",
+    "Source hair edge remains under magnification",
+    "show geometry pair SKIP because attachment identity changes; sampled channels READ",
+    "Owner watch/publication and full PR CI remain separate",
+    "Source reproducibility does not promise identical bytes across different fonts/encoders"
+  ],
+  "derivation": {
+    "raw": "inputs/layers-v2/full",
+    "output": "$TRAILER_OUT/derived-full",
+    "recipe": "tools/derive_trimmed_full.py reuses accepted trim_loops keep mask",
+    "painting_edited": false,
+    "raw_PNGs_edited": false,
+    "other56_run_PNGs_byte_equal": true,
+    "other44_assembled_images_pixel_equal": true,
+    "alpha_changed_pixels": 3460,
+    "scalar_changed_pixels": 3179,
+    "fully_removed_mask_pixels": 3347,
+    "fully_removed_mask_residual_alpha_pixels": 0,
+    "other_part_tracks_exact_e144": true
+  },
+  "visual": {
+    "hair_frames_read": 240,
+    "hair_pages": 20,
+    "hair_crop": [
+      213,
+      54,
+      556,
+      464
+    ],
+    "hips_frames_read": 240,
+    "hips_pages": 5,
+    "hips_crop": [
+      180,
+      220,
+      650,
+      370
+    ],
+    "resizing": "none; actual decoded WebP crops pasted1:1",
+    "all_native_pages_self_read": true,
+    "limits": "frame-by-frame sheet self-read, not continuous playback acceptance; reveal obscuresart during4..5.65s; before/afterreveal and pre-revealtilt witnesses available",
+    "render_grid": [
+      900,
+      783
+    ],
+    "render_pixels_per_world_unit": 0.5288951917064656
+  },
+  "historical_records": {
+    "uncorrected_v2": "BUILD-V2.json",
+    "rejected_input_mutating_attempt": {
+      "build_seconds": 237.859,
+      "pool_exit": 1,
+      "reason": "derivation rewrote inputs; source guard refused; not accepted as clean"
+    },
+    "pre_layering_ring_fix": "BUILD-RING-FIX.json",
+    "prior_layering": "BUILD-LAYERING.json"
+  },
+  "layering": {
+    "retained": "rope_r,rope_l,seat_bar,hair_long, then body/skirt/legs; identical slotobjects/order to e144"
+  },
+  "hair_physics": {
+    "physical_tail_last_axis_range_deg": [
+      7.31029515939729,
+      8.184748592479155
+    ],
+    "root_to_tip_chord_range_deg": [
+      5.64472498467952,
+      5.8891446224281925
+    ],
+    "head_world_swing_controlled_range_deg": 8.131925496373507,
+    "window_loop_seconds": [
+      1.5,
+      3.75
+    ],
+    "left_axis_excess_deg": 0.05282309610564795,
+    "formal_attenuation": "PARTIAL RED retained; visually adopted as nonblocking at960x540 delivery",
+    "local_head_input_plateau_seconds": [
+      2,
+      3.5
+    ],
+    "lag_seconds_from_local_input_ramp_end": {
+      "last_axis": [
+        0.35,
+        0.35
+      ],
+      "chord": [
+        0.25,
+        0.25
+      ]
+    },
+    "lag_scope": "head/nohead isolatedresponse peak vs local keyedramp completion2.0s; not world-max lag; WORLD head/nohead varies.081311deg onheldlocalinput; cause unverified",
+    "distributed_bend": {
+      "r": [
+        2.2950911985856948,
+        1.9905012289766688,
+        1.351220128687416
+      ],
+      "l": [
+        2.719895749171684,
+        2.1010911079767283,
+        1.466642484245213
+      ]
+    },
+    "root_anchor_max_error_rig_units": 1.1368683772161603e-13,
+    "hair_loop_max_component_offset_delivery_px": 9.645926072162183e-05,
+    "component_scale_used_px_per_rigunit": 0.4112,
+    "postbeat_velocity_acceleration_max_ratio_to_e144": 0.5395517946818446,
+    "production_exact_adopted_control": true,
+    "other_part_tracks_byte_equal": true,
+    "non_tail_poses_equal_all5": true,
+    "changes": "remove existing tail_ctl idlekeys AND tune8 public rotatephysics constraints; not a gravityalone/fullfactorial proof",
+    "tail_parameters": {
+      "tail_r0_phys": {
+        "bone": "tail_r0",
+        "rotate": 1,
+        "inertia": 0.2,
+        "strength": 105.0,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 120
+      },
+      "tail_r1_phys": {
+        "bone": "tail_r1",
+        "rotate": 1,
+        "inertia": 0.2,
+        "strength": 84.0,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 0
+      },
+      "tail_r2_phys": {
+        "bone": "tail_r2",
+        "rotate": 1,
+        "inertia": 0.1,
+        "strength": 67.2,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 0
+      },
+      "tail_r3_phys": {
+        "bone": "tail_r3",
+        "rotate": 1,
+        "inertia": 0.1,
+        "strength": 53.8,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 0
+      },
+      "tail_l0_phys": {
+        "bone": "tail_l0",
+        "rotate": 1,
+        "inertia": 0.2,
+        "strength": 105.0,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 120
+      },
+      "tail_l1_phys": {
+        "bone": "tail_l1",
+        "rotate": 1,
+        "inertia": 0.2,
+        "strength": 84.0,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 0
+      },
+      "tail_l2_phys": {
+        "bone": "tail_l2",
+        "rotate": 1,
+        "inertia": 0.1,
+        "strength": 67.2,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 0
+      },
+      "tail_l3_phys": {
+        "bone": "tail_l3",
+        "rotate": 1,
+        "inertia": 0.1,
+        "strength": 53.8,
+        "damping": 0.85,
+        "mass": 1.0,
+        "mix": 1,
+        "gravity": 0
+      }
+    }
+  }
+}

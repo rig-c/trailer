@@ -69,7 +69,7 @@
    ],
    [
     "neck",
-    "head",
+    "full",
     "neck"
    ],
    [
@@ -164,6 +164,18 @@
     "run": "full",
     "tag": "back hair"
    }
+  ],
+  "yield_refused": true,
+  "keep_under_occluders": [
+   "hair_long",
+   "hair_back",
+   "handwear_l",
+   "legwear",
+   "neck",
+   "bottomwear",
+   "topwear",
+   "handwear_r",
+   "face"
   ]
  },
  "bones": [
@@ -193,6 +205,14 @@
   },
   {
    "name": "neck",
+   "parent": "chest",
+   "at": [
+    422,
+    332
+   ]
+  },
+  {
+   "name": "neck_part",
    "parent": "chest",
    "at": [
     422,
@@ -435,7 +455,7 @@
   },
   {
    "chain": "tail_r",
-   "parent": "chest",
+   "parent": "head",
    "points": [
     [
      331,
@@ -461,7 +481,7 @@
   },
   {
    "chain": "tail_l",
-   "parent": "chest",
+   "parent": "head",
    "points": [
     [
      517,
@@ -501,6 +521,22 @@
    "tip": [
     374,
     1000
+   ]
+  },
+  {
+   "name": "ear_r",
+   "parent": "head",
+   "at": [
+    335,
+    284
+   ]
+  },
+  {
+   "name": "ear_l",
+   "parent": "head",
+   "at": [
+    477,
+    251
    ]
   }
  ],
@@ -562,60 +598,6 @@
    ]
   },
   "hair_front": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 26,
-     "stray": 2
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 3,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load",
-    "stimulus": [
-     {
-      "chain": "bang_r",
-      "degrees": 11
-     },
-     {
-      "chain": "bang_c",
-      "degrees": 10
-     },
-     {
-      "chain": "bang_l",
-      "degrees": 11
-     }
-    ]
-   },
    "r": 11,
    "segments": [
     [
@@ -632,7 +614,18 @@
     "bang_r",
     "bang_c",
     "bang_l"
-   ]
+   ],
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 30,
+    "maxEdge": 30,
+    "stray": 3
+   },
+   "influences": {
+    "maxInfluences": 4,
+    "floor": "continuous"
+   }
   },
   "hairpin": {
    "contour": {
@@ -668,71 +661,24 @@
     "hairpin_tassel"
    ],
    "influences": {
+    "maxInfluences": null,
     "floor": "continuous"
-   }
+   },
+   "rule": "heat"
   },
   "neck": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 5
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 1,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load"
-   },
+   "grid": 5,
    "r": 3,
    "segments": [
     [
-     "chest",
+     "neck_part",
      [
-      403,
-      350
+      422,
+      332
      ],
-     [
-      403,
-      462
-     ]
-    ],
-    [
-     "head",
      [
       403,
       289
-     ],
-     [
-      403,
-      239
      ]
     ]
    ]
@@ -743,7 +689,7 @@
     "margin": 2,
     "spacing": 30,
     "maxEdge": 30,
-    "stray": 2
+    "stray": 4
    },
    "r": 5,
    "segments": [
@@ -802,61 +748,6 @@
    ]
   },
   "topwear": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 24,
-     "stray": 48
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 1,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load",
-    "regions": [
-     {
-      "name": "bust",
-      "shape": "circle",
-      "cx": 425,
-      "cy": 422,
-      "r": 44,
-      "band": 20,
-      "bone": "chest_jiggle",
-      "maxEdgeLength": 12,
-      "transition": 16,
-      "grade": 0.75,
-      "minArtSamples": 1
-     }
-    ]
-   },
    "r": 10,
    "segments": [
     [
@@ -881,7 +772,30 @@
       692
      ]
     ]
-   ]
+   ],
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 24,
+    "maxEdge": 24,
+    "stray": 48,
+    "regions": [
+     {
+      "name": "bust",
+      "shape": "circle",
+      "cx": 425,
+      "cy": 422,
+      "r": 44,
+      "spacing": 12,
+      "band": 27,
+      "bone": "chest_jiggle"
+     }
+    ]
+   },
+   "influences": {
+    "maxInfluences": null,
+    "floor": "continuous"
+   }
   },
   "bottomwear": {
    "contour": {
@@ -889,7 +803,7 @@
     "margin": 2,
     "spacing": 30,
     "maxEdge": 30,
-    "stray": 1
+    "stray": 6
    },
    "r": 8,
    "segments": [
@@ -942,7 +856,7 @@
      ]
     ],
     [
-     "chest",
+     "head",
      [
       424,
       330
@@ -961,50 +875,6 @@
    }
   },
   "legwear": {
-   "auto": {
-    "source": {
-     "tolerance": 2,
-     "margin": 2,
-     "spacing": 30,
-     "stray": 1
-    },
-    "sourceBounds": {
-     "minCoverage": 1,
-     "maxOvershoot": 5,
-     "maxUndercut": null
-    },
-    "targets": {
-     "artFit": {
-      "minCoverage": 1,
-      "maxOvershoot": 5,
-      "maxUndercut": 0
-     },
-     "maxBoundaryDeviation": 2
-    },
-    "influences": {
-     "maxInfluences": 4,
-     "minWeight": 0
-    },
-    "budget": {
-     "maxCandidates": 5000
-    },
-    "minArtSamples": 1,
-    "motion": {
-     "maxLocalDeformation": 3,
-     "residual": {
-      "maxResidual": 1
-     }
-    },
-    "boundaryRuns": {
-     "maxVertices": 8
-    },
-    "retriangulate": "delaunay",
-    "removalOrder": "deformation-load",
-    "stimulus": {
-     "chain": "leg",
-     "degrees": 12
-    }
-   },
    "r": 12,
    "segments": [
     [
@@ -1019,15 +889,26 @@
      ]
     ],
     "leg"
-   ]
+   ],
+   "contour": {
+    "tolerance": 2,
+    "margin": 2,
+    "spacing": 30,
+    "maxEdge": 30,
+    "stray": 1
+   },
+   "influences": {
+    "maxInfluences": 4,
+    "floor": "continuous"
+   }
   }
  },
  "regions": {
   "eyewhite_r": "eye_r",
   "eyewhite_l": "eye_l",
   "shoes": "leg1",
-  "ear_r": "head",
-  "ear_l": "head",
+  "ear_r": "ear_r",
+  "ear_l": "ear_l",
   "face": "head",
   "mouth": "mouth",
   "iris_l": "eye_l",
@@ -1214,6 +1095,64 @@
    ],
    "squash": 0.12,
    "brow_drop": 1.2
+  }
+ },
+ "depth": {
+  "zScale": 80
+ },
+ "turn": {
+  "pivot": 55,
+  "band": {
+   "yaw": 12,
+   "pitch": 12
+  },
+  "counter": 0.1,
+  "grid": [
+   13,
+   16
+  ],
+  "roles": {
+   "face": "surface",
+   "hair_front": "unit",
+   "hair_back": "unit",
+   "hair_long": "unit",
+   "hairpin": "unit",
+   "ear_r": "unit",
+   "ear_l": "unit",
+   "eyewhite_r": "unit",
+   "eyewhite_l": "unit",
+   "iris_r": "unit",
+   "iris_l": "unit",
+   "brow_r": "unit",
+   "brow_l": "unit",
+   "lash_r": "unit",
+   "lash_l": "unit",
+   "mouth": "unit"
+  },
+  "unitDepths": {
+   "hair_front": 65,
+   "hair_back": -14,
+   "hair_long": -22,
+   "hairpin": -8,
+   "ear_r": 20,
+   "ear_l": 12
+  },
+  "body": {
+   "bone": "chest",
+   "pivot": 55,
+   "roles": {
+    "topwear": "surface",
+    "neck": "unit"
+   },
+   "unitDepths": {
+    "hair_front": 65,
+    "hair_back": -14,
+    "hair_long": -22,
+    "hairpin": -8,
+    "ear_r": 20,
+    "ear_l": 12,
+    "neck": 52.1765
+   }
   }
  }
 }

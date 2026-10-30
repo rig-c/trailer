@@ -1,0 +1,298 @@
+{
+  "prefix": "trailer7_v2_head_20261030",
+  "timestamp": "20261030_043406_e80c5845",
+  "layers": [
+    {
+      "name": "neckwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_neckwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_neckwear_depth.png"
+    },
+    {
+      "name": "bottomwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_bottomwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_bottomwear_depth.png"
+    },
+    {
+      "name": "legwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_legwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_legwear_depth.png"
+    },
+    {
+      "name": "footwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_footwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_footwear_depth.png"
+    },
+    {
+      "name": "tail",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_tail.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_tail_depth.png"
+    },
+    {
+      "name": "wings",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_wings.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_wings_depth.png"
+    },
+    {
+      "name": "objects",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_objects.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_objects_depth.png"
+    },
+    {
+      "name": "eyewear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyewear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyewear_depth.png"
+    },
+    {
+      "name": "earwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_earwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_earwear_depth.png"
+    },
+    {
+      "name": "handwear-l",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_handwear-l.png",
+      "left": 1010,
+      "top": 1009,
+      "right": 1020,
+      "bottom": 1022,
+      "depth_median": 1.0,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_handwear-l_depth.png"
+    },
+    {
+      "name": "back hair",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_back hair.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.921875,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_back hair_depth.png"
+    },
+    {
+      "name": "headwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_headwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.90625,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_headwear_depth.png"
+    },
+    {
+      "name": "neck",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_neck.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.703125,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_neck_depth.png"
+    },
+    {
+      "name": "topwear",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_topwear.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.609619140625,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_topwear_depth.png"
+    },
+    {
+      "name": "ears-r",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_ears-r.png",
+      "left": 290,
+      "top": 623,
+      "right": 398,
+      "bottom": 730,
+      "depth_median": 0.567138671875,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_ears-r_depth.png"
+    },
+    {
+      "name": "ears-l",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_ears-l.png",
+      "left": 678,
+      "top": 460,
+      "right": 771,
+      "bottom": 621,
+      "depth_median": 0.5361328125,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_ears-l_depth.png"
+    },
+    {
+      "name": "face",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_face.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.4481201171875,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_face_depth.png"
+    },
+    {
+      "name": "nose",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_nose.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.4471201171875,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_nose_depth.png"
+    },
+    {
+      "name": "mouth",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_mouth.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.4471201171875,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_mouth_depth.png"
+    },
+    {
+      "name": "eyebrow-l",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyebrow-l.png",
+      "left": 512,
+      "top": 416,
+      "right": 655,
+      "bottom": 459,
+      "depth_median": 0.368896484375,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyebrow-l_depth.png"
+    },
+    {
+      "name": "irides-l",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_irides-l.png",
+      "left": 569,
+      "top": 487,
+      "right": 653,
+      "bottom": 584,
+      "depth_median": 0.3485107421875,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_irides-l_depth.png"
+    },
+    {
+      "name": "eyewhite-r",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyewhite-r.png",
+      "left": 352,
+      "top": 580,
+      "right": 458,
+      "bottom": 670,
+      "depth_median": 0.3428955078125,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyewhite-r_depth.png"
+    },
+    {
+      "name": "eyewhite-l",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyewhite-l.png",
+      "left": 556,
+      "top": 487,
+      "right": 661,
+      "bottom": 584,
+      "depth_median": 0.3428955078125,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyewhite-l_depth.png"
+    },
+    {
+      "name": "eyebrow-r",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyebrow-r.png",
+      "left": 310,
+      "top": 491,
+      "right": 423,
+      "bottom": 566,
+      "depth_median": 0.3414306640625,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyebrow-r_depth.png"
+    },
+    {
+      "name": "eyelash-l",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyelash-l.png",
+      "left": 546,
+      "top": 464,
+      "right": 688,
+      "bottom": 557,
+      "depth_median": 0.2662353515625,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyelash-l_depth.png"
+    },
+    {
+      "name": "irides-r",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_irides-r.png",
+      "left": 381,
+      "top": 578,
+      "right": 457,
+      "bottom": 668,
+      "depth_median": 0.256103515625,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_irides-r_depth.png"
+    },
+    {
+      "name": "eyelash-r",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyelash-r.png",
+      "left": 343,
+      "top": 564,
+      "right": 458,
+      "bottom": 665,
+      "depth_median": 0.2158203125,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_eyelash-r_depth.png"
+    },
+    {
+      "name": "front hair",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_front hair.png",
+      "left": 0,
+      "top": 0,
+      "right": 1024,
+      "bottom": 1024,
+      "depth_median": 0.1715087890625,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_front hair_depth.png"
+    },
+    {
+      "name": "handwear-r",
+      "filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_handwear-r.png",
+      "left": 267,
+      "top": 616,
+      "right": 472,
+      "bottom": 1024,
+      "depth_median": 0.0859375,
+      "depth_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_handwear-r_depth.png"
+    }
+  ],
+  "width": 1024,
+  "height": 1024
+}

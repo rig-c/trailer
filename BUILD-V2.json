@@ -1,0 +1,137 @@
+{
+  "spec": "trailer-build-measurement/1",
+  "pool_job_id": "20261029T213128Z-879f7709b20e4d7f81691538ddf049b8",
+  "input_snapshot_sha256": "698656d2440aa9f6c32c1b683057c3736c3edd692ff0ab0653b5b987f7af7ece",
+  "command": [
+    "bash",
+    "build.sh"
+  ],
+  "exit": 0,
+  "build_seconds": 241.289,
+  "excluded_from_timer": [
+    "dependency installation",
+    "queue wait",
+    "evidence capture"
+  ],
+  "isolation": "unmodified pool runner fresh source snapshot excludes out/node_modules; exact npm ci from lock; output absent; no manual clone",
+  "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "packages": {
+      "@rig-c/parts": "1.79.1",
+      "@rig-c/pose": "1.5.4",
+      "rig-c": "2.81.1"
+    },
+    "numpy": "2.4.4",
+    "pillow": "12.2.0",
+    "caption_font": "DejaVuSans-Bold.ttf",
+    "caption_font_sha256": "5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895"
+  },
+  "source_inputs_changed": [],
+  "compiler_spine_each": {
+    "assertions": 52,
+    "passed": 24,
+    "failed": 0,
+    "skipped": 14,
+    "outside_profile": 14,
+    "A00_ROUNDTRIP_PARSE": "SKIP: spine-core not installed"
+  },
+  "parts_check": {
+    "summary": "PASS; 12 of 12 counted bars measured, 0 skipped",
+    "optional_notes": {
+      "SEAM_OVER_MOTION": "SKIP: no neighbour pair",
+      "CLOTH_SETTLES": "SKIP: parts-stage rig has no physics"
+    },
+    "requirements": {
+      "declared": 0,
+      "measured": 0,
+      "pass": 0,
+      "fail": 0,
+      "not_measurable": 0,
+      "not_declared": [
+        "contact",
+        "follow",
+        "aim",
+        "range",
+        "stretch",
+        "seam"
+      ]
+    },
+    "recomposite_holes": "REPORTED, not barred",
+    "uncovered_error_px": 4383
+  },
+  "film": {
+    "bones": 99,
+    "slots": 29,
+    "physics": 26,
+    "producer_triangles": 1727,
+    "film_mesh_triangles_including_wave_copy": 2145,
+    "face_triangles": 360,
+    "wave_copy_triangles": 58
+  },
+  "folds": {
+    "body_turn": {
+      "meshes": 11,
+      "folded": []
+    },
+    "idle": {
+      "meshes": 11,
+      "folded": []
+    },
+    "show": {
+      "meshes": 12,
+      "folded": []
+    },
+    "tilt": {
+      "meshes": 11,
+      "folded": []
+    },
+    "turn": {
+      "meshes": 11,
+      "folded": []
+    }
+  },
+  "loop_printed_units": {
+    "bone": "0.000",
+    "vertex": "0.000"
+  },
+  "delivery": {
+    "width": 960,
+    "height": 540,
+    "frames": 240,
+    "duration_ms": 12000,
+    "yaw_degrees": [
+      -12,
+      12
+    ],
+    "sha256": "d6604d899e1afe11646bd175a4274780c945a000cbd33ce76c6e0f6c20c7bff5",
+    "bytes": 6445874
+  },
+  "runtime_file_sha256": {
+    "build.sh": "dd337b834616e736b99155c66ef5f2c83fed60226b7c4d9008464a112cb89bf8",
+    "film.sh": "f55b8c4bb630943d5afa3b0b59809f542e68522f617741b68fe264d553a4443c",
+    "package.json": "2024505c93a6fe77d8e28a636f9a6f99ff79c5b25e20fd070cf51e25fff7b9ce",
+    "package-lock.json": "e06c5ded33a31f30ca7d42376a852c9129116194448ec3e0485900a9eecb2c73",
+    "requirements.txt": "6edaefaf33b398d3809ed82ffb1b4090e27a87d98f21d354cc68aa2d1cf8a453",
+    "inputs/config.json": "847f140876b0a6d7aa8ac4a96cc4c4eb7575e227d167c5b0c6922e86c5407fa9",
+    "inputs/requirements.json": "7f20a53674465c592af4e3fdf355f2440d44a8f6337f27c8afddd3fbe1e30c6d",
+    "inputs/painting.png": "acec219e9e9263d9bd5b7baa1dd5a0fd64103d5a5f0484c2ec5b46552575d56d",
+    "inputs/sky.png": "c533c0588dfe2e216a75b33a749aef31c309cb1f9b847b4601fa08afa26d63db",
+    "inputs/palm.png": "3c0b54d52143ffca79085d442f36b7db70a87d64f4f7c6041bb0054fb836c8f1",
+    "film/rig.py": "142c613b8950b4c2a8a7d33c170f228533c8ef980c116b405afe442e322d9cf7",
+    "film/palm.py": "9e347a2cdf5aa0bbb110fff2f61b1e91f683d4e8873a0e45a7d5c5aefbdd68c5",
+    "film/compose.py": "057a0dc39027525757a9aed382db8b2fe709f376d6f11964575121b461017317",
+    "tools/loop.py": "fcaffdbc66c6f1e84997d93a96ed0204fc5b6dceae2ec2524ba2de7ee4c4db8d",
+    "tools/bends.py": "d790e2fe2209f12ccbb6a3ad97e5511bf0f4b0048e595fab65dc6eb2872f6b70",
+    "tools/_geo.py": "0045bc5908d659f97308b6d0580dd57ad6b9347befc37d4cabd05120b5a9fc62",
+    "tools/delivery.py": "d9c15edf1e2d26e11eb552ad79d1d1bf4d2ab3cbf058e795d5fdd2fbab9f6cd6"
+  },
+  "limits": [
+    "Build/gates do not establish visual acceptance",
+    "No auto3px residual claim for contour",
+    "Source hair edge remains under magnification",
+    "show geometry pair SKIP because attachment identity changes; sampled channels READ",
+    "Owner watch/publication and full PR CI remain separate",
+    "Source reproducibility does not promise identical bytes across different fonts/encoders"
+  ]
+}

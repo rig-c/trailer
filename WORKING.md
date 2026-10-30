@@ -1,221 +1,246 @@
-# Working on the film
+# Working on trailer v2
 
-For an agent picking this repository up with no memory of how it got here, and asked to change the film.
-[README.md](README.md) says what the film is and how to rebuild it; this page says how to change it and
-how to know the change is right. Everything on it was learned by getting it wrong first, and the page
-itself was corrected by handing it to an agent that had nothing else: what that reader had to work out
-alone is now written down, and what it found wrong has been fixed (see *What the cold reader found*).
+Production derives the original FULL run into `$TRAILER_OUT/derived-full` and keeps the original HEAD run. The rejected 607 HEAD experiment is not used.
+Source/rig changes live in `inputs/config.json`; performance in `film/rig.py`; staging in
+`film/compose.py`. Build with `./build.sh`; use `./film.sh` only when the already-built parts are valid.
+Default output is `out/v2-final`. The owner-approved selected delivery is copied to root `trailer.webp`; build.sh itself keeps its output separate.
 
-Units: the rig's own units, which are the painting's pixels. `film/compose.py` draws them at 0.822 px per
-unit in the 1920×1080 frames and 0.411 in the 960×540 WebP. "Film px" below means the 1080p frames.
+## Measured delivery and build
 
-## Three layers, three places
+Final yaw is ±12°. Delivery is 960×540, 240 frames at 20 fps and 12,000 ms. The selected film has
+107 compiled bones, 29 slots and 26 physics constraints, including eight generated stop helper bones.
+`BUILD-FINAL.json` records the new source build, compiler/profile counts, source guard, media identity
+and known RED dispositions. The build is timed once after a locked install, with no carried output or
+node_modules; its base archive and exact source overlay are independently hashed. The successful build took **237.841 s**, excluding installation. Delivery is 6,405,916 bytes and is
+byte-identical to the selected reviewed take (SHA256 631e74967074dd59d405cd137a4d4783820559b852c1485e0a13cd365139ad24).
+Both normal/black spine gates read 26 PASS / 0 FAIL / 12 SKIP / 14 outside profile (52 total).
+Parts check reads 12/12 counted bars PASS; separate seam/settles SKIPs and 0 temporal declarations remain.
+All five 20 fps animation sets have 0 folded meshes: idle/turn/tilt/body_turn 0/11, show 0/12.
+Bone and vertex closure both print 0.000 units. The final show geometry and producer JSON exactly match
+the selected take; all 495 nonhair poses across five animations plus their setup poses remain exact.
 
-| You are asked to change | Edit | Rebuild with |
+The 24-frame labelled loop overview is a thumbnail sheet; native decoded 960×540 frames and unscaled
+head crops are the delivery-scale evidence. Encoding/font identity is recorded. No comparative
+benchmark or cross-platform byte-equality claim is implied.
+
+## Beats and depth
+
+The 16 s show includes a 4 s lead-in, then a 12 s loop. Sway 4 s; breath 3 s/14 rig units; tilt/smile 1.5–3.75;
+gaze 3.60–5.40; depth look 3.85–5.90 at 12°; reveal 3.95–5.65; kick 6.0–7.7; hop 8.1–8.88;
+wave 9.55–11.68. All three gaze onsets lead the corresponding head change 0.25 s. The actual motion file and
+rendered channels are the authority, not this table alone.
+
+The rig stage is 832×1216 from a 1664×2432 painting at assemble scale 0.5. Compose draws 0.8224 px per
+rig unit in 1920×1080 working frames and 0.4112 in 960×540 delivery. Rig render native pixels have their
+own recorded viewport scale; they are not 1 rig unit per pixel.
+
+Full and HEAD generation: canvas 1024, depth inference 512, seed 42, steps 30, offload true. No painting
+regeneration. Every retained head/neck consumer is scalar-sheet bound. Face is surface; independently
+registered unit depths: front hair 65, back hair −14, long hair −22, headwear −8, ears 20/12, neck 52.1765.
+The actual neck proposal wrote config, rather than treating a collar fragment as the neck.
+
+The chosen keep/yield flags retain original amodal material beneath soft covers and conditionally yield
+drift-refused front pixels to matching opaque holders. Rest error is not a visual gate: the earlier
+all-flag comparison changed mean absolute error 2.718→2.897 with uncovered error 4383 unchanged. Removing
+only hair keep measured 2.846; removing its yield too measured 2.932. These numbers do not establish
+motion cleanliness or justify a cut.
+
+## Restoring the accepted hip-hair cleanup
+
+The initial v2 FULL run restored two horizontal oval loops at hip height: its `st_input_full.png`
+still contains them, although the published v1 back-hair layer and `painting.png` were already trimmed.
+The build now reuses the accepted v1 `tools/trim_loops.py` keep mask, unchanged in source coordinates,
+through `tools/derive_trimmed_full.py`. It derives into `$TRAILER_OUT/derived-full` and passes that exact
+run to `--full`; it never regenerates a checked source in `inputs/`.
+
+Only back-hair alpha and the corresponding opaque grayscale depth samples change. The 1024-square
+registration and every layer box stay fixed. Depth stays opaque L; the same trim mask restores the
+erased-loop field toward its background level 255. Raw art/depth and the already-trimmed painting stay
+byte-identical. The operation changes 3,460 alpha pixels and 3,179 scalar samples; RGB everywhere,
+pixels outside the affected mask, lower tail ends and the other 56 run PNGs are unchanged. Actual
+assembly changes only `hair_long.png` and its depth sheet: the other 44 images are pixel-identical.
+The full motion JSON is identical to the pre-fix performance, including ±12° look, gaze lead and reveal.
+
+The first correction build wrote derived PNGs under `inputs/`: its script took 237.859s but the unchanged
+source guard/pool exited 1, so it is rejected as a clean build. Pixel equality did not waive that refusal.
+The earlier corrected output-only build took 233.453s, with build, guard and pool all exiting 0 and no source
+hash changes. `BUILD-V2.json` preserves the earlier uncorrected-v2 measurement; `BUILD-RING-FIX.json`
+preserves that correction measurement; `BUILD-LAYERING.json` preserves the draw-order measurement; `BUILD-PHYSICS.json` preserves the earlier hanging-only revision; `BUILD-FINAL.json` binds the selected moving-seat-stop delivery.
+
+All 240 decoded delivery hip crops were read at 1:1, in five 1880×2016 lossless pages with frame/time
+labels; ten 1880×1008 half-pages support smaller viewers. All crop/tile pixel hashes match the decoded
+WebP. No restored outboard hip oval was observed, including swing/hop extremes. The fully removed
+3,347-pixel source mask has zero remaining positive alpha. White pixel counts include normal clothing
+and hair and are diagnostics, not an automatic oval classifier. Native setup/min/max/diff and 4×NN
+boundary views show no new tail severing, ghost or gap at the removed-loop joins. This is separate from
+the retained head-edge highlight discussed below and from owner publication approval.
+
+## Long hair in front of the swing bar (prior ordering revision)
+
+The film inserts `seat_bar` immediately before `hair_long` in the slots array. Back-to-front order is
+ropes, bar, long hair, then the body/skirt/legs; rope order stays unchanged. The pinned published-v1
+writer instead inserted the bar after long hair, so this is an explicit new ordering, not a restoration
+of v1 ordering. No source pixels, mesh shape, bone, weight, spring or motion changed for that ordering-only revision. The following physics revision preserves its exact draw order.
+
+The old-order negative control is labelled “bar IN FRONT OF hair”; the new candidate “hair IN FRONT OF
+bar”. Native full-frame delivery comparisons use swing-key extrema f020 (1.00 s, +2.5°) and f060
+(3.00 s, −2.5°). Both show hair covering the bar while skirt/legs cover hair. All 240 decoded hip crops
+were read again with no restored oval or new hip gap observed. All 495 rendered poses across five
+animations have identical bone matrices and attachment vertices to the ring-corrected old order;
+image arrays and motion/show JSON bytes match too. Native setup/min/max/diff witnesses and 4×NN
+hair/bar boundaries were read with no new tear or ghost at those boundaries. Native render grid
+900×783 uses 0.5288951917064656 pixels per world unit; native pixels are not one rig unit each.
+
+## Hair rim: source evidence, failed ladder, delivery disposition
+
+At the original native 900×783 max-yaw frame 166, bob ROI [535,226,548,262] has 468 pixels; ahoge
+ROI [375,140,488,187] has 5311. Existing-frame UV/alpha reconstruction matches every pixel in both ROIs
+with RGB error 0; no pixels were excluded. Bob visible contributors: 201 long-hair, 80 back-hair pixels.
+Both corresponding registered original source crops contain the light/double contour. Official transparent
+RGBA over dark ground retains it; recomposition against the opaque render differs by at most 1 channel.
+This is bounded source-edge provenance, not proof of global renderer correctness.
+
+Source ladder 1: HEAD-owner with FULL only below the head box cannot be represented by current declarations.
+`extend_below_crop` continues connected full components only where HEAD reaches the crop probe. Actual
+probe row 377 has 0 HEAD support columns (last alpha>128 row 336): 0 continuation pixels, versus 116209 in
+the full/full positive control. No bounds API was invented. FULL-owner alone preserved tails but the
+light rim remained; setup uncovered error 4383→4558, so it was not called clean.
+
+Source ladder 2: one exact 607 crop [506,121,1113,728], same 1024 canvas/depth 512/seed 42/steps 30/offload.
+Preflight clipped raw union alpha>=1: 81001 texels, >=8: 164, >=128: 0, maximum clipped alpha 36.
+These were reported and admitted as faint haze; zero clipped faint alpha was not a package contract.
+The new HEAD produced a detached 4015 pixel bead ring in headwear. A documented structural accessory
+split preserved 14277 positive-alpha pixels with zero RGBA differences/loss/addition/overlap and identical
+rest recomposite; it did not erase the ring. It remained visible as a necklace and the rim survived the
+posed comparison. That source/config was rejected and preserved. No second generation was submitted.
+
+Delivery-scale comparison of the original ±12° turn uses unobscured same-pose controls at 4.30 s
+and 5.15 s, full 960×540 frames and unscaled head crops, alongside v1. At that size the outer edge was
+accepted as a hair highlight; this does not establish zero edge pixels or erase the thin edge visible
+under enlargement. The more legible ±12° turn is retained. The ±8° candidate
+(`20261029T211507Z-eab47773702546c59b13ac821d7e4dc1`) was rejected for lower turn legibility.
+
+The same-pose control imports the actual compositor with `show.reveal=[0,0]`; camera, sky, captions,
+rig pose and downsampling remain the same. Five outside-reveal JPEG byte matches per amplitude control
+the earlier comparison. The final contour candidate also has a bounded same-compositor peak-pose
+control and outside-reveal byte match. Diagnostic PNGs precede WebP encoding; actual delivery crops
+are decoded from the encoded WebP. The reveal intentionally overlaps the maximum turn, so only an
+unobscured control can support the underlying-source observation. No source edge was repainted or masked.
+
+## Meshes, bends and failures kept
+
+| Part | Final mode | Triangles |
 | --- | --- | --- |
-| **the rig** — bones, chains, meshes, weights, what a part is | `inputs/config.json`, `inputs/requirements.json` | `./build.sh` (11–12 min) |
-| **the performance** — what she does and when; physics; the breath | `film/rig.py` | `./film.sh` (5–7 min) |
-| **the staging** — sky, lights, captions, the mesh-and-bone reveal | `film/compose.py` | `./film.sh` |
+| hair_long | contour | 434 |
+| hair_back | auto | 28 |
+| handwear_l | auto | 30 |
+| legwear | contour | 158 |
+| neck | grid | 304 |
+| bottomwear | contour | 133 |
+| topwear | contour | 384 |
+| handwear_r | contour | 58 |
+| hairpin | contour | 46 |
+| hair_front | contour | 127 |
 
-- `./film.sh` reuses `out/parts` and runs steps 2–5. If you changed the config and ran only `./film.sh`,
-  you are looking at the old rig.
-- `./film.sh` moves the last build's `out/scene`, `out/render` and `out/film` to `out/prev` before it
-  builds, because every reading below compares two builds. One generation is kept; copy `out/prev`
-  elsewhere if you need a baseline for longer.
-- **The posed frames are ready about 16 seconds in** (`out/render/show@20fps/geometry.json`); composing the
-  240 frames is the rest. For a change of timing or motion, stop after step 4 and read the geometry
-  (`tools/moved.py`, `tools/loop.py`, `tools/bends.py`) before paying for the composite.
-- A green `./film.sh` ends with the gate line twice (`52 assertions: 21 measured (21 passed, 0 failed) …`)
-  and `240 frames -> out/scene/trailer.webp`. `rig-parts check` is not rerun by it and measures the
-  **idle**: its `BREATH_VISIBLE` is about the idle's breath, which the film replaces. It says nothing about
-  a change under `film/`.
+The ten producer meshes total 1,702 triangles. The face surface adds 360 and the film’s duplicated sleeve adds 58: 2,120 mesh triangles stored in the compiled model. The wave swaps attachments, so the 12 stored mesh slots are not all active together.
 
-## The timeline
+The failed auto attempt printed 122 hair_front / 65 legwear triangles; those refused outputs are not accepted baselines. The chosen contours have 127 / 158.
 
-The loop is 12 s. `film/rig.py` writes one animation, `show`, of 16 s: the loop's last 4 s first (so the
-springs have settled into the motion), then the loop. `film/compose.py` drops the lead-in: animation frame
-80 is loop time 0. Times here are loop time and are each beat's outer extent, as in the README's table;
-the keys are in `rig.py` and are the authority.
+Earlier producer diagnostics: topwear auto refused a reference-identity mismatch (1,382 deform values versus an attachment array of
+460 entries); no accepted auto triangle count exists for that attempt. Its documented contour
+replacement initially had 352 triangles and folded at region band 20. Band 27 follows the measured
+21.181708 rig-unit chest-relative displacement plus margin. Hairpin uses heat weights with continuous,
+uncapped influences; a rigid cap-one alternative produced a discontinuity and eight folded frames and
+was rejected. These historical diagnostic counts are not the final producer counts in the table above.
 
-| s | beat | written as |
-| --- | --- | --- |
-| whole loop | the swing, 4 s a period | `swing` rotate ±2.5° about a pivot far above |
-| whole loop | the breath, 3 s | see *The breath* |
-| 0.9, 5.2, 8.6 | blinks | the `eyes` group's `scaley` |
-| 1.5 – 4.1 | head tilt (eyes closed in a smile 1.9 – 3.7) | `head` rotate; eyes to 0.38, iris and white faded out; brows; mouth |
-| 3.7 – 5.2 | the reveal: every mesh and bone drawn over her (caption 3.75 – 5.15) | `compose.py`, from `geometry.json` |
-| 4.3 – 6.4 | kicking legs | `leg0`, `leg1` rotate |
-| 6.7 – 7.8 | the hop, and a startled face | `seat` translate 6.74 – 7.52; everything on a spring follows late |
-| 9.6 – 11.7 | the wave (palm shown 9.8 – 11.4) | `sleeve_r0` from the elbow; the palm and a bare forearm swapped in; `hand_r` a quarter beat late |
+The final auto-source attempt declared actual setup-relative bends: bang_r 14°, bang_c 12°, bang_l 13°, leg 16°. It failed before compilation: the unreduced hair_front source inverted three triangles at bang_r +14°, and reduced motion residuals were 5.550295 px for hair_front and 5.901466 px for legwear against the unchanged 3 px limit. That 42.448 s attempt is RED, not the successful final timing.
 
-A gesture is a list of `(time, value)` pairs passed through `lay()`, which lays it over the lead-in for
-you. It has to start and end on the same value.
+The documented contour route replaces only these two automatic meshes: tolerance 2, margin 2, spacing/maxEdge 30, hair_front stray 3 and legwear stray 1. Both preserve their previous segments, r, distance rule and four-influence cap with a continuous floor. The front-hair contour reports 23 dust islands / 26 pixels excluded under its declared stray limit; the original RGBA/depth files remain unchanged. The automatic mesh's motion residual comparison does not apply to contour; no 3 px auto result is claimed for it. The contour candidate is measured by all-animation rendered folds, rig-parts check, actual setup-relative bends and native/delivery inspection.
+Fresh final film readings: bang_r 13.1°, bang_c 11.1°, bang_l 12.4°, leg 15.4°, headwear tassel 93.2°, yaw 12.0°. `tools/bends.py` excludes the lead-in and measures largest setup-relative local turn;
+half-range is a separate reading. Source confidence, gate arithmetic and visual acceptance are different.
 
-## The breath
+## Earlier hanging-hair response controls (7beaf)
 
-Not a gesture: three constants in `film/rig.py` (`BREATH, RISE, IN`), a function `breath(t)` that is 0 at
-the bottom and 1 at the top, and `sampled()`, which turns a function of loop time into keys.
+The earlier hanging-only writer removed the producer’s existing `tail_*_ctl` idle rotations and tunes eight
+public rotation-physics constraints. All four links retain their original strengths
+105/84/67.2/53.8, mass 1 and mix 1. Damping is 0.85; inertia is 0.2 on links 0/1 and 0.1 on links 2/3.
+Root links respond to gravity 120 in the default downward world; lower links have gravity 0 to keep
+the painted curl. That earlier revision added no new tail keys, pixel edits, mesh/weight changes or custom solver. The later stop revision changes only documented drawn-link binding names and their child parentage.
+That earlier delivery’s complete rig/motion JSON and all 321 show poses matched its selected physics control. These response measurements are not reused as measurements of the later seat-stop take.
+Other part tracks are byte-equal; non-tail bones and other attachments match the previous delivery
+across all five animations. Raw sources, ring removal and hair-in-front-of-bar order are unchanged.
 
-- `BREATH`, the period. **A whole number of breaths has to fit the 12 s loop** (an `assert` holds it), and
-  4 s is the swing's own period, on which a breath reads as part of the swing. So the choices are 3 s, 6 s
-  and 12 s, and nothing between — "a little slower" does not exist here; the next slower breath is half
-  the speed. It is 3.
-- `RISE`, how far the chest rises, 14 units (11.5 film px). See the rule below before lowering it.
-- `IN`, the share of a breath spent breathing in, 0.42: in is quicker than out.
-- The followers are lags in **seconds**: the shoulders 0.12 s behind the chest, the head 0.2 s. The head's
-  track is the difference between the breath now and 0.2 s ago, so a slower breath moves the head less
-  (at 6 s its excursion roughly halves). If you change the period, decide what the lags should do.
-- `inputs/config.json` also has a breath, under `motion` (`chest`, `translatey`, period 4). That is the
-  idle's; `rig.py` drops it (`replaced`). Changing it changes nothing in the film and costs a full build.
+The formal first-tilt window is 1.5–3.75 s, sampled at 20 fps. The head angle is its world x-axis;
+primary tip angle is the last physical link’s world x-axis, and the secondary measure is the chord
+from root origin to its last link’s length tip. Angles unwrap from setup; the ranges below subtract
+the seat’s world rotation. A painted curl is not assumed to point along that physical axis.
 
-## How to look, when you cannot watch
+| Range, degrees | Head | Right tail | Left tail |
+| --- | ---: | ---: | ---: |
+| Previous last-link axis | 8.131925 | 28.931 | 26.938 |
+| 7beaf last-link axis | 8.131925 | 7.310295 | 8.184749 |
+| 7beaf root-to-tip chord | 8.131925 | 5.644725 | 5.889145 |
 
-You cannot play the film. These readings replaced watching; each is a script in `tools/`, cheapest first.
+The left axis exceeds the fixed head-order bar by **0.052823°: partial RED remains**. Delivery-scale
+visual review adopted the more inward/downward hanging silhouette as a nonblocking product choice;
+the number was not relabelled PASS. All three adjacent joint ranges vary by about 1.35–2.72°, above
+the segment-length-derived one-delivery-pixel angular bounds, so this is distributed bending.
+Root-anchor position error is at most 1.14e-13 rig units. The measured post-beat velocity/acceleration
+max/RMS readings are below the previous version’s (largest ratio 0.539552).
 
-1. **The same frame from two builds** — `python3 tools/frames.py out/prev/scene out/scene`. Pixels
-   differing by more than 40 per frame, and their box. Says whether a change landed and when. It cannot
-   say *which part* moved for anything under the chest (61 of the 83 bones): the box is the whole figure.
-2. **Which bones moved** — `python3 tools/moved.py out/prev/render/show@20fps/geometry.json
-   out/render/show@20fps/geometry.json chest_ctl`. Per bone, the largest difference between the builds,
-   split by an ancestor. After a change to the breath, everything not under `chest_ctl` reads zero.
-3. **Crop and enlarge.** A defect at film scale is a few pixels. The skirt's kinked hem was invisible in
-   the whole frame and plain at 2.4× on a 400 × 200 crop.
-4. **With and without, at the extreme** — `python3 tools/overlay.py <with> <without> out.png x0 y0 x1 y1
-   2.4`. For anything periodic: the frame at its peak against the same frame built without it (for the
-   breath: a copy of `rig.py` whose `breath()` returns 0, built into another directory; the peaks are at
-   loop time `IN × BREATH` plus whole periods — frames 25–26, 85–86, 145–146, 205–206 today). Red and cyan
-   fringes; if they are a pixel wide a viewer will not see it either. **It measures how far, not how
-   fast**: the same breath at half the speed gives the same number.
-5. **Does any triangle fold** — `rigc render … --folds` (the command is under *The meshes, as they
-   stand*). One line per mesh that folds, none on this cut.
-6. **Does the loop close, does anything pop** — `python3 tools/loop.py out/render/show@20fps/geometry.json`.
-   Loop time 0 against one loop later, and frames where bones turn several times further than on the
-   frames around them. On this cut it prints 0.000 and only the hop's own frames; anything else is yours.
-7. **`rigc inspect`** for the rig itself — bones and names over the art, one mesh's weights, every mesh's
-   density against the figure (`--show art,density`). See the README's *Looking at the rig*.
-8. **`tools/bends.py`** for what the performance asks of the rig: how far each bone turns from its setup
-   pose over the loop.
-9. **A person.** `ffmpeg -stream_loop 1 -framerate 20 -i out/scene/s%04d.jpg -c:v libx264 -pix_fmt yuv420p
-   -crf 18 out.mp4` — the loop twice, so the seam is seen once — and ask. Two of the last three defects,
-   "the eyes do not follow the face" and "I cannot feel the breath", were found this way and by no
-   reading above. There is no reading here for whether a motion can be *felt*; a slow, small motion on a
-   figure that is swinging is exactly the case no script answers.
+The LOCAL head input reaches 7.5° at 2.00 s and holds to 3.50 s. In paired head/no-head controls,
+response peaks occur 0.35 s later on both last-link axes and 0.25 s later on both chords, on the
+0.05 s frame grid. These are lags from local input ramp completion, **not world-maximum lags**.
+The world head/no-head angle varies 0.081311° during that held local input; its cause was not
+isolated. Exact-argmax and float-plateau measurement attempts are retained as rejected evidence.
+Hop and wave windows are full-response stress/settle readings, not additional attenuation bars.
 
-"Not in step with the swing" has a reading too, if you need it: the chest's height in the seat's own
-frame, from `geometry.json`, has no component at the swing's 4 s period when the breath's period is 3 or 6
-(and nearly all of it there at 4).
+A no-tail-physics control retains the old idle keys. It reduces some amplification but does not
+meet the same range/bend checks. The chosen change combines key removal with physics tuning;
+these controls do not prove gravity alone caused the improvement or form a full factorial study.
 
-## Rules this film was corrected into
+For the earlier 7beaf delivery, all 240 decoded frames were self-read in 20 native hair pages and five hip pages, without
+resizing. No new tear, tail severing, doubled strand or restored hip oval was observed in that
+frame-sheet read. Separate old/new full 960×540 tilt frames use the identical camera; the new hair
+crop does not stand in for the old extent. Native setup/min/max/diff and boundary evidence remain
+separate from delivery frames. The angle table/CSV and four-panel plot are bound to exact final
+production geometry. This is frame-by-frame inspection, not a continuous-playback verdict.
 
-Each is here because the film broke it once.
+## Moving-seat angular stops (selected delivery)
 
-- **The eyes follow the face.** A blink squashes along the eye bone's own axis; on a tilted head that axis
-  has to be the line through the eyes. `@rig-c/parts` now builds it and `rig-c` gates it (A51).
-- **An open hand is the size of the face.** The palm was drawn at 58 units and read as a child's; at 78
-  (1.35×) it reads.
-- **A limb bends at its joints and nowhere else.** The waving arm follows the sleeve's axis from the elbow
-  and the hand turns at the wrist crease, late and a little. Rotating one sprite at the cuff broke the
-  wrist.
-- **A closed eye is the lash alone.** Squashing the iris and the white with it leaves dashes; fade them out.
-- **The breath is sized for the frame, not for the body.** 2.5 % of the torso is right for a standing figure
-  in close-up. Here she is small and swinging, and at 6.5 units nobody could see it; it is 14. It also
-  needs its own period — on the swing's 4 s it reads as the swing.
-- **A mesh is reduced against the motion the film performs, not against the idle.** The idle turns a chain
-  one or two degrees; the film turns the skirt 24°, the legs 10°, the waving arm 32°. A mesh reduced on
-  the idle built green, passed every check, and kinked the skirt's hem. Measure with `tools/bends.py`,
-  declare each chain's largest turn from its setup pose as `auto.stimulus` in the config, and say how far
-  from the unreduced mesh you accept at those bends (`auto.motion.maxLocalDeformation`: 3 here; 1 is not
-  reachable at such bends — one removed vertex on the legs already reads 1.16).
-- **Build a part both ways before keeping its mesh.** A reduction held to a large bend is not the small
-  mesh it sounds like. On the skirt (24°) and the waving sleeve (33°) the `auto` reduction kept 276 and 148
-  triangles; `rig-parts mesh-draft`, which traces the outline around a coarse grid and keeps it only where
-  it holds against that grid, wrote 132 and 49, and the two films could not be told apart at the largest
-  bend, enlarged. On parts that bend a few degrees `auto` wins by as much. Nothing reports this; you find
-  it by building the part on a lattice at the figure's spacing (`"grid": 30` here), running `mesh-draft`,
-  and comparing the `[rig] mesh` lines.
-- **What the viewer is shown has to be visible.** The reveal drew every mesh edge alike and the outlines did
-  not read; the outline of each mesh is now drawn over its inner edges.
+The selected producer adopts the reviewed two-stop declaration exactly: `tail_r_seat` stops `tail_r1`
+against `seat` at `[-246,27]`; `tail_l_seat` stops `tail_l1` at `[255,27]`. Both use inward 0/outward 60.
+All eight tail physics entries move unchanged from the motion table into the rig constraints, before
+the stop’s copy/clamp reads them. `tail_r2_ctl` and `tail_l2_ctl` hang from the respective `_d` drawn
+links, and mesh weight names for link1 point to `_d`; all local binding coordinates and weights stay
+unchanged. The underlying raw RGBA/depth, hip-loop restoration, draw order, head/face/body motion,
+look-around amplitude and reveal are unchanged. The other 18 springs stay in the motion table.
 
-## The meshes, as they stand
+The public mechanism aims a frame at a point attached to the moving obstacle bone and clamps rotation.
+It has no positional line projection, friction or surface collision. It therefore does not certify
+that the hair rests on the bar. On all 240 loop frames, the link2 control origins remain above the
+nominal opaque bar top (seat-local y 27): minimum clearance R11.789459/L12.486742 delivery px;
+0/240 below-bar frames on both sides. The normal RMS from the setup centerline height 47 is
+R5.716630/L5.832207px against the unchanged <=1px criterion: **RED on both sides remains**.
+These are moving-seat-frame link-center measurements, not a pixel-surface contact certificate.
 
-`inputs/config.json`, per part. 1,420 triangles where a lattice at each part's own spacing had 3,081 (the lattice figures were measured before the hip loops were erased from the long hair).
+At f040/2.00s and f070/3.50s, last-link endpoint separation grows from the earlier hanging-only
+79.156/77.739px to 169.038/177.611px. Because the painted tips curl, a separate actual distal mesh
+measurement uses vertices with side-link2/3 weight>=0.5: outer spans 223.763/221.509px become
+275.533/280.584px (+51.770/+59.076px). The wider fan and normal-RMS RED were accepted as known
+limits of the selected delivery-scale silhouette. No metric was relaxed or relabelled PASS.
 
-| part | mode | triangles | built the other way |
-| --- | --- | --- | --- |
-| `topwear` | `auto`, with the soft chest as a declared region | 503 | — |
-| `hair_long` | `contour`, `influences` with no cap and a continuous floor | 434 | lattice 578 |
-| `bottomwear` | `contour`, as `mesh-draft` drafted it | 132 | `auto` at the film's bends 276; lattice 140 |
-| `hair_front` | `auto` | 112 | lattice 114 |
-| `legwear` | `auto` | 77 | lattice 176 |
-| `handwear_r` | `contour`, as `mesh-draft` drafted it | 49 | `auto` at the film's bends 148; lattice 52 |
-| `hairpin` | `contour` at the draft's settings, `influences` with a continuous floor | 47 | `contour` at its own spacing 120; lattice 46 |
-| `handwear_l` | `auto` | 31 | lattice 72 |
-| `hair_back` | `auto` | 28 | lattice 120 |
-| `neck` | `auto` | 7 | lattice 12 |
+A later bounded analytical correction was not rendered or adopted: an unconstrained fit put its aim
+points far above the bar; a bar-constrained one-step fit still predicted right-side RMS 1.017707px.
+Those estimates did not establish a universal impossibility and did not justify a new collider or
+parameter sweep. The selected production inputs are the original reviewed stop candidate, unchanged.
 
-"Lattice" is `"grid": 30`, the spacing `rig-parts propose` drafts for this figure. `mesh-draft` left the
-hairpin on its lattice — its candidate sat 1.055 rig px from the lattice over the idle, against a line of
-1 — and the candidate's settings were then written by hand, which is an author's call and is why that
-entry carries no drafted note.
+## Reading and publishing
 
-**Folds.** `node_modules/.bin/rigc render --candidate out/build --animation show --fps 20 --max 900 --folds --out <dir>`
-names every mesh with a triangle turned over against the setup pose, and the frames. On this cut it names
-none. On the last one it named `hair_long` (three slivers at a curl's tip, 88 frames) and `hairpin` (91
-frames); a continuous floor cleared the hairpin and two of the hair's three, and lifting the cap on the
-long hair cleared the last. Both are `meshes.<part>.influences` in the config. Each line gives the folded
-triangles' world box and their share of the mesh's area, and
-`rigc inspect --candidate out/build --animation show --fps 20 --at <s> --show art,mesh,folds --zoom folds --max 900`
-frames a picture to them; a fold that still draws as a hairline wants a larger `--max`. Size is the triage:
-the long hair's three were 0.07 % of its mesh, at a nearly transparent tip.
+Read setup/min/max/diff at native pixels, then native and nearest-neighbour 4 x boundary crops. Record
+tear/ghost/clean per observed boundary and its scope; absence at two endpoints is not a whole-loop claim.
+The final show geometry-extrema pair is SKIP when the wave changes attachment identity; channel extrema
+remain READ. Keep that SKIP, use actual yaw-channel witnesses, and inspect the whole loop.
 
-The declared bends against what `tools/bends.py` reads on this cut:
-
-| chain | declared `stimulus` | largest turn from setup, over the loop |
-| --- | --- | --- |
-| `skirt_r` / `skirt_c` / `skirt_l` (on `contour` since this cut: nothing is reduced, so nothing is declared) | — | 23.8 / 11.8 / 22.4 |
-| `leg` | 12 | 10.6 |
-| `sleeve_r` (the wave; on `contour` since this cut) | — | 32.5 |
-| `sleeve_l` | 4 | 2.0 |
-| `bang_r` / `bang_c` / `bang_l` | 11 / 10 / 11 | 11.0 / 10.0 / 10.4 |
-| `hairpin_tassel`, `tail_r` / `tail_l` (on `contour`: nothing is reduced, so nothing is declared) | — | 95.0, 8.8 / 11.2 |
-
-Every declared value covers what the film does. If you change the performance so that a chain turns
-further than its declared `stimulus`, re-measure and raise it, or the mesh is again one that was never
-asked about the motion it carries. (A bone's motion does not depend on its mesh, so one measurement after
-the change is enough — but it does depend on the renderer: the fringe read 9.7 before `rig-c` 2.45.2 and
-11.0 after.)
-
-## What the cold reader found
-
-Three defects, each of which this page or the README had denied or not known. All three are fixed in this
-cut; they stay here because how they were found is the method.
-
-- **The loop did not close on its springs** — 26 film px at the seam, and springs jumping together on
-  three frames — while the README said it closed. The reader measured a claim instead of repeating it.
-  The cause was the renderer's ([core#1380](https://github.com/rig-c/core/issues/1380)); `tools/loop.py`
-  is that measurement, kept.
-- **The reveal drew three helper bones**, the breath's twins, because `compose.py` listed two helper
-  suffixes and a third had been added in `rig.py`.
-- **The declared bends did not match the tool that measures them**: `bends.py` read the lead-in frames and
-  printed a half-range, where a stimulus is a turn from the setup pose. Three chains were under-declared.
-
-## Before you publish
-
-- `./build.sh` from a clean clone with the versions `package.json` pins, twice; the two `trailer.webp`
-  agree byte for byte on one machine.
-- Copy `out/scene/trailer.webp` over the repository's `trailer.webp`.
-- The README's figures (the gate line, counts, the build time) are the ones this build printed, and any
-  number you changed is changed everywhere it is written: grep the old value in `README.md`, this page and
-  the comments in `film/`.
-- If the published loop changes, `rig-c/.github`'s `profile/trailer.webp` is the same file.
-
-## Open, for whoever makes the next cut
-
-- `hair_long` and `hairpin` are on `contour` with their weight cut declared. Whether `auto` now accepts
-  them (it refused both while their unreduced meshes folded) has not been tried on this cut; by the table
-  above it is worth trying on `hair_long` and not on `hairpin`.
-- The soft chest's region is generous (503 triangles in `topwear`); it has not been tightened because the
-  first complaint about this film was a chest that did not move.
-- The turn control `@rig-c/parts` 1.9.0 drafts (a dial that carries each part by its depth) is not used;
-  the parallax here is still three hand-written tracks. The drafted depths push the legs the wrong way on
-  a seated figure ([parts#271](https://github.com/rig-c/parts/issues/271)).
+Final bars/skips: `A00_ROUNDTRIP_PARSE` unrun without the optional spine SDK. Show global geometry pair SKIP due to wave attachment changes; sampled channels remain READ. Parts check reads the producer’s idle and diagnostic turns; its no-physics CLOTH_SETTLES note does not assess the film’s later 26 springs. Temporal contact/follow/aim/range/stretch/seam requirements are undeclared. RECOMPOSITE_HOLES is reported, not barred: 4,093 uncovered error pixels after the hip-loop restoration (the earlier source read was 4,383). No full suite, native browser viewer or cross-encoder byte-equality claim. The selected delivery has owner approval; organisation/site publication is separate. The current loop prints 0.000 for both bone and vertex offsets; this is rounded, not mathematical zero. The earlier hanging-only hair component offset projected to 0.00009646 delivery pixels; that historical figure is not a new seat-stop measurement. Earlier native beat/boundary and unobscured head-turn controls remain source-bound. The selected seat-stop take retains its approved fullframe comparisons and native whole-loop sheet. A new all 240 frame-by-frame visual read is not claimed; contact RED and the wider fan are explicitly retained.
+The root `trailer.webp` is updated to the owner-approved selected v2 delivery. Organisation/site changes remain separate; no publishing script or automatic root copy runs as part of build.sh.
