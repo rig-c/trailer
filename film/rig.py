@@ -152,12 +152,12 @@ def chain(prefix, links, strength, damping, inertia, taper=0.85, start=0):
 chain('tail_r', 4, 105, 0.85, 0.2, taper=0.8, start=0)
 chain('tail_l', 4, 105, 0.85, 0.2, taper=0.8, start=0)
 # A root gravity response keeps hanging hair below its moving attachment.
-# Distal links take half the inertial kick, preserving the painted curl.
+# Distal links use the public default inertia to lag rapid parent motion.
 for side in ('tail_r', 'tail_l'):
     for k in range(4):
         physics[f'{side}{k}_phys']['gravity'] = 120 if k == 0 else 0
         if k >= 2:
-            physics[f'{side}{k}_phys']['inertia'] = 0.1
+            physics[f'{side}{k}_phys']['inertia'] = 0.5
 for bang in ('bang_r', 'bang_c', 'bang_l'):
     chain(bang, 2, 130, 0.86, 0.5)
 chain('hairpin_tassel', 2, 60, 0.80, 0.7)

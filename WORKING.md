@@ -1,5 +1,6 @@
 # Working on trailer v2
 
+Current distal tail inertia is 0.5 instead of 0.1; the current trailer is `a441e98601de6910d549facb0391a6c5b597fe53a69c0854239c1c365ae81ee4` from the 243.808 s build excluding installation, while `BUILD-FINAL.json`, `631e7496…` and the 237.841 s measurement below describe the #8 baseline; lower-curl frame-step maxima at 3.55–3.75 s are L 3.56 → 1.69 / R 5.17 → 1.52 px and at 8.10–8.25 s L 2.45 → 1.08 / R 3.80 → 2.11 px, with outside-window maxima L 2.34 → 2.91 / R 2.66 → 3.34 px.
 Production derives the original FULL run into `$TRAILER_OUT/derived-full` and keeps the original HEAD run. The rejected 607 HEAD experiment is not used.
 Source/rig changes live in `inputs/config.json`; performance in `film/rig.py`; staging in
 `film/compose.py`. Build with `./build.sh`; use `./film.sh` only when the already-built parts are valid.
