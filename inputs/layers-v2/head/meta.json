@@ -1,0 +1,218 @@
+{
+  "image": "st_input_head.png",
+  "prompt_id": "73aef975-0acb-4356-9677-578e07e8071c",
+  "prefix": "trailer7_v2_head_20261030",
+  "seed": 42,
+  "resolution": 1024,
+  "resolution_depth": 512,
+  "steps": 30,
+  "quant": "none",
+  "offload": true,
+  "lama": false,
+  "canvas": [
+    1024,
+    1024
+  ],
+  "layer_count": 29,
+  "graph": {
+    "1": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "nova_comfy_1f8f8e69c126452d97641177bcefebd5.png"
+      }
+    },
+    "2": {
+      "class_type": "SeeThrough_LoadLayerDiffModel",
+      "inputs": {
+        "auto_download": true,
+        "cache_tag_embeds": true,
+        "group_offload": true,
+        "model": "layerdifforg/seethroughv0.0.2_layerdiff3d",
+        "quant_mode": "none",
+        "unet_ckpt": "",
+        "vae_ckpt": ""
+      }
+    },
+    "3": {
+      "class_type": "SeeThrough_GenerateLayers",
+      "inputs": {
+        "image": [
+          "1",
+          0
+        ],
+        "layerdiff_model": [
+          "2",
+          0
+        ],
+        "num_inference_steps": 30,
+        "resolution": 1024,
+        "seed": 42
+      }
+    },
+    "4": {
+      "class_type": "SeeThrough_LoadDepthModel",
+      "inputs": {
+        "auto_download": true,
+        "cache_tag_embeds": true,
+        "group_offload": true,
+        "model": "layerdifforg/seethroughv0.0.1_marigold",
+        "quant_mode": "none"
+      }
+    },
+    "5": {
+      "class_type": "SeeThrough_GenerateDepth",
+      "inputs": {
+        "depth_model": [
+          "4",
+          0
+        ],
+        "layers": [
+          "3",
+          0
+        ],
+        "resolution_depth": 512,
+        "seed": 42
+      }
+    },
+    "6": {
+      "class_type": "SeeThrough_PostProcess",
+      "inputs": {
+        "layers_depth": [
+          "5",
+          0
+        ],
+        "tblr_split": true,
+        "use_lama": false
+      }
+    },
+    "7": {
+      "class_type": "SeeThrough_SavePSD",
+      "inputs": {
+        "filename_prefix": "trailer7_v2_head_20261030",
+        "parts": [
+          "6",
+          0
+        ]
+      }
+    },
+    "8": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "%PREFIX%_preview_layers",
+        "images": [
+          "3",
+          1
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "%PREFIX%_preview_parts",
+        "images": [
+          "6",
+          1
+        ]
+      }
+    }
+  },
+  "graph_sha256": "d544340d8fc3da2624c274e515786a8a26ee8b4badd7bf10dc4fc19cf2a813eb",
+  "job_sha256": "8c75432c8f5e2a3a1d35e14029079d2b48851680b2e1cfb36469702c5e4f348b",
+  "identity": {
+    "project": "rig-trailer",
+    "owner": "naru-rig-trailer-7",
+    "session": "01a18920-d78b-7e22-860e-9bcfe44fd262"
+  },
+  "input_sha256": "ba5a8d4ab0b01437575b09b4b3ab504de92d0eceab9239e3f1a80ecb322f939d",
+  "manifest_filename": "trailer7_v2_head_20261030_20261030_043406_e80c5845_layers.json",
+  "manifest_sha256": "eed239dbc81e8104680e0633a825917b495e57c53cd64c0f87acb5bd82383145",
+  "files_sha256": {
+    "parts/neckwear.png": "5057f455f501b606199c5e0a48bd88808c02b23554c5e8eb77a6493d13995a89",
+    "parts/neckwear_depth.png": "09019d747420ca153e68f67ed7b698003e3030f65193388fb2561050b02ec7b6",
+    "parts/bottomwear.png": "c0861ddb4d3f25530a76f21328f9b2ce150f455f8871bde61f8aa42f9ec8cdca",
+    "parts/bottomwear_depth.png": "a76b353ef8b45c30675164e562fd4c4c96aac113ffb028f1a2f3761e27815fc0",
+    "parts/legwear.png": "b8a04a07d659ec6d4972cdc0ea8eb0af2de156018539b730519bb1f4b6e00d9a",
+    "parts/legwear_depth.png": "7d3dc1ff359e067f67d9b6184ca23812c53098d39eb574187f178df43046926f",
+    "parts/footwear.png": "375b4ec1bfbb8bfc45ab0e2bbd0a0393eb6d0bcf51276e3cc107975550beb340",
+    "parts/footwear_depth.png": "c48ae376f00f5089b64d593e0b828ec34f7be42612d0714fd8a1ab686e402822",
+    "parts/tail.png": "f9d6526e193b9bd3baf26755600b37795f8f757b7bc7588af8a18732f9351597",
+    "parts/tail_depth.png": "adba08bf5d834cbf978de4e54963a78eb71c3d7e684a6c70a3619d7a6eb71724",
+    "parts/wings.png": "a62a36d14888e50447dcbac73c29e72e1e728513137ce19221f2c6c2d3d2bc83",
+    "parts/wings_depth.png": "16cdd3a6372a67f0bc31ec52b34ade683d636e09cfe12cf0a3950fcfef375483",
+    "parts/objects.png": "7d73fab5cf5ba4c01016e9c736ca34d69ce7d0593b0236f06383d34dfe6b16a0",
+    "parts/objects_depth.png": "6d8796c345a011c85e094b73d81fa1d498373e6274cc9885a5c916d92b35de2c",
+    "parts/eyewear.png": "7cb66bce957621c9e50839a9a3c4253d9ec192c9c56174030d53986df256cea8",
+    "parts/eyewear_depth.png": "3ab6630b1fa43ecaa4059b0871999770b4d27ea2b1f75f5bdeb424359ee206be",
+    "parts/earwear.png": "6b721884c5f84f2546f041efc24756910be5adb7b48b2cf626edbfa9ce39dd66",
+    "parts/earwear_depth.png": "2876dd8f7eb08aa2e9050ed95b32d58f78f89cc31d8552c1909973c71f0f23f4",
+    "parts/handwear-l.png": "51488520cf7b9c3d72c6722a441d77377d3aa7c3a7d41182778cfabdd678a0c0",
+    "parts/handwear-l_depth.png": "e985b5e46e5f92f2634f2fccf379b5164f720de79c718b6fca37e6b88ae60031",
+    "parts/back hair.png": "d9e5682d5df09be00126cef04775914c86ec8c4d4dc6ec8e3b3358d3fa55d269",
+    "parts/back hair_depth.png": "d56a92ee1a6c8137c4b277f2abef4a464713a0d2e828c13574323c2d3a6d432e",
+    "parts/headwear.png": "ed4d61e34f2bf399b65c515b1ad524e167e2d23397021da6f8d7df538c452a7a",
+    "parts/headwear_depth.png": "02857cd4d5cd9cef7371d27f6cbe60e04f46c8c20e65c9064cfdc3daf0116dd9",
+    "parts/neck.png": "0e30b66de2efa3136b8386c6ee03c8ebe873dc3bd3a09c5964065b821b51f8a4",
+    "parts/neck_depth.png": "1fce6f529d7366de99fcaf812266b8d1eb6238ec60af6edb4c64215bf0cf04b0",
+    "parts/topwear.png": "0478d75c8c53dfc12ca55f28b3a3376f146962592c938316b353f68f82defc61",
+    "parts/topwear_depth.png": "1e1a7e3c9eda93fcf236d819b6fd9a5878b07543de5c84f9ddf78f6334b6ff32",
+    "parts/ears-r.png": "0fab8e6289090bfdc2590b71a28f9d674ea5803729c38e1b4ae2eead4c4d85a7",
+    "parts/ears-r_depth.png": "0562247bce1b204f68870d03706ccec92f06ac5f8e2aef2240a539b7268e1674",
+    "parts/ears-l.png": "b04e8a4f4ee199061b9a414b119abb0c6dac4a9edc2fe0b65ddd0bae92b50371",
+    "parts/ears-l_depth.png": "61de32ca0d674e8ce192a16d2ce42344e119ec1e887191872373a0d8ebe7be79",
+    "parts/face.png": "5a90b6f0ce22b2f2ad3c5c3fdb5cc24910261957e0bcfc6e2502d4032eb60d75",
+    "parts/face_depth.png": "f8c91fddc95b3ea5083267ea51c3ba9bb1619543c5193cd637a48df20cd5add2",
+    "parts/nose.png": "4a9ba37193face5a17d9a674e6fddefaf93d2564056ca4caa5b7d186a2120a04",
+    "parts/nose_depth.png": "505bd15089ad3486bb8a96f3e2ec9f174994ea869d80a701a212d9b74b42a08d",
+    "parts/mouth.png": "66ec840fe48341f76b605fb6fbf9413d1f3c1170bba1cf70f574fd6672afa98d",
+    "parts/mouth_depth.png": "6af4ead22041662c1b199239c02561a57f272718192e11c2e92c41107c251560",
+    "parts/eyebrow-l.png": "044a8800878a9404dd2bfa963aae6f08be371f2095b1cb0721f0ff8557841b0b",
+    "parts/eyebrow-l_depth.png": "85f94199dce8d52c4aad0db3ba11a401dc0ec0eb777f9d42cd71cccc26308178",
+    "parts/irides-l.png": "2c40ad5f0fc00760a429d14ede6df33886a61424701b5e48f3d5375d7da114f3",
+    "parts/irides-l_depth.png": "dfb88c3daa99c450665945a28e5514a9412cb64caacfe072cad66ee2a93492f9",
+    "parts/eyewhite-r.png": "d02830076f0d82ca62140f08c969009b2dd24aeca34932017a08e547aa2e8b34",
+    "parts/eyewhite-r_depth.png": "07edeb26a666764d6688c6b07562823ded2a7eaa28099aeaf904404ec1564d97",
+    "parts/eyewhite-l.png": "d9c5a47db1e872012e392eb96fd0a13177bf86088118b5ae6e2bc53c7da61152",
+    "parts/eyewhite-l_depth.png": "d910e51b2364a6bb977ebe6812b820e60956a5cddc36dcaa8129b7f7773ebaf0",
+    "parts/eyebrow-r.png": "c105398dcf1da2c1142b1fe16a94782ab92ee946480d5e5a88c55656a2f1bf58",
+    "parts/eyebrow-r_depth.png": "c4b6c0158bb4ffb7c199e79eb154def556196d4a0e566e72a7acf96073ca27fe",
+    "parts/eyelash-l.png": "e45f6660d992c26644e80e4b97f4895126635a3f42f0351e0bc7abd6f188f1f4",
+    "parts/eyelash-l_depth.png": "5c0792b0fc9f627cc8cd558958671b30a57725acbd9c61c92cebe4ed87a007b3",
+    "parts/irides-r.png": "bd577fc55b93587517b3501ae883058aeae482cfab5f23ad6bd2b74e9504c290",
+    "parts/irides-r_depth.png": "e2d24ec14318a9b842c7daee423fdad9daffd8fbf404888cd26f6a0fa6649d3c",
+    "parts/eyelash-r.png": "6443bbe545a23f11f44f08cac15f6e07d8d999f3ee49fdc4f9e3c8b97f376c50",
+    "parts/eyelash-r_depth.png": "6c57357bf7ef63ec4a36d63d00de93ae4eb5540f04615ea2b6f1cab0c663b178",
+    "parts/front hair.png": "eb9fbcbdaebdd7bf0f2d8bdcf93fa566f0f70183eca13ffe267531d13451cda3",
+    "parts/front hair_depth.png": "cdf5a64b9f8761769692d925652ea0f7493c9971e6eb8e232fa486a37cb817be",
+    "parts/handwear-r.png": "767a5f3966cd89e27a8b744ff2dceadd1b79819c0a5f2d7813a6e54a73762e3f",
+    "parts/handwear-r_depth.png": "2df526553da5fa0239f476e839e6ff41d8f07524d974ea920ea6caa65f91a4ff"
+  },
+  "history_sha256": "77724863ceb78abafbf78391c3195e455eb1ff694eec8233e5b8b55dcdab5e0d",
+  "client_sha256": "0872dc236ef8f32486c6351236318d28532d4550bba321b6e37366fc9b975175",
+  "capabilities_at_submission_sha256": null,
+  "capabilities_note": "Interrupted before original sidecar; submission capability hash unavailable. Fresh capability hash is separate.",
+  "capabilities_at_recovery_sha256": "dbd772c52094a858f9780ce6b09066ced7652a0a62c1daf0a6ec04ad5a54ddf6",
+  "preview_outputs": [
+    {
+      "node": "8",
+      "descriptor": {
+        "filename": "%PREFIX%_preview_layers_00003_.png",
+        "subfolder": "",
+        "type": "output"
+      },
+      "sha256": "fb66b43514c70ecdba7ffa5c82a4f83941f06b6ee27396312d1f956975c990b6",
+      "bytes": 954093
+    },
+    {
+      "node": "9",
+      "descriptor": {
+        "filename": "%PREFIX%_preview_parts_00003_.png",
+        "subfolder": "",
+        "type": "output"
+      },
+      "sha256": "518c1e3166fa3f86164f234bc8c459d3cb3f16bc6c8eee74951157ed2b395c5d",
+      "bytes": 755015
+    }
+  ],
+  "collection": "read-only recovery of existing prompt after authorized resume",
+  "runtime_python": "3.13.1"
+}

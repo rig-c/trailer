@@ -1,219 +1,263 @@
-# The rig-c trailer, reproducible
+# The rig-c trailer v2, reproducible
 
 <p align="center">
-  <img src="trailer.webp" alt="A character on a swing under a night sky breathes, tilts her head, smiles, kicks her legs, hops and waves, her twin tails following; for one beat her meshes and bones are drawn over her" width="100%" />
+  <img src="trailer.webp" alt="A character on a swing under a night sky breathes, tilts, smiles and looks around, her long hair draping over the seat; she kicks, hops and waves while a reveal shows her moving meshes and bones" width="100%" />
 </p>
 
 The loop on the [rig-c organisation's front page](https://github.com/rig-c), with everything that made it:
-one generated painting, its two See-through layer sets, the config an agent wrote for
-[`@rig-c/parts`](https://github.com/rig-c/parts), and three short scripts. One command rebuilds the loop
+one generated painting, its See-through layer sets, the config an agent wrote for
+[`@rig-c/parts`](https://github.com/rig-c/parts), and a few short scripts. One command rebuilds the loop
 from them with the published packages.
 
+v2 is the same painting, character, swing and sky as v1, and the same 12-second performance with one beat
+added: she looks around, through a sampled 2.5D depth turn built from the layers' depth sheets, and the
+mesh-and-bone reveal now runs during that turn. Her long hair is drawn in front of the swing bar and drapes
+over the seat, held there by angular stops on the moving seat rather than by keys; the twin tails move on
+springs alone.
+
 It is here as a worked case, not as a template: a character that is not standing, a prop that is part of
-her skeleton, a performance longer than an idle, and a record of what review caught on the way.
+her skeleton, a performance longer than an idle, a depth turn on a painting that was never regenerated,
+and a record of what was measured on the way — including the two things this film does not do.
 
 To change the film rather than rebuild it, read [WORKING.md](WORKING.md): where each kind of change goes,
-how to check one without being able to watch it, and the rules this film was corrected into.
+how to check one without being able to watch it, and every measurement behind the figures on this page.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/rig-c/trailer && cd trailer
-pip install -r requirements.txt      # numpy, pillow
-./build.sh                           # installs @rig-c/parts 1.62.0 and rig-c 2.69.0, then runs the five steps
+pip install -r requirements.txt      # numpy 2.4.4, pillow 12.2.0
+./build.sh                           # npm ci if node_modules is missing, then the five steps
 ```
 
-Needs [bun](https://bun.sh) ≥ 1.2 (the tools run on it), npm, and python3. No GPU and no ComfyUI: the
-painting, the sky, the palm and the See-through layers are inputs, already in `inputs/`.
-The whole build took 11 min 42 s on an Apple M4 (measured once, this cut).
+Needs [bun](https://bun.sh) ≥ 1.4 (the packages declare it as their engine), npm, and python3. The
+lockfile pins `@rig-c/parts` 1.79.1, `@rig-c/pose` 1.5.4 and `rig-c` 2.81.1. No GPU and no ComfyUI: the
+painting, the sky, the palm and both See-through layer sets are inputs, already in `inputs/`.
 
-The result is `out/scene/trailer.webp` (960×540, 240 frames, 12 s at 20 fps), with the 1920×1080 frames
-beside it and a contact sheet. Run from a clean directory with the published packages, on the machine the trailer was made on, it reproduced the published loop byte for byte — all 240 frames and the WebP (python 3.13.1, pillow 12.2.0, numpy 2.4.4, bun 1.4.2). Another machine's encoders and caption font can move bytes without moving the picture.
+The result is `out/v2-final/scene/trailer.webp` (960×540, 240 frames, 12 s at 20 fps), with the 1920×1080
+frames beside it, a contact sheet, and a `delivery-inspection/` folder of frames and crops read from the
+encoded file. `TRAILER_OUT=<dir>` puts all of it somewhere else. The build never touches the root
+`trailer.webp`; that file is the published loop, copied there by hand, and the last line `build.sh` prints
+is the path of the one it just wrote.
+
+The whole build took **3 min 58 s** (237.841 s, excluding the install) on a Linux x86-64 runner, measured
+once from a fresh locked install with nothing carried over — `BUILD-FINAL.json` is that run's record. It
+reproduced the root `trailer.webp` byte for byte: 6,405,916 bytes, SHA-256
+`631e74967074dd59d405cd137a4d4783820559b852c1485e0a13cd365139ad24` (python 3.12.3). Another machine's
+encoders and caption font can move bytes without moving the picture; the figure is one measurement, not a
+benchmark.
 
 | | |
 | --- | --- |
-| **An input, not rebuilt** | `inputs/painting.png`, `inputs/layers/` (See-through), `inputs/sky.png`, `inputs/palm.png` — generated on a ComfyUI box; `generation.json`, `sky.json` and `palm.json` record how, and `tools/trim_loops.py` the one edit made to the painting and its back-hair layer afterwards |
-| **Written by the author (an AI agent)** | `inputs/config.json`, `keypoints.json`, `requirements.json`, and `film/` |
-| **Rebuilt by `build.sh`** | the parts, the rig, the compiled skeleton, every rendered frame, the composite |
+| **An input, not rebuilt** | `inputs/painting.png` (the v1 painting, unchanged), `inputs/layers-v2/` (the two v2 See-through runs: full body and head crop, 29 art/depth pairs each), `inputs/sky.png`, `inputs/palm.png` — generated on a ComfyUI box; `generation.json` (its `v2_depth` block for the new runs), `sky.json` and `palm.json` record how. `inputs/layers/` is v1's layer sets, kept. `tools/trim_loops.py` is the one edit made to the painting in v1; its mask is reused in step 1 |
+| **Written by the author (an AI agent)** | `inputs/config.json`, `keypoints.json`, `requirements.json`, `film/`, and the three readers `build.sh` runs between steps: `tools/derive_trimmed_full.py`, `tools/preflight.ts`, `tools/delivery.py` |
+| **Rebuilt by `build.sh`** | the derived full-body run, the parts, the rig, the compiled skeletons, every rendered frame of five animations, the composite, the inspection crops |
 
 ## The five steps
 
-**1. Parts, rig, check** — `rig-parts build`. The painting and the two See-through runs are assembled into
-23 rig-ready parts, meshed and weighted to the bones `config.json` declares (1,420 triangles in ten meshes; a
-lattice at each part's own spacing had 3,081 — see *The meshes*), given a four-second idle, and
-checked. The check passes twelve bars of twelve, two of them through a declaration:
-
-```
-BREATH_VISIBLE: PASS — declared_not_planted shoes; …
-TIP_OVER_ROOT: PASS — declared_rises handwear_r; …
-STRESS_OFF_CHAIN: PASS — tags handwear; turns 90 | -90 | 180; parts_read 2; reading 1; …
-check: PASS; 12 of 12 bar(s) measured, 0 skipped
-```
-
-`rig-parts check` assumes a figure that stands. `inputs/requirements.json` says what the scene knows and the
-tool cannot: she sits, so her shoes are not planted, and her right forearm rises from the elbow. A relaxed
-bar prints the declaration first, so it never reads as a passed one.
+**1. Parts, rig, check** — `tools/derive_trimmed_full.py`, then `rig-parts build`. The full-body run is
+copied to `out/v2-final/derived-full` with v1's hip-loop trim applied to its back-hair layer and that
+layer's depth sheet (3,460 alpha pixels and 3,179 depth samples change; the script asserts that every
+other file came through byte-identical). The raw run in `inputs/` is never edited. The painting and the two
+runs are then assembled into 23 rig-ready parts, meshed and weighted to the bones `config.json` declares
+(ten meshes, 1,702 triangles — seven on a traced `contour`, two on `auto`, the neck on a grid; the per-part
+table is in WORKING.md), given a four-second idle and three diagnostic turns, and checked. Twelve bars are
+measured and all twelve pass, two of them through a declaration: `rig-parts check` assumes a figure that
+stands, and `inputs/requirements.json` says what the scene knows and the tool cannot — she sits, so her
+shoes are not planted, and her right forearm rises from the elbow. Two more bars print as SKIP notes
+rather than counting (`SEAM_OVER_MOTION`: no neighbour pair; `CLOTH_SETTLES`: the parts carry no physics
+yet — the springs arrive in step 2), and `RECOMPOSITE_HOLES` reports 4,093 uncovered pixels without being
+a bar. `tools/preflight.ts parts` then confirms every part has both its art and its depth sheet.
 
 **2. The film rig** — `film/palm.py`, `film/rig.py`. Plain rig-spec and motion-spec data added to what
-step 1 wrote: the swing, a physics constraint on every chain, the breath, the palm, and one animation.
-The sections below say what each is for.
+step 1 wrote: the swing, a physics constraint on every chain and the soft chest (26 in all), the breath,
+two gaze bones under the eyes, the palm, the two seat stops, and one animation. `tools/preflight.ts film`
+parses the result with the packages' own parsers and refuses a timeline that does not increase or a last
+key that carries a curve.
 
-**3. Compile and gate** — `rigc build`, twice. Nothing is written unless the gate is green:
+**3. Compile and gate** — `rigc build`, twice. Nothing is written unless the gate is green, and each build
+ends on the same summary line:
 
 ```
-52 assertions: 21 measured (21 passed, 0 failed), 17 skipped, 14 not in profile "spine"
-bones=83 slots=29 animations=2 regionAttachments=18 meshAttachments=11 physicsConstraints=24
+  ..    52 assertions: 26 measured (26 passed, 0 failed), 12 skipped, 14 not in profile "spine"
 ```
 
-The second build is the same rig with every slot tinted black; step 5 needs it.
+One of the twelve skips is `A00_ROUNDTRIP_PARSE`, the parse by the official Spine runtime: the published
+package does not carry `spine-core`, so rigc's own validator gates the build in its place and says so. The
+compiled rig has 107 bones (99 authored, 8 generated for the stops), 29 slots, 26 physics constraints and
+2,120 mesh triangles. The second build is the same rig with every slot tinted black; step 5 needs it.
 
-**4. Pose** — `rigc render --geometry`. 321 frames of the rig, and `geometry.json`: every bone's world
-transform and every mesh vertex after skinning, per frame.
+**4. Pose** — `rigc render`. Every animation of the build — the idle and three diagnostic turns from step
+1, and `show` — posed at 20 fps, 495 frames in all; `--geometry` writes every bone's world transform and
+every mesh vertex after skinning per frame, `--extremes` writes each animation's two farthest poses, and
+`--folds` names any triangle that turns over. None does, in any of the five. Then the black twin, `show`
+only, framed by the first render's viewport.
 
-**5. The film layer** — `film/compose.py`. Sky, lights, the mesh-and-bone reveal, captions.
+**5. The film layer and the readings** — `film/compose.py`. Sky, lights, the mesh-and-bone reveal, captions;
+240 frames at 1920×1080, the WebP at 960×540, a contact sheet. Then three readers over what was just
+written: `tools/loop.py` (does the loop close — 0.000 units on both the largest bone offset and the
+largest vertex offset), `tools/bends.py` (how far the film turns each bone from its setup pose), and
+`tools/delivery.py`, which decodes the encoded WebP, asserts 240 frames and 12,000 ms, and writes the
+inspection folder: full frames and head crops at both yaw extremes and on either side of the reveal, all
+at the file's own pixels, plus a labelled whole-loop sheet and a JSON of hashes.
 
 ## What the rig is
 
 | Beat | Seconds | What moves it |
 | --- | --- | --- |
-| Sway | whole loop | `swing` rotates ±2.5° about a pivot far above the frame; `seat` and the whole character hang under it |
-| Breath | whole loop, 3 s | the chest rises 14 units and widens; the shoulders follow 0.12 s late and the head 0.2 s late; hair and the soft chest take it through their springs |
-| Tilt and smile | 1.5 – 4.1 | `head` rotation; the `eyes` group's `scaley`, `brows`, `mouth` |
-| The reveal | 3.7 – 5.2 | not the rig: the film layer drawing the render's own geometry |
-| Kicking legs | 4.3 – 6.4 | `leg1` rotation, with a spring on both leg bones |
-| Hop | 6.7 – 7.8 | `seat` jumps 44 units; everything on a spring arrives late |
-| Wave | 9.6 – 11.7 | the forearm from the elbow, an open palm swapped in, the hand trailing at the wrist |
+| Sway | whole loop | `swing` rotates ±2.5° on a 4 s period about a pivot far above the frame; `seat` and the whole character hang under it |
+| Breath | whole loop, 3 s | the chest rises 14 units and widens; the shoulders follow 0.12 s late and the head 0.2 s late; hair and the soft chest carry it through their springs |
+| Tilt and smile | 1.5 – 3.75 | `head` rotation to 7.5°; the `eyes` group's `scaley`, `brows`, `mouth` |
+| Look around | gaze 3.60 – 5.40, head 3.85 – 5.90 | `yaw_dial` turns the sampled depth field to +12°, then −12°, then back; the irises move 3 units ahead of it, each change 0.25 s before the head's |
+| The reveal | 3.95 – 5.65 | not the rig: the film layer drawing the render's own geometry, over the turn |
+| Kicking legs | 6.0 – 7.7 | `leg1` rotation ±9°, `leg0` ±2.5°, with a spring on both leg bones |
+| Hop | 8.1 – 8.88 | `seat` jumps 44 units; everything on a spring arrives late |
+| Wave | 9.55 – 11.68 | the forearm from the elbow to 32°, an open palm swapped in from 9.82 to 11.44, the hand trailing at the wrist by ±7° |
+
+The animation is 16 s: a 4 s lead-in that replays the loop's last four seconds, then the loop, so that by
+the loop's first frame every spring is where it will be at its last. Step 5 keeps only the loop.
 
 **The swing is two bones of her skeleton** (`root > swing > seat > hip`), and its bar and ropes are three
 attachments on `seat`. So the sway is ordinary bone motion, and it reaches her hair the way any motion of a
 parent does: through the physics constraints on the chains. Nothing synchronises a character to a prop.
 
-**24 physics constraints.** `rig-parts` keys its idle on a `<bone>_ctl` parent of every chain link, which
+**26 physics constraints.** `rig-parts` keys its idle on a `<bone>_ctl` parent of every chain link, which
 leaves the link itself free for a constraint; `rig.py` gives one to each link of the twin tails, bangs,
-tassel, skirt, sleeve and legs, tapering in strength toward the tip, and one to the chest.
+tassel, skirt, sleeve and legs, tapering in strength toward the tip, and one to the chest. The eight tail
+springs live in the rig's own constraint list, where the stops can read them; the other eighteen stay in
+the motion table.
 
-**The soft chest** is the recipe from the parts guide: a bone under `chest`, a circular region of the
-`topwear` mesh handed to it in `config.json`, and a spring on its x and y. It moves 4 – 6 units through the
-sway and about 20 on the hop.
+**Depth by parallax, and now by a sampled surface.** Three bones get a keyed twin above them (`leg0_px`,
+`leg1_px`, `chest_jiggle_px`), keyed in step with the swing: what is nearer the viewer travels a little
+further than what is behind it, and the torso leans 1.5° against the sway. That is v1's depth and it is
+still here. The look-around is the new kind — see *The depth turn*.
 
-**Depth by parallax.** Three bones get a keyed twin above them (`leg0_px`, `leg1_px`, `chest_jiggle_px`),
-keyed in step with the swing: what is nearer the viewer — knees, feet, the chest's front — travels a little
-further than what is behind it, and the torso leans 1.5° against the sway. It is bone motion bending
-meshes, not a depth model.
+**The meshes.** Each part is on the mode that measured smaller or did not fold: `hair_back` and
+`handwear_l` on `auto`, the neck on a grid, and the other seven — including the long hair at 434
+triangles and the topwear at 384 — on a traced `contour`. The front hair and the legwear were tried on
+`auto` first and refused: at the bends this film puts them through their reduced motion residuals were
+5.55 px and 5.90 px against a 3 px limit, so they went to `contour` at 127 and 158 triangles. The topwear's
+soft region sits on `chest_jiggle` with band 27. The hairpin declares continuous, uncapped influences
+because a cap of one bone produced a discontinuity and eight folded frames; the long hair and the topwear
+declare the same. The
+largest turns the film makes from the setup pose, read by `tools/bends.py`: the bangs 13.1°, 11.1° and
+12.4°, the leg 15.4°, the hairpin's tassel 93.2°, the yaw dial 12.0°.
 
-**The breath** replaces the idle's own (2.6 units on the swing's 4 s, which read as part of the swing).
-Three seconds a breath, four to the loop, so it never falls in step with the sway. The shoulders and the
-head each ride a twin bone above the one `rig-parts` keys, and follow by lagging rather than by a motion
-of their own.
+## The depth turn
 
-**The meshes.** Six parts are on `auto` — a traced outline reduced under declared bounds — and four on
-`contour`, a traced outline with a coarse grid inside: the skirt and the waving sleeve as
-`rig-parts mesh-draft` drafted them, the hairpin at the same settings, and the long hair. Each part is on
-the mode that came out smaller when both were built. Where the film bends a chain a few degrees `auto` is
-far the smaller (the back hair, 28 triangles against a lattice's 120). Where it bends one 24° or 33°, a
-reduction held to those bends kept two to three times what the draft needs — the skirt 276 against 132,
-the sleeve 148 against 49 — and the film is the same to the eye. Each `auto` chain's bend in this film is
-declared in `config.json` (`auto.stimulus`, measured with `tools/bends.py`), because a mesh is otherwise
-reduced against the idle, and the idle bends a chain one or two degrees. No triangle folds over anywhere
-in the film (`rigc render --folds` names no mesh): the long hair and the hairpin, which folded three and
-two in the last cut, declare their weight cut (`influences`). The per-part counts and the declared bends
-are tabled in WORKING.md. The reveal draws each mesh's outline over its inner edges, so the silhouettes
-read.
+The painting was not regenerated. Two new See-through runs of it — the full body and the head crop, 29
+layers each at 1024² with depth inferred at 512, seed 42, 30 steps — give every part an art image and a
+depth sheet, and `inputs/generation.json` binds the runs to their input bytes, settings and prompt.
 
-**The loop closes with a lead-in.** Springs make an animation's first frame differ from its last. The
-animation is 16 s: the loop's last four seconds, then the loop. By the loop's first frame the springs are
-where they will be at its last, and step 5 keeps only the loop. `tools/loop.py` reads it: 0.000 units
-between loop time 0 and one loop later, on every bone and vertex.
+`config.json`'s `turn` block says how the head reads them: the face is a sampled *surface*; the hair,
+hairpin, ears, eyes, brows, lashes and mouth are *units* at declared depths (front hair 65, back hair −14,
+long hair −22, hairpin −8, ears 20 and 12). The body has a turn of its own on `chest`, with the topwear as
+its surface and the neck as a unit at 52.1765 — a figure `rig-parts propose --write-config` drafted from
+the neck layer rather than from a collar fragment. `keep_under_occluders` names nine parts whose complete
+content is kept beneath translucent covers, and `yield_refused` lets front pixels the depth read refused
+pass to the opaque part that holds them, under the package's own ownership rule.
 
-That was not true of this film until `rig-c` 2.45.2. Through seven cuts the springs were up to 26 px apart
-at the seam and jumped together on three frames inside the loop, and the page said the loop closed. See
-the last row of the table below.
+The look itself is one keyed bone, `yaw_dial`, at ±12°: the sampled field displaces each part by
+−depth·sin(yaw), so the head does not spin, it turns. A ±8° version was built and compared at 960×540 and
+in head crops; ±12° reads more clearly and is the one kept. At the far end of the turn, under enlargement,
+the hair's outer edge shows a light double contour. It is in the source layers — the registered source
+crops carry it, and a reconstruction of the rendered frame from the layers matches every pixel of the two
+regions measured — and nothing here repainted or masked it; at the trailer's own size it reads as a
+highlight. WORKING.md records the two attempts at a cleaner source and why neither was used.
 
-## What review caught
+## Hair, swing and seat
 
-The author of a rig cannot see it; an agent reads a handful of frames. Every row below was green at the
-gate and wrong in the picture, and was found by a person watching the loop.
+**Draw order.** Back to front: the ropes, the bar, the long hair, then the body, skirt and legs. v1 drew the
+bar in front of the hair; here `rig.py` inserts the bar's slot immediately before `hair_long`, so the
+tails fall across the bar and the skirt and legs still cover them. Nothing else changed for that: no
+pixel, mesh, weight, spring or key.
 
-| Seen | Cause | Fix here | Where it went |
-| --- | --- | --- | --- |
-| "The eyes do not match the tilt of the face" | The head is painted 23.7° off vertical and the five face bones were written with the page's axes, so a blink's `scaley` squashed the eyes along the page | first by hand in `rig.py`; since `@rig-c/parts` 1.7.0 the rig stage stands the five bones on the line through the eyes and declares it, `rig-c` 2.40.0's gate holds the build to it (`A51`), and `rig.py` only checks that it was done | [parts#239](https://github.com/rig-c/parts/issues/239), [core#1351](https://github.com/rig-c/core/issues/1351) — both shipped |
-| "The chest does not move — a paper doll" | The torso was one mesh on two rigid bones | the soft region and its spring; the parallax | — |
-| "The hand is too small: an open hand goes by the size of the face" | The palm was sized from the painted, half-hidden hand | wrist to fingertip 58 → 78 units, about half the face's width | — |
-| "Her wrist breaks when she waves" | Two things: the palm's forearm pointed the way the painted wrist did, 14° off the sleeve; and the whole palm turned ±15° at the cuff, against the arm | the forearm follows the sleeve's axis; the palm is two pieces, and only the hand turns, at the wrist, ±7°, a quarter beat behind the arm | — |
-| "Hair lying over the seat will be hard to swing" | In the first painting the twin tails draped over the swing | a new painting, hair hanging behind the seat line (`generation.json`) | — |
-| The swing's end joints read as eyes | Glossy balls with a dark centre | flat open rings | — |
-| "The curled loops beside her hips read as hair lying on the ground; she is in the air, so they float" | The painting drew a ring of hair on the outside of each twin tail at hip height | both rings erased from the painting and the See-through layer (`tools/trim_loops.py`: the tail's edge measured on the rows above and below each ring, everything outside it removed) | — |
-| "I cannot feel her breathing" | The idle's breath was 2.6 units, and at 6.5 (2.5 % of the torso, right for a standing figure in close-up) it was still lost: she is small in the frame and swinging | 14 units, its own 3 s period, shoulders and head following late | the drafted breath now scales with the torso ([parts#252](https://github.com/rig-c/parts/issues/252), [#270](https://github.com/rig-c/parts/issues/270)) |
-| The loop did not close on its springs, and springs jumped on three frames | Not the film: the renderer advanced physics in steps of 1/60 s under frames of 1/20 s, and three such steps are not exactly a twentieth in floating point, so what a spring showed flipped between two states (the official runtime does the same on the same calls) | nothing here; rebuilt on the fixed renderer | `rigc render` got a physics clock of its own ([core#1380](https://github.com/rig-c/core/issues/1380), rig-c 2.45.2). Found by an agent handed this repository and nothing else, checking a claim this page made |
-| "The meshes have no outline" | The reveal drew every edge alike, and the largest mesh was still a lattice whose blocks covered the rest | the long hair on a traced outline; outlines drawn over inner edges | — |
-| The kick is never seen without the x-ray | The reveal ran 4.1 – 6.6 s across the whole kick (4.3 – 6.4 s) | the reveal moved to 3.7 – 5.2 s: it opens over the first kick and clears before the larger second kick (5.2 – 6.4 s, 1.2 s) | — |
+**The tails move on springs alone.** The idle's keyed tail motion is removed and each of the four links on
+either side carries a rotation spring: strengths 105, 84, 67.2 and 53.8 down the chain, damping 0.85,
+inertia 0.2 on the upper two links and 0.1 on the lower two, and gravity 120 on the root link only, so the
+hair hangs below its moving attachment while the painted curl at the tip is kept. The key removal and the
+spring settings are one change; the film does not show that gravity alone would have done it.
 
-Four more were found by the tools refusing, or by the author reading their reports, and became issues:
-long hair behind the back dropped from the assembly plan
-([parts#233](https://github.com/rig-c/parts/issues/233)), a cut piece given its base's chains a second time
-([parts#230](https://github.com/rig-c/parts/issues/230)), the check's standing-figure bars
-([parts#231](https://github.com/rig-c/parts/issues/231)), and a `tip` on a single bone accepted and ignored
-(in #239). All of them have shipped; the first three in `@rig-c/parts` 1.6.0, which is why step 1 is one green command here.
+**Two stops drape the hair over the seat.** `rig.json` declares `tail_r_seat` and `tail_l_seat`: each
+clamps the second link of a tail (`tail_r1`, `tail_l1`) against a point that rides on `seat` — (−246, 27)
+and (255, 27) in the seat's own frame — with 0° of travel inward and 60° outward. The compiler generates
+eight helper bones for them; the clamped link is drawn through its `_d` twin and the links below it keep
+their own springs.
 
-One was found by the author comparing two builds frame by frame: with every mesh reduced on the idle, the
-build and every check were green and the skirt's hem kinked in the film. The film bends its chains ten to
-twenty times further than the idle does. That became the rule in WORKING.md, the declared bends in the
-config, and two issues — what a mesh should be reduced against ([parts#265](https://github.com/rig-c/parts/issues/265))
-and a weight rule that folds triangles under a large bend ([parts#284](https://github.com/rig-c/parts/issues/284)).
-Both have shipped, and this cut uses them: the figure's own spacing and `rig-parts mesh-draft` for the
-first, `meshes.<part>.influences` for the second. The hairpin's tassel swings 95° from rest, and at that
-bend its mesh folded before anything was reduced — the tool now says so in one sentence
-([parts#280](https://github.com/rig-c/parts/issues/280)) rather than leaving it to be found, and with the
-weight cut declared it no longer folds.
+**What that is and is not.** It is an angular stop that follows a point on a moving bone. It is not a
+surface-contact solver: there is no line projection, no friction, no collision against the bar's pixels.
+So the hair is not certified as resting on the bar. Measured over all 240 loop frames in the seat's
+frame, the third link's origin never drops below the bar's top (its clearance is at least 11.79 px on the
+right and 12.49 px on the left), but the clamped link's centre moves off the height it rests at in the
+setup pose by an RMS of 5.72 px on the right and 5.83 px on the left, against a bar 1 px thick at that
+scale — the check for "resting on the bar" reads red on both sides, and the film is published with it
+red. The tails also fan wider than in the earlier build where they hung straight down: the outer span of
+their lower material grows by 51.8 px at 2.0 s and 59.1 px at 3.5 s. At 960×540 the hair reads as lying
+over the seat; those three numbers are what that reading is worth.
 
-Rebuilding this repository on each new release is itself a check. Moving it to 1.7.0 found one more: a face bone that takes its own `tip` from the config gets no declared axis, and nothing says so ([parts#258](https://github.com/rig-c/parts/issues/258)) — this config had done exactly that as the 1.6.0 workaround. Moving it to 1.10.0 and 1.11.0 found the count in *The meshes*: the author's own reduction of the three most-bent parts was two to three times heavier than what the new draft command wrote, and nothing had said so because nothing had built both. `rig-c` 2.46.0's fold reading named triangles nobody had seen at two curl tips and on the hairpin's outline; that it named them without saying where they were became [core#1386](https://github.com/rig-c/core/issues/1386), and 2.47.0 prints the box and frames a picture to it. Moving it to 1.61.0 caught a chest segment left in `meshes.handwear_l.segments`: `CHECK_STRESS_OFF_CHAIN` refused the 0.532 off-chain chest weight that pinned the cuff when the left sleeve turned (ratio 27.9 at 180° against 1.0 rigid; dropping the chest segment leaves `handwear_l` on `sleeve_l` alone at ratio 1). Rebuilding on `@rig-c/parts` 1.62.0 and `rig-c` 2.69.0 did not move the rig or its 321 posed frames (0.000 units across all 83 bones; `out/render/show@20fps` and `out/render_black/show@20fps` are byte for byte unchanged from 1.61.0); moving the reveal from 4.1 – 6.6 s to 3.7 – 5.2 s changed 62 of the 240 composed frames (`s0065`–`s0130`, 3.25 – 6.50 s; 58 with pixels differing by more than 40, while `s0092`–`s0095` at 4.60 – 4.75 s sit inside the full-opacity plateau of both windows and are unchanged) and left the 25 frames across the second kick (`s0104`–`s0128`, 5.20 – 6.40 s, 1.20 s) free of any overlay.
+**The hip loops.** v1's painting had a ring of hair erased beside each hip (`tools/trim_loops.py`),
+because on a figure sitting in mid-air they read as hair lying on a floor that is not there. The v2
+full-body run was made from the untrimmed source and brought both rings back; step 1 applies the same
+mask to the derived copy, and all 240 frames' hip regions were read at 1:1 from the decoded WebP with no
+ring restored and no gap or severed strand where they were.
 
-## Looking at the rig
+## Validation and inspection
 
-`rig-c` draws a build for an agent to read — bones, names, a coordinate grid, what the rig declares, any mesh's
-weights and every mesh's density against the figure, over the art — with a legend beside the picture that maps pixels back to rig coordinates:
+`build.sh` assembles, rigs and checks the parts, writes the film rig, compiles and gates both skeletons,
+poses five animations, composes the loop and reads it back. What those readings say of this build,
+recorded in `BUILD-FINAL.json`:
 
-```bash
-node_modules/.bin/rigc inspect --candidate out/build --show art,bones,names,declared --dim --zoom bone:head:120 --out head.png
-```
+| Reading | Result |
+| --- | --- |
+| `rigc build`, normal and black | 52 assertions each: 26 pass, 0 fail, 12 skip, 14 outside the `spine` profile |
+| `rig-parts check` | 12 bars measured, 12 pass; `SEAM_OVER_MOTION` and `CLOTH_SETTLES` as SKIP notes; no temporal requirement declared |
+| `rigc render --folds` | 0 folded meshes in every animation (11 meshes in idle, turn, tilt and body_turn; 12 in show, with the wave's sleeve copy) |
+| `tools/loop.py` | largest bone and vertex offset at the seam both 0.000 units (rounded, not mathematical zero) |
+| `tools/delivery.py` | 240 frames, 12,000 ms, 960×540; yaw channel read at −12° and +12° |
+| the seat stops | clearance ≥ 11.79 / 12.49 px; centreline RMS 5.72 / 5.83 px against 1 px, red |
 
-Most of the findings in the table above were first seen in pictures like that one, drawn by throwaway scripts before the command existed.
+A green gate is not a verdict on the picture, and this page does not pretend it is. What was looked at:
+the inspection folder's native frames and head crops at both ends of the turn, the same frames with the
+reveal switched off so the underlying art could be read, the hip regions of every frame at 1:1, and
+full-frame comparisons at the swing's two extremes for the hair-over-bar order and the seat stops. The
+hair's double contour, the red contact check and the wider fan are the limits that reading found, and
+they are stated above rather than fixed in the picture.
 
-## What is the rig and what is staging
-
-`rig-c` makes an object that can be directed; composing a take is the consumer's. This repository is a
-consumer. So:
-
-- **The rig**: every motion in the table above, compiled by `rigc build` and posed by `rigc render`.
-- **Staging**: the sky, the lights, the shadow, the captions, and the choice of when she does what.
-- **The reveal** is in between and is honest about it: the lines are drawn by `compose.py`, at the
-  positions `geometry.json` gives for that frame. The caption's counts — bones in the skeleton, meshes
-  drawn — are read from the same file.
-
-The frames are posed by `rigc render`, not played by [`@rig-c/play`](https://github.com/rig-c/play): the
-trailer is a video. The compiled model in `out/build/` is what `@rig-c/play` loads.
+`rig-c` makes an object that can be directed; composing the shot is the consumer's, and this repository
+is a consumer. The rig is every motion in the table above, compiled by `rigc build` and posed by
+`rigc render`. The staging is the sky, the lights, the shadow, the captions and the choice of when she
+does what. The reveal is in between and honest about it: `compose.py` draws the lines at the positions
+`geometry.json` gives for that frame, and the caption's counts — bones in the skeleton, meshes drawn —
+are read from the same file. The frames are posed, not played by [`@rig-c/play`](https://github.com/rig-c/play):
+the trailer is a video. The compiled model in `out/v2-final/build/` is an ordinary rig-c model and is
+what `@rig-c/play` would load.
 
 ## Files
 
 ```
-build.sh                 the five steps
-film.sh                  steps 2-5 alone, for a change to film/
-WORKING.md               how to change the film and check the change
-inputs/painting.png      the generated painting, 1664×2432; generation.json and pose_seated.json record it, tools/trim_loops.py the edit after
-inputs/layers/           the two See-through runs (full body, head crop) and what each was fed
-inputs/config.json       the rig-parts config: plan, bones, meshes, regions, motion
-inputs/keypoints.json    the joints, read off the painting
-inputs/requirements.json what the scene declares to the check
-inputs/sky.png           the painted sky; sky.json records it
-inputs/palm.png          the generated open hand; palm.json records it
-film/palm.py             the palm, cut out, recoloured and split at the wrist
-film/rig.py              the film rig
-film/compose.py          the film layer
-tools/                   the readings WORKING.md describes: frames.py (two builds, frame by frame),
-                         moved.py (which bones a change moved), overlay.py (two frames, red and cyan),
-                         loop.py (does the loop close; does anything pop), bends.py (how far the film
-                         turns each bone from its setup pose); trim_loops.py is the input edit, not a reading
-trailer.webp             what build.sh makes
+build.sh                    the five steps
+film.sh                     steps 2-5 alone, reusing the built parts, for a change to film/
+WORKING.md                  how to change the film, and every measurement behind this page
+BUILD-FINAL.json            the record of the measured build; BUILD-V2, -RING-FIX, -LAYERING, -PHYSICS.json are the builds before it
+inputs/painting.png         the generated painting, 1664×2432; generation.json and pose_seated.json record it
+inputs/layers-v2/           the two v2 See-through runs (full body, head crop): art and depth per layer, and what each was fed
+inputs/layers/              v1's two runs, kept for the record
+inputs/config.json          the rig-parts config: plan, bones, meshes, regions, motion, depth, turn
+inputs/keypoints.json       the joints, read off the painting
+inputs/requirements.json    what the scene declares to the check
+inputs/sky.png              the painted sky; sky.json records it
+inputs/palm.png             the generated open hand; palm.json records it
+film/palm.py                the palm, cut out, recoloured and split at the wrist
+film/rig.py                 the film rig: swing, springs, stops, gaze, palm, the performance
+film/compose.py             the film layer
+tools/derive_trimmed_full.py  the hip-loop trim applied to a copy of the full-body run
+tools/preflight.ts          the inputs of steps 1 and 2 parsed before anything is compiled
+tools/delivery.py           the encoded loop decoded and cropped at its own pixels
+tools/                      the readings WORKING.md describes: frames.py (two builds, frame by frame),
+                            moved.py (which bones a change moved), overlay.py (two frames, red and cyan),
+                            loop.py (does the loop close; does anything pop), bends.py (how far the film
+                            turns each bone from its setup pose); trim_loops.py is v1's input edit
+trailer.webp                the published loop; build.sh writes its own under out/
 ```
 
 ## Licence

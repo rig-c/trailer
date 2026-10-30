@@ -211,7 +211,7 @@ def main(open_dir, black_dir, sky_path, show, out_dir, fps):
     colour = {n: LOGO[tops.index(chain_of(n)) % 5] for n in drawn}
 
     # The reveal wipes in from the left and out to the right.
-    WIRE, FADE, SOFT = (3.70, 5.20), 0.45, 90.0
+    WIRE, FADE, SOFT = tuple(show['reveal']), 0.30, 90.0
     left, right = CX - 620, CX + 620
     xs = np.arange(W, dtype=np.float32)[None, :]
 
@@ -228,12 +228,12 @@ def main(open_dir, black_dir, sky_path, show, out_dir, fps):
 
     # The counts in the caption are read from the render: bones in the skeleton,
     # mesh attachments drawn in the middle of the reveal.
-    mid = geo['frames'][int((lead + 4.45) * fps)]
+    mid = geo['frames'][int((lead + sum(WIRE) / 2) * fps)]
     meshes = sum(1 for a in mid['attachments'] if kinds.get(a['slot']) == 'mesh' and a.get('vertices'))
     captions = [(0.40, 1.75, 'One painting.', 0),
                 (1.95, 3.55, 'Rigged by an AI agent.', 1),
-                (3.75, 5.15, f"{len(geo['bones'])} bones · {meshes} meshes", 3),
-                (6.95, 9.30, 'Physics on every strand.', 4),
+                (4.00, 5.60, f"{len(geo['bones'])} bones · {meshes} meshes", 3),
+                (7.95, 9.30, 'Physics on every strand.', 4),
                 (9.70, 11.70, 'Verified before it is written.', 2)]
     captions = [(a, b, caption_sprite(text, LOGO[ci])) for a, b, text, ci in captions]
 
@@ -330,8 +330,8 @@ if __name__ == '__main__':
     small = [f.resize((960, 540), Image.LANCZOS) for f in frames]
     small[0].save(out_dir + '/trailer.webp', save_all=True, append_images=small[1:], duration=int(1000 / fps),
                   loop=0, quality=72, method=6)
-    sheet = Image.new('RGB', (960 * 4, 540 * 2))
-    for q, t in enumerate((1.0, 2.8, 4.45, 5.65, 7.08, 7.4, 10.12, 10.6)):
+    sheet = Image.new('RGB', (960 * 4, 540 * 3))
+    for q, t in enumerate((0.0, 1.0, 2.8, 4.25, 5.10, 5.65, 6.30, 7.35, 8.42, 10.12, 10.60, 11.95)):
         sheet.paste(small[int(t * fps)], ((q % 4) * 960, (q // 4) * 540))
     sheet.save(out_dir + '/sheet.jpg', quality=88)
     print(len(frames), 'frames ->', out_dir + '/trailer.webp', os.path.getsize(out_dir + '/trailer.webp') // 1024, 'KB')

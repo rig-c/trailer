@@ -2,6 +2,12 @@
   "name": "rig-c-trailer",
   "private": true,
   "description": "The rig-c organisation's trailer, reproducible: one painting to a rigged, animated loop",
-  "scripts": { "build": "./build.sh" },
-  "devDependencies": { "@rig-c/parts": "1.62.0", "@rig-c/pose": "1.0.2", "rig-c": "^2.69.0" }
+  "scripts": {
+    "build": "./build.sh"
+  },
+  "devDependencies": {
+    "@rig-c/parts": "1.79.1",
+    "@rig-c/pose": "1.5.4",
+    "rig-c": "2.81.1"
+  }
 }

@@ -1,0 +1,194 @@
+{
+  "spec": "trailer-build-measurement/1",
+  "pool_job_id": "20261030T024832Z-9139f7d7122f49cfabafb44ea9613238",
+  "input_snapshot_sha256": "305654028f11e47b1dee84f4eb7342ada0fa4b2180a3b7e282f8649999ff196f",
+  "command": [
+    "bash",
+    "build.sh"
+  ],
+  "exit": 0,
+  "build_seconds": 237.841,
+  "excluded_from_timer": [
+    "dependency installation",
+    "queue wait",
+    "evidence capture"
+  ],
+  "isolation": "unmodified ordinary pool runner; verified pinned GitHub tarball + exact declared source overlay only; no retained output/dependencies; fresh npm ci; no manual clone",
+  "source_base": {
+    "base_commit": "5c0e55d950f1011f6e1dc0b44ca3f342df75c4f4",
+    "base_tarball_sha256": "4fd70902a240d67693a1c99dfcdccb331db1c39582db07d8ed990748d755555a",
+    "prebuild_write_manifest_sha256": "9c1e162c62984b13c167d51becd670366a90e5b07d023e84836ef158fc9e6e21",
+    "base_git_blobs_verified": 95,
+    "overlay_paths": 133,
+    "effective_source_files": 218,
+    "effective_manifest_sha256": "905848331b030c74c8a59280e155294ea14acc593d8825bb32285d79455444ec",
+    "no_carried_out_or_node_modules": true
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "packages": {
+      "@rig-c/parts": "1.79.1",
+      "@rig-c/pose": "1.5.4",
+      "rig-c": "2.81.1"
+    },
+    "numpy": "2.4.4",
+    "pillow": "12.2.0",
+    "font_checksum": "not newly recorded; output is byte-identical to the reviewed delivery"
+  },
+  "source_inputs_changed": [],
+  "effective_source_files_changed": [],
+  "source_input_count": 194,
+  "compiler_spine_each": {
+    "assertions": 52,
+    "passed": 26,
+    "failed": 0,
+    "skipped": 12,
+    "outside_profile": 14,
+    "A00_ROUNDTRIP_PARSE": "SKIP: optional spine-core absent"
+  },
+  "parts_check": {
+    "counted_bars": 12,
+    "passed": 12,
+    "failed": 0,
+    "counted_skipped": 0,
+    "separate_SKIP": [
+      "SEAM_OVER_MOTION: no neighbour pair",
+      "CLOTH_SETTLES: no producer physics"
+    ],
+    "temporal_requirements_declared": 0,
+    "temporal_requirements_measured": 0,
+    "recomposite_holes_reported_not_barred": 4093
+  },
+  "film": {
+    "compiled_bones": 107,
+    "authored_bones": 99,
+    "generated_stop_helpers": 8,
+    "slots": 29,
+    "physics": 26,
+    "rig_tail_physics": 8,
+    "motion_other_physics": 18,
+    "producer_triangles": 1702,
+    "film_mesh_triangles_including_wave_copy": 2120
+  },
+  "folds": {
+    "body_turn": {
+      "meshes": 11,
+      "folded": []
+    },
+    "idle": {
+      "meshes": 11,
+      "folded": []
+    },
+    "show": {
+      "meshes": 12,
+      "folded": []
+    },
+    "tilt": {
+      "meshes": 11,
+      "folded": []
+    },
+    "turn": {
+      "meshes": 11,
+      "folded": []
+    }
+  },
+  "loop_printed_units": {
+    "bone": "0.000",
+    "vertex": "0.000"
+  },
+  "delivery": {
+    "sha256": "631e74967074dd59d405cd137a4d4783820559b852c1485e0a13cd365139ad24",
+    "bytes": 6405916,
+    "size": [
+      960,
+      540
+    ],
+    "frames": 240,
+    "duration_ms": 12000,
+    "byte_identical631e": true
+  },
+  "stops": [
+    {
+      "chain": "tail_r_seat",
+      "links": [
+        "tail_r1"
+      ],
+      "against": "seat",
+      "at": [
+        -246,
+        27
+      ],
+      "inward": 0,
+      "outward": 60
+    },
+    {
+      "chain": "tail_l_seat",
+      "links": [
+        "tail_l1"
+      ],
+      "against": "seat",
+      "at": [
+        255,
+        27
+      ],
+      "inward": 0,
+      "outward": 60
+    }
+  ],
+  "accepted_known_limits": {
+    "seat_normal_RMS_px": [
+      5.71663047878426,
+      5.832207200791444
+    ],
+    "unchanged_RMS_bar_px": 1,
+    "RMS_verdict": "RED both, adopted after delivery review",
+    "negative_node_clearance_frames": [
+      0,
+      0
+    ],
+    "minimum_node_clearance_px": [
+      11.789459200000632,
+      12.486742080685316
+    ],
+    "interpretation": "angular stop following moving-seat points, no positional contact/friction solver; not certified resting on bar",
+    "distal_material_span_increase_px_f040_f070": [
+      51.77005795660784,
+      59.07564153430479
+    ],
+    "wider_fan": "accepted known delivery silhouette"
+  },
+  "invariants": {
+    "full_show_geometry_exact_reviewed631e": true,
+    "producer_JSON_exact_reviewed631e": true,
+    "all51_image_pixels_exact": true,
+    "nonhair_pose_changes_all5_animations": 0,
+    "all5_frame_count": 495
+  },
+  "visual": {
+    "native_whole_loop_sheet": "12 full960x540 panels in3840x1620 sheet; no panel downscale; viewer may scale display",
+    "inspection": "native loop overview self-read; exact media identity binds prior approved fullframe sheets; no new all240 pages or continuous-playback claim",
+    "source_edge": "enlarged hair edge remains, accepted at delivery scale"
+  },
+  "limits": [
+    "show global geometry extrema pair SKIP because wave changes attachment identity; channels READ",
+    "no full suite/PRCI/nativebrowser viewer in lane",
+    "no new all240 or lower-chain lag certification for seat-stop; prior physics response controls are historical"
+  ],
+  "runtime_file_sha256": {
+    "build.sh": "5d0b49cc20cf6c7eb6aae36c7da75a20207056e98ccedbb8f91d48cd29509d0b",
+    "film.sh": "fd5bbcd8e30e3bf5e5eafc8ad0b47cb1b1025c42026a81cab3394035ef06a04f",
+    "film/rig.py": "3d480cd9f59d8b10f21479b490381aaa3cc51188b609ac3e28f4faeabf6c7ca2",
+    "film/compose.py": "057a0dc39027525757a9aed382db8b2fe709f376d6f11964575121b461017317",
+    "package-lock.json": "e06c5ded33a31f30ca7d42376a852c9129116194448ec3e0485900a9eecb2c73",
+    "inputs/config.json": "847f140876b0a6d7aa8ac4a96cc4c4eb7575e227d167c5b0c6922e86c5407fa9",
+    "tools/derive_trimmed_full.py": "011a1436a43d0ad49376ad039680df975c62edf0a4fe645b44b237b78fb02113",
+    "tools/preflight.ts": "9d0a26fcd7361751bea6b5abb4c3b097616b979bfeb9f0206973f280e3a78ec3"
+  },
+  "historical_records": [
+    "BUILD-V2.json",
+    "BUILD-RING-FIX.json",
+    "BUILD-LAYERING.json",
+    "BUILD-PHYSICS.json"
+  ]
+}

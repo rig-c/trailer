@@ -19,10 +19,6 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageFilter
 
-root = Path(sys.argv[1])
-layer_p = root / 'inputs/layers/full/parts/back hair.png'
-paint_p = root / 'inputs/painting.png'
-
 ROWS = (527, 567)  # the rings' rows, layer px, with a margin
 # Tail outer edge, (row, x) in layer px, measured where alpha > 128 on rows clear of the ring.
 LEFT = ([520, 526, 532, 568, 574, 580], [339, 332, 324, 253, 246, 242])    # erase x < edge
@@ -30,33 +26,47 @@ RIGHT = ([520, 526, 532, 562, 568, 574], [706, 714, 723, 769, 775, 779])   # era
 X_LEFT, X_RIGHT = (150, 450), (600, 900)  # the halves each rule may touch
 RAMP = 1.5
 
-layer = Image.open(layer_p).convert('RGBA')
-a = np.array(layer.split()[3]).astype(np.float64)
-keep = np.ones_like(a)
-xs = np.arange(a.shape[1], dtype=np.float64)
-for y in range(*ROWS):
-    el = np.interp(y, *LEFT)
-    er = np.interp(y, *RIGHT)
-    kl = np.clip((xs - (el - RAMP)) / RAMP, 0, 1)       # 0 outside the left tail
-    kr = np.clip(((er + RAMP) - xs) / RAMP, 0, 1)       # 0 outside the right tail
-    row = np.ones_like(xs)
-    row[X_LEFT[0]:X_LEFT[1]] = kl[X_LEFT[0]:X_LEFT[1]]
-    row[X_RIGHT[0]:X_RIGHT[1]] = kr[X_RIGHT[0]:X_RIGHT[1]]
-    keep[y] = row
-a2 = a * keep
-removed = (a > 0) & (keep < 1)
-layer.putalpha(Image.fromarray(np.round(a2).astype(np.uint8)))
-layer.save(layer_p)
-print('layer px touched:', int(removed.sum()))
+def keep_mask(size):
+    """The accepted v1 trim in its registered 1024-square source grid."""
+    if tuple(size) != (1024, 1024):
+        raise ValueError('loop trim requires the original 1024-square registration')
+    keep = np.ones((size[1], size[0]), dtype=np.float64)
+    xs = np.arange(size[0], dtype=np.float64)
+    for y in range(*ROWS):
+        el = np.interp(y, *LEFT)
+        er = np.interp(y, *RIGHT)
+        kl = np.clip((xs - (el - RAMP)) / RAMP, 0, 1)
+        kr = np.clip(((er + RAMP) - xs) / RAMP, 0, 1)
+        row = np.ones_like(xs)
+        row[X_LEFT[0]:X_LEFT[1]] = kl[X_LEFT[0]:X_LEFT[1]]
+        row[X_RIGHT[0]:X_RIGHT[1]] = kr[X_RIGHT[0]:X_RIGHT[1]]
+        keep[y] = row
+    return keep
 
-# Painting: 1664 x 2432, centred on the 2432 square See-through was fed; layer px * 2432/1024.
-paint = Image.open(paint_p).convert('RGB')
-P = np.array(paint)
-sq = 2432
-pad = (sq - paint.width) // 2
-m = Image.fromarray((removed * 255).astype(np.uint8)).resize((sq, sq), Image.NEAREST)
-m = m.filter(ImageFilter.MaxFilter(5))  # cover the ring's antialiased rim at painting scale
-M = np.array(m)[:, pad:pad + paint.width] > 0
-P[M] = (255, 254, 255)
-Image.fromarray(P).save(paint_p)
-print('painting px whitened:', int(M.sum()))
+
+def main(root):
+    layer_p = root / 'inputs/layers/full/parts/back hair.png'
+    paint_p = root / 'inputs/painting.png'
+    layer = Image.open(layer_p).convert('RGBA')
+    a = np.array(layer.split()[3]).astype(np.float64)
+    keep = keep_mask(layer.size)
+    removed = (a > 0) & (keep < 1)
+    layer.putalpha(Image.fromarray(np.round(a * keep).astype(np.uint8)))
+    layer.save(layer_p)
+    print('layer px touched:', int(removed.sum()))
+
+    # Legacy CLI only: also edit the original painting. The v2 derivation does not call this.
+    paint = Image.open(paint_p).convert('RGB')
+    P = np.array(paint)
+    sq = 2432
+    pad = (sq - paint.width) // 2
+    m = Image.fromarray((removed * 255).astype(np.uint8)).resize((sq, sq), Image.NEAREST)
+    m = m.filter(ImageFilter.MaxFilter(5))
+    M = np.array(m)[:, pad:pad + paint.width] > 0
+    P[M] = (255, 254, 255)
+    Image.fromarray(P).save(paint_p)
+    print('painting px whitened:', int(M.sum()))
+
+
+if __name__ == '__main__':
+    main(Path(sys.argv[1]))
