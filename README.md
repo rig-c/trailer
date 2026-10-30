@@ -40,10 +40,11 @@ encoded file. `TRAILER_OUT=<dir>` puts all of it somewhere else. The build never
 `trailer.webp`; that file is the published loop, copied there by hand, and the last line `build.sh` prints
 is the path of the one it just wrote.
 
-The whole build took **3 min 58 s** (237.841 s, excluding the install) on a Linux x86-64 runner, measured
-once from a fresh locked install with nothing carried over — `BUILD-FINAL.json` is that run's record. It
-reproduced the root `trailer.webp` byte for byte: 6,405,916 bytes, SHA-256
-`631e74967074dd59d405cd137a4d4783820559b852c1485e0a13cd365139ad24` (python 3.12.3). Another machine's
+The whole build took **4 min 4 s** (243.808 s, excluding the install) on a Linux x86-64 runner, measured
+once from a fresh locked install with nothing carried over. It reproduced the root `trailer.webp` byte for
+byte: 6,406,188 bytes, SHA-256 `a441e98601de6910d549facb0391a6c5b597fe53a69c0854239c1c365ae81ee4`.
+`BUILD-FINAL.json` is the record of the build before the tail-tip change described under *Hair, swing and
+seat* (237.841 s, SHA-256 `631e7496…`, python 3.12.3). Another machine's
 encoders and caption font can move bytes without moving the picture; the figure is one measurement, not a
 benchmark.
 
@@ -174,9 +175,22 @@ pixel, mesh, weight, spring or key.
 
 **The tails move on springs alone.** The idle's keyed tail motion is removed and each of the four links on
 either side carries a rotation spring: strengths 105, 84, 67.2 and 53.8 down the chain, damping 0.85,
-inertia 0.2 on the upper two links and 0.1 on the lower two, and gravity 120 on the root link only, so the
-hair hangs below its moving attachment while the painted curl at the tip is kept. The key removal and the
-spring settings are one change; the film does not show that gravity alone would have done it.
+inertia 0.2 on the upper two links and 0.5 on the lower two, and gravity 120 on the root link only, so the
+hair hangs below its moving attachment. The key removal and the spring settings are one change; the film
+does not show that gravity alone would have done it.
+
+The lower two links had inertia 0.1 at first, and the painted curls snapped against the seat as the head
+tilted back and as the hop began. Raising them to the package default, 0.5, lets the tips lag their parent.
+The largest per-frame step of a curl tip relative to the seat, at the delivery scale:
+
+| Window | Left (px) | Right (px) |
+| --- | --- | --- |
+| 3.55–3.75 s, tilt return | 3.56 → 1.69 | 5.17 → 1.52 |
+| 8.10–8.25 s, hop onset | 2.45 → 1.08 | 3.80 → 2.11 |
+| everywhere else in the loop | 2.34 → 2.91 | 2.66 → 3.34 |
+
+The steps inside the two windows fell below those elsewhere. The curls now drift through a little more
+motion elsewhere in the loop instead of snapping in two places. Nothing outside the tails changed.
 
 **Two stops drape the hair over the seat.** `rig.json` declares `tail_r_seat` and `tail_l_seat`: each
 clamps the second link of a tail (`tail_r1`, `tail_l1`) against a point that rides on `seat` — (−246, 27)
