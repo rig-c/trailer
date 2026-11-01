@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/rig-c/trailer/main/assets/banner.svg" alt="rig-c/trailer — The rig-c trailer, reproducible from one painting to an animated loop" width="100%" />
 </p>
 
-# The rig-c trailer v2, reproducible
+# rig-c/trailer
 
 <p align="center">
   <img src="trailer.webp" alt="A character on a swing under a night sky breathes, tilts, smiles and looks around, her long hair draping over the seat; she kicks, hops and waves while a reveal shows her moving meshes and bones" width="100%" />
