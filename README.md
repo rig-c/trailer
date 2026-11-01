@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rig-c/trailer/main/assets/banner.svg" alt="rig-c/trailer — The rig-c trailer, reproducible from one painting to an animated loop" width="100%" />
+</p>
+
 # The rig-c trailer v2, reproducible
 
 <p align="center">
